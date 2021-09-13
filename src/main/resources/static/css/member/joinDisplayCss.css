@@ -1,0 +1,34 @@
+@charset "UTF-8";
+
+body{
+  display: grid;
+  justify-content: center;
+}
+div.joinDisplay_container{
+  width: 1000px; height: 300px;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 300px 50px 300px;
+  margin-top: 20px; margin-bottom: 20px;
+}
+
+div.joinDisplay_container p{
+  font-size: large;
+}
+
+div.joinDisplay_container button{
+  width: 250px; height: 50px;
+  padding: 0;
+}
+
+div.joinDisplay_joinWhereGarden, div.joinDisplay_joinSns{
+  text-align: center;
+}
+
+button#googleBtn, button#naverBtn{
+  margin-bottom: 15px;
+}
+
+div.joinDisplay_joinSns img{
+  width: 100%; height: 100%;
+}

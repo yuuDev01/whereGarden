@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+ 
+  <title>어딜, 가든</title>
+  
+  <!-- 추가 CSS -->
+  <link rel="stylesheet" href="/css/board/boardWrite.css">
+	
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous" defer></script>
+</head>
+
+<body>
+	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
+	
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+    
+<body>
+  <div class="boardList_allContainer">
+    <div class="Board_menu">
+      <ul>
+        <li>커뮤니티</li>
+        <li><a th:href="@{/board/boardList(category=자유게시판)}">자유게시판</a></li>
+        <li><a th:href="@{/board/boardList(category=QnA)}">QnA</a></li>
+      </ul>
+    </div>
+    <form th:action="@{/board/boardWrite}" th:method="post" th:object="${writeForm}" enctype="multipart/form-data">
+    <div class="writeForm_container">
+    <input type="hidden" th:field="*{bmid}"/>
+		<input type="hidden" th:field="*{bnickname}"/>
+    <div class="writeForm_titleBox">
+    	<select th:if="${category} == null" th:field="*{bcategory}">
+        <option value="" selected>카테고리를 선택하세요</option>
+        <option th:name="*{bcategory}" th:value="자유게시판">자유게시판</option>
+        <option th:name="*{bcategory}" th:value="QnA" >QnA</option>
+      </select>
+      <select th:if="${category} == '자유게시판'" th:field="*{bcategory}">
+        <option value="">카테고리를 선택하세요</option>
+        <option th:name="*{bcategory}" th:value="자유게시판" selected>자유게시판</option>
+        <option th:name="*{bcategory}" th:value="QnA" >QnA</option>
+      </select>
+      <select th:if="${category} == 'QnA'" th:field="*{bcategory}">
+        <option value="">카테고리를 선택하세요</option>
+        <option th:name="*{bcategory}" th:value="자유게시판" >자유게시판</option>
+        <option th:name="*{bcategory}" th:value="QnA" selected>QnA</option>
+      </select>
+      <input type="text" placeholder="제목을 입력하세요" th:field="*{btitle}">
+    </div>
+    <div class="writeForm_contentBox">
+      <textarea id="content" name="" th:field="*{bcontent}"></textarea>
+      <div class="mb-3">
+        <input type="file" class="form-control" th:field="*{files}" multiple="multiple">
+      </div>
+      <div class="writeForm_buttonBox">
+        <button type="submit">등록</button>
+        <button type="reset">취소</button>
+      </div>
+    </div>
+    </div>
+    </form>
+  </div>
+
+  <!-- <script src="https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js"></script>
+  <script>
+    ClassicEditor
+      .create( document.querySelector( '#content' ) )
+      .then( editor => {
+        console.log( editor );
+        editor.extraPlugins = 'autogrow'
+        editor.autoGrow_minHeight = 200;
+        editor.autoGrow_maxHeight = 200;  
+      } )
+      .catch( error => { 
+        console.error( error );
+      } );
+  </script> -->
+</body>
+  
+  
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+  
+  <title>어딜, 가든</title>
+  
+    <!-- 변경한 bootstrap CSS -->
+	<style>
+		button#freeBoardSaveBtn, button#freeBoardCancelBtn{
+			width:100px;
+		}
+		.wrap-freeBoard-btns{
+			text-align: right;
+		}
+		
+	</style>
+</head>
+
+<body>
+
+	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
+	
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+    
+  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+	  <option selected>게시판 카테고리</option>
+	  <option value="1">One</option>
+	  <option value="2">Two</option>
+	</select>
+	<form action="">
+		<div class="mb-3">
+		  <label for="exampleFormControlInput1" class="form-label">제목</label>
+		  <input type="email" class="form-control" id="exampleFormControlInput1" >
+		</div>
+		
+		<div class="mb-3">
+		  <label for="exampleFormControlTextarea1" class="form-label">내용</label>
+		  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+		</div>
+		
+	  <div class="mb-3">
+		  <input class="form-control" type="file" id="formFileMultiple" multiple>
+		</div>
+		
+		<div class="wrap-freeBoard-btns">
+	    <button type="button" id="freeBoardSaveBtn" class="btn btn-success" >저장</button>
+	    <button type="reset" id="freeBoardCancelBtn" class="btn btn-success" >취소</button>
+	  </div>
+
+	</form>
+
+	<footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
+	
+	<script src="https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js"></script>
+	<script>
+		ClassicEditor
+			.create( document.querySelector( '#exampleFormControlTextarea1' ) )
+			.then( editor => {
+				console.log( editor );
+				})
+			.catch( error => {
+				console.error( error );
+				});
+	</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+	
+	
+</body>
+</html>

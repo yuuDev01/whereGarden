@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+  
+  <title>어딜, 가든</title>
+  
+  <!-- 추가 CSS -->
+  <link rel="stylesheet" href="/css/board/boardDetail.css">
+  
+  <!-- 추가 js -->
+  
+  <!-- bootStrap js -->
+  <script src="/js/board/boardDetail.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous" defer></script>
+</head>
+
+<body>
+
+	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
+	
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+   
+  <!-- th:with="새 정의할 변수명=${변수}" -->
+  <div class="boardList_allContainer" th:with="mid=${session?.loginMember?.id}">
+    <div class="Board_menu">
+      <ul>
+        <li>커뮤니티</li>
+        <li><a th:href="@{/board/boardList(category=자유게시판)}">자유게시판</a></li>
+        <li><a th:href="@{/board/boardList(category=QnA)}">QnA</a></li>
+      </ul>
+    </div>
+    <div class="writeForm_container" th:object="${boardDetail}">
+    <div class="writeForm_titleBox">
+      <span th:text="*{btitle}">제목</span>
+      <div th:if="*{budate} == null"><span  th:text="|*{bnickname} / ${#temporals.format(boardDetail.bcdate, 'yyyy-MM-dd hh:mm')}|">작성자 / 작성일시란</span></div>
+      <div th:if="*{budate} != null"><span th:text="|*{bnickname} / ${#temporals.format(boardDetail.budate, 'yyyy-MM-dd hh:mm')}|">작성자 / 작성일시란</span></div>
+    </div>
+    <div class="writeForm_contentBox">
+      <textarea id="content" name="" cols="100" rows="10" th:field="*{bcontent}" readonly="readonly"></textarea>
+      <div class="file">
+        <label for="">첨부파일</label>
+        <div class="fileListBox">
+          <p th:each="file : *{files}">
+          <a href="" th:text="${file.upload_fname}"></a>
+          </p>
+         	<!-- <a th:href="@{|/attach/${file.store_fname}/${file.upload_fname}}|"
+         	 th:text="${file.upload_fname}"></a> -->
+        </div>
+      </div>
+      <div class="writeForm_buttonBox">
+	      <button th:if="${mid} == *{bmid}" type="button" class="btn btn-success" id="modifyBtn" th:data-bnum="*{bnum}">수정</button>
+        <button th:if="${mid} == *{bmid}" type="button" class="btn btn-success" id="deleteBtn">삭제</button>
+        <button type="button" class="btn btn-success" id="replyBtn">답글</button>
+        <button type="button" class="btn btn-success" id="listBtn" th:data-category="*{bcategory}">목록</button>
+      </div>
+    </div>
+    </div>
+  </div>
+    
+	<footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
+	
+</body>
+</html>

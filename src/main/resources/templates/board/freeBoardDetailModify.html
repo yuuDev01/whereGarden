@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+  
+  <link rel="stylesheet" href="/css/main/main.css">
+  
+  <title>어딜, 가든</title>
+</head>
+
+<body>
+	<header th:replace="/fragment/fragment_header_loginNo :: fragment_header_loginNo"></header>
+	
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+    
+	<form th:action="@{|/board/freeBoardModifySave/${findedBoardDTO.Bnum}|}" method="POST">
+	  <ul>
+	  	<li hidden>글 번호 <label for="" name="Bnum" th:text="${findedBoardDTO.Bnum}"></label></li>
+	    <li>제목</li>
+	    <li><input type="text" name="Btitle" th:value="${findedBoardDTO.Btitle}"></li>
+	    <li>내용</li>
+	    <li><textarea name="Bcontent" id="" cols="30" rows="10" th:text="${findedBoardDTO.Bcontent}"></textarea></li>
+	    <li><button type="submit">저장</button>
+	    <button type="button" onclick="javascript:location.href='/board/freeBoardList'">취소</button></li>
+	    <!-- 여기에 나중에 첨부파일 추가하기 -->
+	  </ul>
+	</form>
+    
+	<footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
+  
+</body>
+</html>

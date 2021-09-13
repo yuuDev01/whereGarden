@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+    
+    <link rel="stylesheet" href="/css/member/joinFormCss.css">
+    
+    <title>회원가입 정보입력</title>
+</head>
+<body>
+
+	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
+	
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+ 	
+        <div class="joinForm_container">
+      <div class="joinForm_innerContainer">
+        <form th:action="@{|/member/modifyDetailMyInfoView/${findedMemberDTO.mid}|}" th:method="get">
+        <h3 th:text="|${findedMemberDTO.Mname}님 개인정보|">회원정보</h3>
+          <ul>
+            <li>
+              <label for="">아이디</label>
+            </li>
+            <li>
+              <input type="text" th:field="${findedMemberDTO.mid}" th:value="${findedMemberDTO.mid}" readonly/>
+            </li>
+            <li>
+              <label for="">비밀번호 찾기 질문</label>
+            </li>
+            <li>
+              <input type="text" th:field="${findedMemberDTO.mquestion}" th:value="${findedMemberDTO.mquestion}" readonly/>
+            </li>
+            <li>
+              <label for="">비밀번호 찾기 답변</label>
+            </li>
+            <li>
+              <input type="text" th:field="${findedMemberDTO.manswer}" th:value="${findedMemberDTO.manswer}" readonly/>
+            </li>
+            <li>
+              <label for="">이름</label>
+            </li>
+            <li>
+              <input type="text" th:field="${findedMemberDTO.mname}" th:value="${findedMemberDTO.mname}" readonly/>
+            </li>
+            <li>
+              <label for="">생년월일</label>
+            </li>
+            <li>
+              <input type="date" th:field="${findedMemberDTO.mbirth}" th:value="${findedMemberDTO.mbirth}" readonly/>
+            </li>
+            <li>
+              <label for="">성별</label>
+            </li>
+            <li>
+            	<input type="text" th:field="${findedMemberDTO.mgender}" th:value="${findedMemberDTO.mgender}" readonly/>
+            </li>
+            <li>
+              <label for="">전화번호</label>
+            </li>
+            <li>
+              <input type="text" th:field="${findedMemberDTO.mtel}" th:value="${findedMemberDTO.mtel}" readonly/>
+            </li>
+            <li>
+              <label for="">주소</label>
+            </li>
+            <li>
+              <input type="text" th:field="${findedMemberDTO.maddress}" th:value="${findedMemberDTO.maddress}" readonly/>
+            </li>
+            <li>
+              <label for="">닉네임</label>
+            </li>
+            <li>
+              <input type="text" th:field="${findedMemberDTO.mnickname}" th:value="${findedMemberDTO.mnickname}" readonly/>
+            </li>
+            <li id="button">
+              <button type="submit">수정하기</button>
+            </li>
+          </ul>
+          </form>
+      </div>
+    </div>
+        
+	<footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
+  
+</body>
+</html>
+
+

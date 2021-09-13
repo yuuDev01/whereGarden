@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+ 
+  <title>어딜, 가든</title>
+  
+  <!-- 추가 CSS -->
+  <link rel="stylesheet" href="/css/board/boardList.css">
+	
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous" defer></script>
+</head>
+
+<body>
+	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
+	
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+ 	
+  <div class="boardList_allContainer">
+    <div class="Board_menu">
+      <ul>
+        <li>커뮤니티</li>
+        <li><a th:href="@{/board/boardList(category=자유게시판)}">자유게시판</a></li>
+        <li><a th:href="@{/board/boardList(category=QnA)}">QnA</a></li>
+      </ul>
+    </div>
+    <div class="boardList_container">
+    <p th:text="${category}"></p>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">글번호</th>
+            <th scope="col" id="freeBoardTitle">제목</th>
+            <th scope="col">닉네임</th>
+            <th scope="col">작성일</th>
+            <th scope="col">조회수</th>
+          </tr>
+        </thead>
+        <tbody>
+       			<tr th:each="item : ${boardList}">
+	            <th scope="row" th:text="${item.bnum}">글 번호</th>
+	            <td class="w-50">
+	            	<th:block th:if="${item.bindent} > 0">
+	            		<span th:each="cnt : ${#numbers.sequence(1,item.bindent)}">&nbsp;&nbsp;</span>
+	            		<i class="far fa-comment-dots"></i>
+	            	</th:block>
+	            	<a href="#" th:href="@{|/board/${item.bnum}/|}" th:text="${item.btitle}">글 제목</a>
+	            </td>
+	            <td th:text="${item.bnickname}">작성자</td>
+	            <td th:text="${#temporals.format(item.Bcdate, 'yyyy-MM-dd')}">작성날짜</td>
+	            <td th:text="${item.bhit}">조회수</td>
+	          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <div class="wrap-freeBoard-btns">
+    <button type="button" id="boardWriteBtn" class="btn btn-success" th:data-category="${category}">글작성</button>
+  </div>
+  <nav aria-label="Page navigation example" id="pasingBox">
+		<ul class="pagination pagination-sm justify-content-center">
+	  	<th:block th:if="${pc.prev}">
+		  	<li class="page-item">
+			    	<a class="page-link" href="#" th:href="@{/bbs/list/1(category=${category})}"><i class="fas fa-angle-double-left"></i></a>
+			  </li>
+		  	<li class="page-item">
+			    	<a class="page-link" href="#" th:href="@{/bbs/list/{reqPage}(reqPage=${pc.startPage-1},category=${category})}"><i class="fas fa-angle-left"></i></a>
+			  </li>
+		  </th:block>
+	    <th:block th:each="pnum : ${#numbers.sequence(pc.startPage,pc.endPage)}">
+	    	<th:block th:if="${pnum != 0}">
+					<li class="page-item active" aria-current="page"
+							th:if="${pc.rc.reqPage == pnum}">
+		      <span class="page-link" th:text="${pnum}">1</span>
+		    </li>							    
+		    <li class="page-item" 
+		    		th:if="${pc.rc.reqPage != pnum}">
+		    	<a class="page-link" href="#" th:href="@{/bbs/list/{reqPage}(reqPage=${pnum},category=${category})}" th:text="${pnum}">3</a>
+		    </li>
+		    </th:block>
+	    </th:block>
+	    <th:block th:if="${pc.next}">
+		  	<li class="page-item">
+			    	<a class="page-link" href="#" th:href="@{/bbs/list/{reqPage}(reqPage=${pc.endPage+1},category=${category})}"><i class="fas fa-angle-right"></i></a>
+			  </li>
+		  	<li class="page-item">
+			    	<a class="page-link" href="#" th:href="@{/bbs/list/{reqPage}(reqPage=${pc.finalEndPage},category=${category})}"><i class="fas fa-angle-double-right"></i></a>
+			  </li>		
+			</th:block>
+	  </ul>
+  </nav>
+  
+	<footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
+  
+  <script>
+	  const $writeBtn = document.getElementById('boardWriteBtn');
+	
+	  $writeBtn.addEventListener("click",e=>{
+		  console.log("클릭");
+	  	const category = e.target.dataset.category;
+	  	location.href = `/board/boardWrite?category=${category}`;
+	  });
+  </script>
+</body>
+</html>

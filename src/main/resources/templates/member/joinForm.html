@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+    
+    <link rel="stylesheet" href="/css/member/joinFormCss.css">
+    
+    <title>회원가입 정보입력</title>
+</head>
+<body>
+
+	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
+	
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+ 	
+        <div class="joinForm_container">
+      <div class="joinForm_innerContainer">
+        <h3>회원정보를 입력해주세요</h3>
+        <form th:action="@{/member/joinFormWrite}" th:method="post" th:object="${joinForm}"> 
+          <ul>
+          	<li>
+          		
+          	</li>
+            <li>
+              <label for="">아이디</label>
+            </li>
+            <li>
+              <input type="text" placeholder="ex) test1@test.com" th:field="*{jid}"/>
+              <p th:errors="*{jid}"></p>
+            </li>
+            <li>
+              <label for="">비밀번호</label>
+            </li>
+            <li>
+              <input type="password" placeholder="숫자, 문자, 특수문자 포함 8~15자리 이내" th:field="*{jpw}"/>
+              <p th:errors="*{jpw}"></p>
+            </li>
+            <li>
+              <label for="">비밀번호 확인</label>
+              <input type="password" th:field="*{jpwChk}"/>
+              <p th:errors="*{jpwChk}"></p>
+            </li>
+            <li>
+              <label for="">비밀번호 찾기 질문</label>
+            </li>
+            <li>
+            <select th:field="*{jquestion}">
+			    <option value="">--질문을 선택하세요--</option>
+			    <option th:value="질문1">질문1</option>
+			    <option th:value="질문2">질문2</option>
+			    <option th:value="질문3">질문3</option>
+			</select>
+			<p th:errors="*{jquestion}"></p>
+            </li>
+
+            <li>
+              <label for="">비밀번호 찾기 답변</label>
+            </li>
+            <li>
+              <input type="text" th:field="*{janswer}" />
+              <p th:errors="*{janswer}"></p>
+            </li>
+            <li>
+              <label for="">이름</label>
+            </li>
+            <li>
+              <input type="text" th:field="*{jname}"/>
+              <p th:errors="*{jname}"></p>
+            </li>
+            <li>
+              <label for="">생년월일</label>
+            </li>
+            <li>
+              <input type="date" th:field="*{jbirth}"/>
+              <p th:errors="*{jbirth}"></p>
+            </li>
+            <li>
+              <label for="">성별</label>
+            </li>
+			<li th:each="ele : ${gender}">
+				<input type="radio" th:field="*{gender}" th:value="${ele.name}"/>
+				<label th:for="${#ids.prev('gender')}"
+							 th:text="${ele.decode}"></label>
+			</li>
+            	<!-- <input type="radio" th:name="*{jgender}" value="남"/>남
+            	<input type="radio" th:name="*{jgender}" value="여"/>여 -->
+            	<p th:errors="*{gender}"></p>
+            </li>
+            <li>
+              <label for="">전화번호</label>
+            </li>
+            <li>
+              <input type="text" th:field="*{jtel}"/>
+              <p th:errors="*{jtel}"></p>
+            </li>
+            <li>
+              <label for="">주소</label>
+            </li>
+            <li>
+              <input type="text" th:field="*{jaddress}"/>
+              <p th:errors="*{jaddress}"></p>
+            </li>
+            <li>
+              <label for="">닉네임</label>
+            </li>
+            <li>
+              <input type="text" th:field="*{jnickname}"/>
+              <p th:errors="*{jnickname}"></p>
+              <p th:errors="*{global}">누락확인</p>
+            </li>
+            <li id="button">
+              <button th:type="submit">완료</button>
+              <button type="reset">취소</button>
+            </li>
+          </ul>
+          </form>
+      </div>
+    </div>
+        
+	<footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
+  
+</body>
+</html>
+
+

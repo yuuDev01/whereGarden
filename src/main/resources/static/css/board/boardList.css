@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+div.boardList_allContainer{
+  display: grid;
+  grid-template-columns: 150px 800px;
+  gap: 50px;
+}
+
+div.Board_menu{
+  outline: 1px solid black;
+}
+
+th#freeBoardTitle{
+  width:300px;
+}
+button#freeBoardWriteBtn{
+  width:100px;
+}
+.wrap-freeBoard-btns{
+  width: 1000px;
+  text-align: right;
+}
+
+nav#pasingBox{
+  width: 1000px;
+  display:flex;
+  justify-content: center;
+}
