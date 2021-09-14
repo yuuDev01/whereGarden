@@ -29,7 +29,7 @@
 	<div class="loginPage_container">
 	  <div class="loginPage_whereGardenLogin">
 	    <p id="loginPage_loginTitle">로그인</p>
-	    <form th:action="@{/login}" th:method="post" th:object="${loginForm}">
+	    <form action="" th:method="post" th:object="${loginForm}">
 	      <input type="text" id="loginPage_Mid" placeholder="아이디를 입력하세요" th:field="*{lid}" th:errorclass="errorBox">
 	      <p th:if="${#fields.hasErrors('lid')}" th:errors="*{lid}" th:errorclass="errorMsg"></p>
 	      <input type="password" id="loginPage_Mpw" placeholder="비밀번호를 입력하세요" th:field="*{lpw}"  th:errorclass="errorBox">	      

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.portfolio.domain.member.dto.MemberDTO;
 import com.kh.portfolio.domain.member.svc.MemberSVC;
@@ -29,6 +30,13 @@ public class LoginController {
 	
 	private final MemberSVC memberSVC;
 
+	//주소페이지
+	@GetMapping("/addressAPI")
+	public String addressAPI() {
+		
+		return "addressAPI";
+	}
+	
 	//로그인 페이지
 	@GetMapping("/loginPage")
 	public String loginPage(@ModelAttribute LoginForm loginForm) {
@@ -37,11 +45,12 @@ public class LoginController {
 	}
 	
 	//로그인 처리
-	@PostMapping("")
+	@PostMapping("/loginPage")
 	public String login(
 			@Valid
 			@ModelAttribute LoginForm loginForm,
 			BindingResult bindingResult,
+			@RequestParam(name="redirectUrl",required = false) String redirectUrl,
 			HttpServletRequest request
 			) {
 		
@@ -55,16 +64,14 @@ public class LoginController {
 			return "loginForm";
 		}
 		
-		//LoginMember클래스에 로그인 된 정보를 가지고 새로운 객체 생성
-		LoginMember loginMember = new LoginMember(
-				loginMemberDTO.getMid(),loginMemberDTO.getMnickname(), "회원");
-		
-		//로긴성공
-		HttpSession session = request.getSession(true);		//true : 세선이 없으면 만들고 있으면 그 세션반환
-		session.setAttribute("loginMember", loginMember);
-		log.info("로그인 된 memberDTO:{}",loginMemberDTO);
-		log.info("로그인 된 loginMember:{}",loginMember);
-		return "redirect:/";
+			//세션생성
+			//세션이 있으면 가져오고 없으면 새롭게 생성
+			HttpSession session =request.getSession(true);
+			LoginMember loginMember = new LoginMember(
+					loginMemberDTO.getMid(),	loginMemberDTO.getMnickname(), "회원");		
+			session.setAttribute("loginMember", loginMember);
+			log.info("redirectUrl:{}",redirectUrl);
+			return "redirect:"+redirectUrl;
 		}
 	
 	//로그아웃
