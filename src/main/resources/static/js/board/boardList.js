@@ -1,13 +1,15 @@
 'use strict';
 
-const $writeBtn 	= document.getElementById('writeBtn');
+const $writeBtn = document.getElementById('WriteBtn');
 const $searchBtn 	= document.getElementById('searchBtn');
 const $searchType = document.getElementById('searchType');
 const $keyword 		= document.getElementById('keyword');
 
+//글작성
 $writeBtn.addEventListener("click",e=>{
-	const cate = e.target.dataset.cate;
-	location.href = `/bbs?cate=${cate}`;
+  console.log("클릭");
+	const category = e.target.dataset.category;
+	location.href = `/board/boardWrite?category=${category}`;
 });
 
 //검색 버튼 클릭시
@@ -21,8 +23,8 @@ $searchBtn.addEventListener('click',e=>{
 		return false;
 	}
 	
-		const cate = e.target.dataset.cate;
-		location.href = `/bbs/list/1/${$searchType.value}/${$keyword.value}?cate=${cate}`;
+		const category = e.target.dataset.category;
+		location.href = `/board/boardList/1/${$searchType.value}/${$keyword.value}?category=${category}`;
 });
 
 //검색입력창 엔터키 눌렀을때
@@ -38,8 +40,8 @@ $keyword.addEventListener('keydown',e=>{
 			return false;
 		}
 	
-		const cate = e.target.dataset.cate;
-		location.href = `/bbs/list/1/${$searchType.value}/${$keyword.value}?cate=${cate}`;
+		const category = e.target.dataset.category;
+		location.href = `/board/boardList/1/${$searchType.value}/${$keyword.value}?category=${category}`;
 
 	}
 });

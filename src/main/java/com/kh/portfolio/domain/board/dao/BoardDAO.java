@@ -3,6 +3,7 @@ package com.kh.portfolio.domain.board.dao;
 import java.util.List;
 
 import com.kh.portfolio.domain.board.dto.BoardDTO;
+import com.kh.portfolio.domain.board.dto.SearchDTO;
 
 public interface BoardDAO {
 
@@ -17,7 +18,7 @@ public interface BoardDAO {
 	 * @param boardDTO
 	 * @return 답글 고유번호
 	 */
-	Long ReplyWrite(BoardDTO boardDTO);
+	Long replyWrite(BoardDTO boardDTO);
 	/**
 	 * 게시글 수정
 	 * @param bnum
@@ -39,6 +40,12 @@ public interface BoardDAO {
 	 * @return
 	 */
 	List<BoardDTO> list(String bcategory, int startRec, int endRec);
+	/**
+	 * 게시글 카테고리별 검색결과 목록
+	 * @param searchDTO
+	 * @return
+	 */
+	List<BoardDTO> list(SearchDTO searchDTO);
 	
 	/**
 	 * 게시글 상세
@@ -63,4 +70,9 @@ public interface BoardDAO {
 	 * @return
 	 */
 	long totoalRecordCount(String category);
+	/**
+	 * 게시판 카테고리별 검색 레코드 총수 
+	 * @return
+	 */
+	long totoalRecordCount(String bcategory, String searchType, String keyword);
 }

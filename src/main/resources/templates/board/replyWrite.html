@@ -7,12 +7,11 @@
  
   <title>어딜, 가든</title>
   
-  <!-- 추가 CSS -->
-  <link rel="stylesheet" href="/css/board/boardModify.css">
+  <!-- CSS 추가 -->
+  <link rel="stylesheet" href="/css/board/boardWrite.css">
   
-  <!-- 추가 js -->
-  <script src="/js/ajaxCall.js" defer></script>
-  <script src="/js/board/boardModify.js" defer></script>
+  <!-- js 추가 -->
+	<script src="/js/board/replywrite.js" defer></script>
 	
 	<!-- bootStrap js -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous" defer></script>
@@ -22,8 +21,7 @@
 	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
 	
  	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
-    
-<body>
+ 	
   <div class="boardList_allContainer">
     <div class="Board_menu">
       <ul>
@@ -32,51 +30,33 @@
         <li><a th:href="@{/board/boardList(category=QnA)}">QnA</a></li>
       </ul>
     </div>
-    <form th:action="@{|/board/boardModify/*{bnum}|}" th:method="patch" th:object="${modifyForm}" enctype="multipart/form-data">
+    <form action="" th:method="post" th:object="${replyForm}" enctype="multipart/form-data">
     <div class="writeForm_container">
-    <input type="hidden" th:field="*{bnum}"/>
-    <input type="hidden" th:field="*{bpnum}"/>
     <input type="hidden" th:field="*{bmid}"/>
 		<input type="hidden" th:field="*{bnickname}"/>
 		<input type="hidden" th:field="*{bcategory}"/>
     <div class="writeForm_titleBox">
-      <select th:if="*{bcategory} == '자유게시판'" th:field="*{bcategory}" disabled>
-        <option value="">카테고리를 선택하세요</option>
-        <option th:name="*{bcategory}" th:value="자유게시판" selected>자유게시판</option>
-        <option th:name="*{bcategory}" th:value="QnA" >QnA</option>
       </select>
       <select th:if="*{bcategory} == 'QnA'" th:field="*{bcategory}" disabled>
         <option value="">카테고리를 선택하세요</option>
         <option th:name="*{bcategory}" th:value="자유게시판" >자유게시판</option>
         <option th:name="*{bcategory}" th:value="QnA" selected>QnA</option>
       </select>
-      <input type="text" placeholder="제목을 입력하세요" th:field="*{btitle}">
+      <input type="text" th:field="*{btitle}">
     </div>
     <div class="writeForm_contentBox">
       <textarea id="content" name="" th:field="*{bcontent}"></textarea>
       <div class="mb-3">
-      	<div class="attachfileBox">
-	      	<label for="file" class="col-sm-2 col-form-label text-center">첨부파일</label>
-	        <p th:each="file : *{files}">
-	       	<!-- <a th:href="@{|/attach/${file.store_fname}/${file.upload_fname}}|"
-	       	 th:text="${file.upload_fname}"></a> -->
-	       	 <a href="" th:text="${file.upload_fname}"></a>
-	       	<i class="fas fa-backspace" th:data-sfname="${file.store_fname}"></i>
-	       	</p>
-      	</div>
-      	<input type="file" class="form-control" th:field="*{files}" multiple="multiple">
+        <input type="file" class="form-control" th:field="*{files}" multiple="multiple">
       </div>
       <div class="writeForm_buttonBox">
-        <button type="submit" class="btn btn-success">수정</button>
+        <button type="submit" class="btn btn-success">등록</button>
         <button type="reset" class="btn btn-success" id="cancelBtn" th:data-category="*{bcategory}">취소</button>
-        <button type="button" class="btn btn-success" id="listBtn" th:data-category="*{bcategory}">목록</button>
       </div>
     </div>
     </div>
     </form>
   </div>
-  
-  <footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
 
   <!-- <script src="https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js"></script>
   <script>
@@ -92,8 +72,5 @@
         console.error( error );
       } );
   </script> -->
-</body>
-  
-  
 </body>
 </html>

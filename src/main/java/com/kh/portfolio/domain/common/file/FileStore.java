@@ -69,6 +69,9 @@ public class FileStore {
 		String fsize = String.valueOf(multipartFile.getSize());
 		String ftype = multipartFile.getContentType();
 		
+		//폴더생성
+		createFolder();
+		
 		//파일시스템에 저장
 		multipartFile.transferTo(Path.of(getFullPath(storeFileName)));
 		
@@ -86,7 +89,11 @@ public class FileStore {
 	private String createStoreFileName(String originalFilename) {		
 		String storFilename = UUID.randomUUID().toString();
 		return storFilename + "." + extractExt(originalFilename);
-	}	
+	}
+	
+	// 폴더 생성 메소드
+	private void createFolder() {
+	}
 	
 	/**
 	 * 서버 보관 파일 삭제

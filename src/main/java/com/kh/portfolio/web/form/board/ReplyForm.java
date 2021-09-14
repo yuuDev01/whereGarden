@@ -12,18 +12,16 @@ import lombok.Data;
 
 @Data
 public class ReplyForm {
-	private Long 	 pbnum;				//부모글 번호
+	private Long 	 bpnum;				//부모글 번호
 
+	@NotBlank
+	private String bmid;		
+	@NotBlank
+	private String bnickname;
 	@NotBlank
 	private String bcategory;
 	@NotBlank
 	private String btitle;
-	@NotNull
-	private Long bid;		
-	@NotBlank
-	private String bemail;		
-	@NotBlank
-	private String bnickname;
 	@NotBlank
 	private String bcontent;
 	

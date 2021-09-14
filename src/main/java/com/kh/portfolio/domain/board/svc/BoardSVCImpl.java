@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 //import com.kh.portfolio.domain.board.FileStore;
 import com.kh.portfolio.domain.board.dao.BoardDAO;
 import com.kh.portfolio.domain.board.dto.BoardDTO;
+import com.kh.portfolio.domain.board.dto.SearchDTO;
 import com.kh.portfolio.domain.common.dao.UpLoadFileDAO;
 import com.kh.portfolio.domain.common.dto.UpLoadFileDTO;
+import com.kh.portfolio.domain.common.file.FileStore;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,7 @@ public class BoardSVCImpl implements BoardSVC{
 
 	private final BoardDAO boardDAO;
 	private final UpLoadFileDAO upLoadFileDAO;
+	private final FileStore fileStore;
 
 	//원글작성
 	@Override
@@ -48,22 +51,38 @@ public class BoardSVCImpl implements BoardSVC{
 
 	//답글 작성
 	@Override
-	public Long ReplyWrite(BoardDTO boardDTO) {
+	public Long replyWrite(BoardDTO boardDTO) {
 		
-		return boardDAO.ReplyWrite(boardDTO);
+		Long bnum = boardDAO.replyWrite(boardDTO);
+		
+		//첨부파일 메타정보 저장
+		upLoadFileDAO.addFiles(
+				convert(bnum, boardDTO.getBcategory(), boardDTO.getFiles())
+		);		
+		return bnum;
 	}
 
 	//게시글 수정
 	@Override
 	public Long boardModify(Long bnum, BoardDTO boardDTO) {
-		
-		return boardDAO.boardModify(bnum, boardDTO);
+		Long modifiedBnum = boardDAO.boardModify(bnum, boardDTO);
+		//첨부파일 메타정보 저장
+		upLoadFileDAO.addFiles(
+				convert(bnum, boardDTO.getBcategory(), boardDTO.getFiles())
+		);
+		return modifiedBnum;
 	}
 
 	//게시글 삭제
 	@Override
 	public void boardDel(Long bnum) {
+		//서버파일 시스템에 있는 업로드 파일삭제
+		fileStore.deleteFiles(upLoadFileDAO.getStore_Fname(String.valueOf(bnum)));
+		//업로드 파일 메타정보 삭제
+		upLoadFileDAO.deleteFileByRid(String.valueOf(bnum));
+		//게시글 삭제
 		boardDAO.boardDel(bnum);
+				
 	}
 
 	//카테고리별 게시글 리스트
@@ -71,6 +90,12 @@ public class BoardSVCImpl implements BoardSVC{
 	public List<BoardDTO> list(String bcategory, int startRec, int endRec) {
 		
 		return boardDAO.list(bcategory, startRec, endRec);
+	}
+	//게시판 카테고리별 검색결과 목록
+	@Override
+	public List<BoardDTO> list(SearchDTO searchDTO) {
+		List<BoardDTO> list = boardDAO.list(searchDTO);
+		return list;
 	}
 
 	//게시글 상세
@@ -101,6 +126,12 @@ public class BoardSVCImpl implements BoardSVC{
 	public long totoalRecordCount(String category) {
 
 		return boardDAO.totoalRecordCount(category);
+	}
+	//게시판 카테고리별 검색결과 총수 
+	@Override
+	public long totoalRecordCount(String bcategory, String searchType, String keyword) {
+
+		return boardDAO.totoalRecordCount(bcategory, searchType, keyword);
 	}
 	
 

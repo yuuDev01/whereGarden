@@ -10,9 +10,10 @@
   <link rel="stylesheet" href="/css/board/boardDetail.css">
   
   <!-- 추가 js -->
+  <script src="/js/ajaxCall.js" defer></script>
+  <script src="/js/board/boardDetail.js" defer></script>
   
   <!-- bootStrap js -->
-  <script src="/js/board/boardDetail.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous" defer></script>
 </head>
 
@@ -51,8 +52,8 @@
       </div>
       <div class="writeForm_buttonBox">
 	      <button th:if="${mid} == *{bmid}" type="button" class="btn btn-success" id="modifyBtn" th:data-bnum="*{bnum}">수정</button>
-        <button th:if="${mid} == *{bmid}" type="button" class="btn btn-success" id="deleteBtn">삭제</button>
-        <button type="button" class="btn btn-success" id="replyBtn">답글</button>
+        <button th:if="${mid} == *{bmid}" type="button" class="btn btn-success" id="deleteBtn" th:data-bnum="*{bnum}" th:data-category="*{bcategory}">삭제</button>
+        <button th:if="*{bcategory} == 'QnA'" type="button" class="btn btn-success" id="replyBtn" th:data-bnum="*{bnum}">답글</button>
         <button type="button" class="btn btn-success" id="listBtn" th:data-category="*{bcategory}">목록</button>
       </div>
     </div>

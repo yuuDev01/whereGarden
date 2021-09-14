@@ -8,8 +8,8 @@ const $listBtn 		= document.getElementById('listBtn');
 const handler = (res, e) => {
 	//console.log(e);
 	if(res.rtcd == '00'){
-		const cate = e.target.dataset.cate;
-		location.href = `/bbs/list?cate=${cate}`;
+		const category = e.target.dataset.category;
+		location.href = `/board/boardList?category=${category}`;
 	}else{
 		//alert('삭제오류!');
 		return false;
@@ -22,16 +22,10 @@ $modifyBtn?.addEventListener("click", e=>{
 	location.href = `/board/boardModify/${bnum}`;
 });
 
-//답글
-$replyBtn?.addEventListener("click",e=>{
-		const bnum = e.target.dataset.bnum;
-	location.href=`/bbs/reply/${bnum}`;	
-});
-
 //삭제
 $delBtn?.addEventListener("click", e=>{
 	const bnum = e.target.dataset.bnum;
-	const url = `/bbs/${bnum}`;
+	const url = `/board/${bnum}`;
 	
 	if(confirm('삭제하시겠습니까?')){
 		request.delete(url)
@@ -39,6 +33,12 @@ $delBtn?.addEventListener("click", e=>{
 					 .then(res=>handler(res, e))
 					 .catch(err=>console.log(err));					 
 	}
+});
+
+//답글
+$replyBtn?.addEventListener("click",e=>{
+		const bnum = e.target.dataset.bnum;
+	location.href=`/board/replyQnA/${bnum}`;	
 });
 
 //목록

@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.kh.portfolio.domain.board.dto.BoardDTO;
+import com.kh.portfolio.domain.board.dto.SearchDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -78,7 +79,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 	//답글 작성
 	@Override
-	public Long ReplyWrite(BoardDTO boardDTO) {
+	public Long replyWrite(BoardDTO boardDTO) {
 		
 		//부모글의 bgroup중 bstep이 부모글의 bstep보다 큰 게시글 bstep + 1
 		updateStep(boardDTO.getBgroup(), boardDTO.getBstep());
@@ -217,6 +218,64 @@ public class BoardDAOImpl implements BoardDAO {
 		return list;
 	}
 	
+	//게시글 카테고리별 검색결과 목록
+	@Override
+	public List<BoardDTO> list(SearchDTO searchDTO) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("select t1.* ");
+		sql.append("  from (select row_number() over(order by bgroup desc, bstep asc) as num, ");
+		sql.append("               bnum,    ");
+		sql.append("               bmid,    ");
+		sql.append("               bnickname,   ");
+		sql.append("               bcategory,   ");
+		sql.append("               btitle,    ");
+		sql.append("               bhit,  ");
+		sql.append("               bpnum,   ");
+		sql.append("               bgroup,  ");
+		sql.append("               bstep,   ");
+		sql.append("               bindent,   ");
+		sql.append("               bcdate,  ");
+		sql.append("               budate   ");
+		sql.append("          from board t1");
+		sql.append("         where bcategory = ? ");
+		
+		switch (searchDTO.getSearchType()) {
+		case "TC": //제목+내용
+			sql.append("and ( t1.btitle  like '%" + searchDTO.getKeyword() + "%' ");
+			sql.append("   or t1.bcontent like '%" + searchDTO.getKeyword() + "%' ) ");
+			break;
+		case "T":	//제목
+			sql.append("and t1.btitle  like '%" + searchDTO.getKeyword() + "%' ");
+			break;
+		case "C":	//내용
+			sql.append("and t1.bcontent  like '%" + searchDTO.getKeyword() + "%' ");
+			break;
+		case "N": //별칭
+			sql.append("and t1.bnickname  like '%" + searchDTO.getKeyword() + "%'" );
+			break;
+		case "A":  //전체			
+			sql.append("and ( t1.btitle  like '%" + searchDTO.getKeyword() + "%' ");
+			sql.append("   or t1.bcontent like '%" + searchDTO.getKeyword() + "%' ");
+			sql.append("   or t1.bnickname like '%" + searchDTO.getKeyword() + "%' ");
+			sql.append("   or t1.bmid like '%" + searchDTO.getKeyword() + "%' )");
+			break;
+
+		default:
+			break;
+		}				
+		sql.append(") t1  ");		
+		sql.append(" where num between ? and ?  ");
+		
+	
+		List<BoardDTO> list = jt.query(
+				sql.toString(), 
+				new BeanPropertyRowMapper<>(BoardDTO.class),
+				searchDTO.getScategory(), searchDTO.getStarcRec(), searchDTO.getEndRec()
+				);	
+		
+		return list;
+	}
+	
 	//게시글 상세
 	@Override
 	public BoardDTO boardDetail(Long bnum) {
@@ -280,6 +339,41 @@ public class BoardDAOImpl implements BoardDAO {
 		sql.append(" where bcategory = ?");
 		
 		long totalCount = jt.queryForObject(sql.toString(), Long.class, category);
+		return totalCount;
+	}
+	
+	//게시판 카테고리별 검색결과 레코드수
+	@Override
+	public long totoalRecordCount(String bcategory, String searchType, String keyword) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("select count(*) ");
+		sql.append("	from board t1");
+		sql.append(" where bcategory = ?");
+		
+		switch (searchType) {
+		case "TC": //제목+내용
+			sql.append("and ( t1.btitle  like '%" + keyword + "%' ");
+			sql.append("   or t1.bcontent like '%" + keyword + "%' ) ");
+			break;
+		case "T":	//제목
+			sql.append("and t1.btitle  like '%" + keyword + "%' ");
+			break;
+		case "C":	//내용
+			sql.append("and t1.bcontent  like '%" + keyword + "%' ");
+			break;
+		case "N": //별칭
+			sql.append("and t1.bnickname  like '%" + keyword + "%'" );
+			break;
+		case "A":  //전체			
+			sql.append("and ( t1.btitle  like '%" + keyword + "%' ");
+			sql.append("   or t1.bcontent like '%" + keyword + "%' ");
+			sql.append("   or t1.bnickname like '%" + keyword + "%') ");
+			break;
+
+		default:
+			break;
+		}				
+		long totalCount = jt.queryForObject(sql.toString(), Long.class, bcategory);
 		return totalCount;
 	}
 }

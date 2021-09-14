@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +24,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.portfolio.domain.board.dto.BoardDTO;
+import com.kh.portfolio.domain.board.dto.SearchDTO;
 import com.kh.portfolio.domain.board.svc.BoardSVC;
 import com.kh.portfolio.domain.common.dto.MetaOfUploadFile;
 import com.kh.portfolio.domain.common.dto.UpLoadFileDTO;
 import com.kh.portfolio.domain.common.file.FileStore;
+import com.kh.portfolio.domain.common.paging.FindCriteria;
 import com.kh.portfolio.domain.common.paging.PageCriteria;
+import com.kh.portfolio.web.form.board.ModifyForm;
+import com.kh.portfolio.web.form.board.ReplyForm;
 import com.kh.portfolio.web.form.board.WriteForm;
 import com.kh.portfolio.web.form.login.LoginMember;
 import com.kh.portfolio.web.form.member.Gender;
@@ -43,15 +48,21 @@ public class BoardController {
 	
 	private final BoardSVC boardSVC;
 	private final FileStore fileStore;
-	@Autowired @Qualifier("pc10")
-	private PageCriteria pc;
+//	@Autowired @Qualifier("pc10")
+//	private PageCriteria pc;
+	@Autowired
+	@Qualifier("fc10")
+	private FindCriteria fc;
 	
 	//게시글 목록
 	@GetMapping({"/boardList",
-							 "/boardList/{reqPage}"})
+							 "/boardList/{reqPage}",
+							 "/boardList/{reqPage}/{searchType}/{keyword}"})
 	public String list(
 			@RequestParam(required = false) String category,
 			@PathVariable(required = false) Integer reqPage,
+			@PathVariable(required = false) String searchType,
+			@PathVariable(required = false) String keyword,	
 			Model model
 			) {
 		
@@ -59,35 +70,38 @@ public class BoardController {
 		
 		//요청페이지가 없으면 1페이지로
 		if(reqPage == null) reqPage = 1;
+		//사용자가 요청한 페이지번호
+		fc.getRc().setReqPage(reqPage);	
 		
-		//전체조회
-		if(category == null) {
-			log.info("카테고리가 null일때(사실 카테고리가 없을 경우는 없게 코딩 예정이라 필요없는 분기문)");
-			//사용자가 요청한 페이지번호
-			pc.getRc().setReqPage(reqPage);	
-			//게시판 전체레코드수
-			pc.setTotalRec(boardSVC.totoalRecordCount());
+		//검색어 유무
+		if((searchType == null || searchType.equals(""))
+				&& (keyword == null || keyword.equals(""))) {
 			
-			list = boardSVC.list(
-					"freeBoard",
-					pc.getRc().getStartRec(),
-					pc.getRc().getEndRec());	
-			
-		//카테고리별 조회	
-		}else {
-			//사용자가 요청한 페이지번호
-			pc.getRc().setReqPage(reqPage);	
-			//게시판 전체레코드수
-			pc.setTotalRec(boardSVC.totoalRecordCount(category));
+			//게시판 전체레코드수 설정
+			fc.setTotalRec(boardSVC.totoalRecordCount(category));
 			
 			list = boardSVC.list(
 					category,
-					pc.getRc().getStartRec(),
-					pc.getRc().getEndRec());			
+					fc.getRc().getStartRec(),
+					fc.getRc().getEndRec());
+			log.info("boardList:{}",list);
+		}else {
+			//게시판 전체레코드수
+			fc.setTotalRec(boardSVC.totoalRecordCount(category,searchType,keyword));
+			
+			list = boardSVC.list(
+					new SearchDTO(
+							category, 
+							fc.getRc().getStartRec(), fc.getRc().getEndRec(), 
+							searchType, keyword)
+			);						
 		}
-		log.info("게시글 목록:{}",list);
+		
+		fc.setSearchType(searchType);
+		fc.setKeyword(keyword);
+				
 		model.addAttribute("boardList", list);
-		model.addAttribute("pc", pc);
+		model.addAttribute("fc", fc);
 		model.addAttribute("category",category);
 		
 		return "board/boardList";
@@ -99,7 +113,6 @@ public class BoardController {
 			@PathVariable Long bnum,
 			Model model) {
 		
-		log.info("게시글 상세조회:{}",boardSVC.boardDetail(bnum));
 		model.addAttribute("boardDetail", boardSVC.boardDetail(bnum));
 		
 		return "board/boardDetail";
@@ -188,30 +201,93 @@ public class BoardController {
 		return "board/boardModify";
 	}
 	
-//	//게시글 수정 처리
-//	@PatchMapping("/{bnum}/edit")
-//	public String edit(
-//			@PathVariable Long bnum,
-//			@Valid @ModelAttribute EditForm editForm,
-//			BindingResult bindingResult,
-//			RedirectAttributes redirectAttributes) throws IllegalStateException, IOException {
-//		
-//		if(bindingResult.hasErrors()) {
-//			log.info("게시글수정처리오류:{}",bindingResult);
-//			return "bbs/editForm";
-//		}
-//		
-//		BoardDTO boardDTO = new BoardDTO();
-//		
-//		//첨부파일 파일시스템에 저장후 메타정보 추출
-//		List<MetaOfUploadFile> storedFiles = fileStore.storeFiles(editForm.getFiles());
-//		//UploadFileDTO 변환
-//		boardDTO.setFiles(convert(storedFiles));		
-//		BeanUtils.copyProperties(editForm, boardDTO);
-//		
-//		Long modifyedBnum = boardSVC.modifyItem(bnum, boardDTO);
-//		redirectAttributes.addAttribute("bnum", modifyedBnum);
-//		
-//		return "redirect:/bbs/{bnum}";
-//	}
+	//게시글 수정 처리
+	@PatchMapping("/boardModify/{bnum}")
+	public String edit(
+			@PathVariable Long bnum,
+			@Valid @ModelAttribute ModifyForm modifyForm,
+			BindingResult bindingResult,
+			RedirectAttributes redirectAttributes) throws IllegalStateException, IOException {
+		
+		if(bindingResult.hasErrors()) {
+			log.info("게시글수정처리오류:{}",bindingResult);
+			return "bbs/editForm";
+		}
+		
+		BoardDTO boardDTO = new BoardDTO();
+		
+		//첨부파일 파일시스템에 저장후 메타정보 추출
+		List<MetaOfUploadFile> storedFiles = fileStore.storeFiles(modifyForm.getFiles());
+		//UploadFileDTO 변환
+		boardDTO.setFiles(convert(storedFiles));		
+		BeanUtils.copyProperties(modifyForm, boardDTO);
+		
+		Long modifyedBnum = boardSVC.boardModify(bnum, boardDTO);
+		redirectAttributes.addAttribute("bnum", modifyedBnum);
+		
+		return "redirect:/board/{bnum}";
+	}
+	
+	//답글 작성 양식
+	@GetMapping("/replyQnA/{bnum}")
+	public String replyForm(
+			@PathVariable Long bnum,
+			Model model,
+			HttpServletRequest request) {		
+		
+		ReplyForm replyForm = new ReplyForm();
+		
+		//세션에서 회원 id,email,nickname가져오기
+		HttpSession session = request.getSession(false);
+		if(session != null && session.getAttribute("loginMember") != null) {
+			LoginMember loginMember = 
+					(LoginMember)session.getAttribute("loginMember");
+			
+			replyForm.setBmid(loginMember.getId());
+			replyForm.setBnickname(loginMember.getNickname());
+		}
+		
+		//부모글의 글번호, 분류코드, 제목 가져오기
+		BoardDTO pBoardDTO = boardSVC.boardDetail(bnum);
+		replyForm.setBpnum(pBoardDTO.getBnum());
+		replyForm.setBcategory(pBoardDTO.getBcategory());
+		replyForm.setBtitle("답글 : " + pBoardDTO.getBtitle());
+		
+		model.addAttribute("replyForm", replyForm);
+		
+		return "board/replyWrite";
+	}
+	
+	//답글 작성 처리
+	@PostMapping("/replyQnA/{bnum}")
+	public String reply(
+			@PathVariable("bnum") Long bpnum,  //부모글
+			@Valid @ModelAttribute ReplyForm replyForm,
+			BindingResult bindingResult,
+			RedirectAttributes redirectAttributes) throws IllegalStateException, IOException {
+	
+		if(bindingResult.hasErrors()) {
+			return "board/replyForm";
+		}
+		
+		BoardDTO replyboardDTO = new BoardDTO();
+		BeanUtils.copyProperties(replyForm, replyboardDTO);
+		
+		//부모글의 bnum, bgroup, bstep, bindent
+		BoardDTO pboardDTO = boardSVC.boardDetail(bpnum);
+		replyboardDTO.setBpnum(pboardDTO.getBnum());			//부모글번호 찾아와서 답글의 부모글번호에 넣기
+		replyboardDTO.setBgroup(pboardDTO.getBgroup());		//부모글그룹 찾아와서 답글의 그룹에 넣기
+		replyboardDTO.setBstep(pboardDTO.getBstep());			//
+		replyboardDTO.setBindent(pboardDTO.getBindent());
+		
+		//첨부파일 파일시스템에 저장후 메타정보 추출
+		List<MetaOfUploadFile> storedFiles = fileStore.storeFiles(replyForm.getFiles());
+		//UploadFileDTO 변환
+		replyboardDTO.setFiles(convert(storedFiles));
+		
+		Long rbnum = boardSVC.replyWrite(replyboardDTO);
+		
+		redirectAttributes.addAttribute("bnum", rbnum);
+		return "redirect:/board/{bnum}";
+	}	
 }

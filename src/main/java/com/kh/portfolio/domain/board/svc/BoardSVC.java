@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.kh.portfolio.domain.board.dto.BoardDTO;
+import com.kh.portfolio.domain.board.dto.SearchDTO;
 
 public interface BoardSVC {
 	
@@ -18,7 +19,7 @@ public interface BoardSVC {
 	 * @param boardDTO
 	 * @return 답글 고유번호
 	 */
-	Long ReplyWrite(BoardDTO boardDTO);
+	Long replyWrite(BoardDTO boardDTO);
 	/**
 	 * 게시글 수정
 	 * @param bnum
@@ -40,6 +41,12 @@ public interface BoardSVC {
 	 * @return
 	 */
 	List<BoardDTO> list(String bcategory, int startRec, int endRec);
+	/**
+	 * 게시글 카테고리별 검색결과 목록
+	 * @param searchDTO
+	 * @return
+	 */
+	List<BoardDTO> list(SearchDTO searchDTO);
 	
 	/**
 	 * 게시글 상세
@@ -58,5 +65,10 @@ public interface BoardSVC {
 	 * @return
 	 */
 	long totoalRecordCount(String category);
+	/**
+	 * 게시판 카테고리별 검색결과 총수 
+	 * @return
+	 */
+	public long totoalRecordCount(String bcategory, String searchType, String keyword);
 
 }
