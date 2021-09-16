@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko" 
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+	
+	<link rel="stylesheet" href="/css/member/findIdForm.css" />
+  
+  <title>Help</title>
+	<style>
+	#email{
+	color:red;
+	}
+	</style>
+  <script src="/js/common/ajaxCall.js" defer></script>
+  <script>
+    let $hiddens = null;
+  	
+    //찾은 아이디 표시
+		const displayEmail = res => {
+      Array.from($hiddens).forEach(ele=>ele.classList.remove("hidden"));
+
+      if(res.rtcd == '00'){
+	      email.textContent = res.data;			    	  
+      }else{
+    	  email.textContent = res.data;
+      }
+		}
+		
+		//Ajax Call 통신오류 발생시
+		const displayError = err => {	email.textContent = err };		
+		
+  	const init = e => {
+  		$hiddens = document.querySelectorAll(".hidden");
+  	  const $name = document.getElementById('name');
+  	  
+	    findBtn.addEventListener("click",e=>{
+	      console.log('click!');
+	      
+	      //유효성 체크
+	      if($name.value.trim().length == 0) {
+	    	  Array.from($hiddens).forEach(ele=>ele.classList.remove("hidden")); 
+	    	  email.textContent = '전화번호를 입력하세요';
+	    	  $name.focus();
+	    	  $name.select();
+	    	  return;
+	      }
+	      if(tel.value.trim().length == 0) {
+	    	  Array.from($hiddens).forEach(ele=>ele.classList.remove("hidden"));
+	    	  email.textContent = '전화번호를 입력하세요';
+	    	  tel.focus();
+	    	  tel.select();
+	    	  return;
+	      }
+	      
+	      //ajax call!
+	      const url = '/api/members/email';
+	      
+	      const payload = {
+	    		name: $name.value,
+	    		tel: tel.value
+	      };
+	      console.log(payload);
+				request.post(url,payload)
+				
+							 .then(res=>res.json())
+							 .then(res=>displayEmail(res))
+							 .catch(err=> {
+								 displayError(err);
+								 console.log(err);
+							 });
+	    });
+  	}
+  	//현재 문서가 dom객체가 메모리에 로딩되면.
+    window.addEventListener("DOMContentLoaded", init);
+  	
+  </script>
+  <style>
+  .hidden {display:none;}
+  </style>
+</head>
+<body>
+<header th:replace="/fragment/fragment_header :: fragment_header">
+  	연습용 빈 헤더입니다.
+  </header>
+  <nav th:replace="/fragment/fragment_nav :: fragment_nav">
+  	연습용 빈 nav입니다.
+  </nav>
+    
+  	<div class="id_container">
+
+    <div class="idFbody">
+     <form method="post"  th:object="${findEmailReq}" th:action="@{/help/findId2}"> 
+  <h3>아이디 찾기</h3>
+  <p>회원정보에 등록한 정보가 같아야 아이디(이메일)를 찾을 수 있습니다.</p>
+  <div class="namebox">
+  <div><label for="name">이름</label><br>
+    <input type="text" th:field="*{name}">
+    </div>
+    <div><label for="tel">전화번호</label> <br>
+    <input type="text" th:field="*{tel}" placeholder="-없이 입력해주세요">
+    </div>
+		<div class="hidden"><span class="email">아이디</sapn></div>
+		<div class="hidden"><span class="email" id="email"></span></div>
+  </div>
+    <div class="button1">
+    <button type="button" id="home" th:onclick="location.href='http://localhost:9050'">홈으로</button>
+    <!-- <button type="submit" id="finBtn" >다음</button> -->
+		 <button type="button" id='findBtn'>아이디찾기</button>  
+		 <button type="button" id='findPwBtn' th:onclick="location.href='http://localhost:9050/help/findPw'">비밀번호찾기</button>  
+  </div>
+   </form>
+</div>
+  	
+  	
+  	
+  	
+  	
+ </div> 	
+<footer th:replace="/fragment/fragment_footer :: fragment_footer">
+  	연습용 빈 footer입니다.
+  	</footer>
+</body>
+</html>

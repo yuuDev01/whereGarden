@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>내 장바구니</title>
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/main/main.css">
+  <style>
+  	.row{
+  		display: grid;
+  		grid-template-columns: 50px 160px 140px 200px 160px 100px;
+  		grid-template-rows: auto;
+  		gap: 10px;
+  	}
+  	#p_num1{
+  		width: 100px;
+  	}
+  </style>
+  
+  <script src="/js/common/ajaxCall.js" defer></script>
+  <script src="/js/cart/cartList.js" defer></script>
+</head>
+<body>
+	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
+	
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+	<main>  
+	  <h3>내 장바구니</h3>
+	  <hr />
+	  <form action="" id="orderForm" class="orderForm">
+	  	<div class="basketdiv" id="basket">
+		  	<div class="row head" >
+		  		<div><input type="checkbox" name="cartChk" value="selectall" onclick="selectAll(this)" /></div>
+		  		<div>상품번호(상품명)</div>
+		  		<div>가격</div>
+		  		<div>수량</div>
+		  		<div>합계</div>
+		  		<div></div>
+		  	</div>
+		  	<div class="row data" th:each="cList,idx : ${cartList}">
+		  		<div><input type="checkbox" name="cartChk" /></div>
+		  		<div th:text="${cList.cname}"></div>
+		  		<div th:text="${cList.cprice}"></div>
+		  		<div>
+		  			<input type="number" th:value="${cList.cqty}" class="cartNum" 
+		  						 th:data-cmid="${cList.cmid}"
+		  						 th:data-cpid="${cList.cpid}"
+		  						 th:data-cnum="${cList.cnum}">
+		  			<!-- <i class="fas fa-arrow-alt-circle-up up" class="upBtn"></i> -->
+		  			<!-- <i class="fas fa-arrow-alt-circle-down down" class="downBtn"></i> -->
+		  		</div>
+		  		<div class="sum" th:text="${cList.cprice}*${cList.cqty}">합계</div>
+		  		<div><button type="button" class="delBtn" th:id="${cList.cnum}" th:data-cnum="${cList.cnum}">삭제</button></div>
+		  	</div>
+		  	<div id="errmsg"></div>
+		  	<div>
+		  		<a th:href="@{/order/form}">선택상품주문</a> <a href="">선택상품삭제</a>
+		  	</div>
+		  </div>
+	  </form>
+	 </main>
+	 <footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
+	 
+</body>
+</html>

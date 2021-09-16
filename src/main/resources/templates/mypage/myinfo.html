@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+      
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+	
+	<link rel="stylesheet" href="/css/member/myinfo.css" />
+  
+  <title>어딜, 가든</title>
+</head>
+
+<body>
+	<header th:replace="/fragment/fragment_header :: fragment_header">
+  		메인화면 헤더
+ 	</header>
+ 	
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav">
+  		메인화면 메뉴
+  	</nav>
+	
+	 <main>
+	 <aside th:replace="/fragment/fragment_aside :: fragment_aside">
+  	연습용 빈 nav입니다.
+  	</aside>
+	 <form class="infopw" th:action="@{/mypage/myinfo}" th:method="patch" th:object="${myinfoPw}">
+	 
+	 <div th:if="${errors?.containsKey('global')}">
+								<p th:text="${errors['global']}" class="field-msg">글로벌 오류 메시지</p>      				
+      				</div>
+    <div>  				
+		<div><label class="pw" for="mpw" > 비밀번호를 입력하세요</label></div>
+		<div><input type="password" th:field="*{mpw}" ></div>
+		<div><p style="margin-top: 0px;margin-bottom: 16px;" th:errors="*{mpw}" th:errorclass="field-msg"></div>
+		<button type="submit" class="btn" id="Btn">내 정보 확인</button>
+		</div>
+	 </form>
+	 </main>
+	 
+	<footer th:replace="/fragment/fragment_footer :: fragment_footer">
+		메인화면 푸터입니다.
+  	</footer>
+  
+</body>
+</html>

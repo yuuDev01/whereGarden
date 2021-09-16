@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+  
+  <link rel="stylesheet" href="/css/main/main.css">
+  <title>나의 주문내역</title>
+  <style>
+  	.container{
+  		width: 1000px;
+  	}
+  	.orderList{
+  		display: grid;
+  		grid-template-columns: repeat(3,150px);
+  		justify-content: center;
+  	}
+  </style>
+</head>
+<body>
+  <header th:replace="/fragment/fragment_header :: fragment_header"></header>
+	
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+ 	
+ 	<main>
+ 		<div class="container">
+ 			<div>
+ 				내 주문내역
+ 			</div>
+ 			<div class="orderList">
+ 				<div>주문날짜</div>
+ 				<div>주문번호</div>
+ 				<div>주문가격</div>
+ 			</div>
+ 			<div class="orderList" th:each="list: ${orderList}">
+ 				<div th:text="${list.odate}"></div>
+ 				<div><a th:href="|/order/orderDetail/${list.onum}|" th:text="${list.onum}"></a></div>
+ 				<div th:text="${list.oprice}"></div>
+ 			</div>
+ 		</div>
+ 	</main>
+ 	
+ 	<footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+ 
+  <title>어딜, 가든</title>
+  
+  <!-- 추가 CSS -->
+  <link rel="stylesheet" href="/css/plant/plantList.css">
+  
+	<!-- js 추가 -->
+	<script src="/js/plant/plantList.js" defer></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<!-- bootStrap js -->
+	
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous" defer></script>
+</head>
+<body>
+	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+<div class="plant_container">
+  
+  <div class="plantSearch" id="plantSearch">
+  <div class="textSearch">
+  <form action="">
+  
+    <div class="searchForm">
+      <input type="text" name="keyword" id="keyword"  placeholder="식물명을 입력하세요">
+      <button id="searchBtn" class="searchBtn">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+    </form>
+  </div>
+ <div class="tagBoxs">
+     <div class="tagBox1">
+         <div id="tag1" class="tagDiv1"><button  class="tagBtn1">#빛의 양</button></div>
+         <div id="tag1" class="tagDiv2"><button  class="tagBtn1">#관리요구도</button></div>
+         <div id="tag1" class="tagDiv3"><button  class="tagBtn1">#물주기</button></div>
+         <div id="tag1" class="tagDiv4"><button  class="tagBtn1">#성장높이</button></div>
+         <div id="tag1" class="tagDiv5"><button  class="tagBtn1">#꽃 색</button></div>
+         <div id="tag1" class="tagDiv6"><button  class="tagBtn1">#생육형태</button></div>
+     </div>
+     <div class="tagBox2">
+         <div id="tag2"class="lightdemand tagDiv1">
+          <button class="tagBtn2 lightdemand">낮은 광도</button>
+          <button class="tagBtn2 lightdemand">중간 광도</button>
+          <button class="tagBtn2 lightdemand">높은 광도</button>
+         </div>
+     <div id="tag2"class="managedemand tagDiv2">
+          <button class="tagBtn2 managedemand">초보자</button>
+          <button class="tagBtn2 managedemand">경험자</button>
+          <button class="tagBtn2 managedemand">전문가</button>
+     </div>
+     <div id="tag2"class="waterCycle tagDiv3">
+          <button class="tagBtn2 waterCycle">가득</button>
+          <button class="tagBtn2 waterCycle">자주</button>
+          <button class="tagBtn2 waterCycle">보통</button>
+          <button class="tagBtn2 waterCycle">가끔</button>
+     </div>
+         <div id="tag2"class="growthHg tagDiv4">
+          <button class="tagBtn2 growthHg">50 미만</button>
+          <button class="tagBtn2 growthHg">50-120</button>
+          <button class="tagBtn2 growthHg">120 초과</button>
+             
+     </div>
+     <div id="tag2"class="flcolor tagDiv5">
+          <button class="tagBtn2 flcolor">파란색</button>
+          <button class="tagBtn2 flcolor">보라색</button>
+          <button class="tagBtn2 flcolor">분홍색</button>
+          <button class="tagBtn2 flcolor">빨강색</button>
+          <button class="tagBtn2 flcolor">오렌지색</button>
+          <button class="tagBtn2 flcolor">노랑색</button>
+          <button class="tagBtn2 flcolor">흰색</button>
+          <button class="tagBtn2 flcolor">혼합색</button>
+          <button class="tagBtn2 flcolor">기타</button>
+    </div>
+    <div id="tag2"class="grwhstle tagDiv6">
+          <button class="tagBtn2 grwhstle">직립형</button>
+          <button class="tagBtn2 grwhstle">관목형</button>
+          <button class="tagBtn2 grwhstle">덩굴성</button>
+          <button class="tagBtn2 grwhstle">풀모양</button>
+          <button class="tagBtn2 grwhstle">로제트형</button>
+          <button class="tagBtn2 grwhstle">다육형</button>
+    </div>
+     </div>
+    </div>
+  </div>
+  
+  <div class="plant_view" id="plant_view">
+    <div th:each="plant : ${plantList}" class="plant" >
+      <i class="far fa-heart" style="display: block;"></i>
+      <i class="fas fa-heart" style="display: none;"></i>
+      <a href=""  th:href="@{|/plant/${plant.PNUM}/|}" >
+      <img class="product-img" th:src="${plant.PIMGURL}" alt=""></a>
+      <div th:text="${plant.PNAME}" class="pname">선인장1</div>
+    </div>  
+  </div>
+ </div> 	
+	
+	<footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
+</body>
+</html>
+</html>

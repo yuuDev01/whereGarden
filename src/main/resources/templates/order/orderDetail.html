@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+  <link rel="stylesheet" href="/css/order/orderDetail.css">
+
+  <title>어딜, 가든</title>
+</head>
+<body>
+	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
+	
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+	<main>
+	  <div class="all_container">
+		
+	    <div class="order_detail_container">
+	        <div class="order_detail_title1" th:text="|${memberDTO.mname}님, 구매내역입니다 (주문번호:${foundOrder.onum})|" ></div>
+	        
+	          <div class="order_detail_title2">구매 정보</div>
+				    <div class="product_detail">
+				      <div class="table">상품명</div>
+				      <div class="table">수량</div>
+				      <div class="table">구매금액</div>
+				    </div>
+				    <div class="product_detail" th:each="ele : ${foundOrder.orderDetails}">
+				      <div class="table" th:text="${ele.odpname}">올리브나무</div>
+				      <div class="table" th:text="${ele.odqty}">1</div>
+				      <div class="table" th:text="|${ele.odsum}원|">270,000원</div>
+				    </div>
+				    
+	          <div th:switch="${foundOrder.opayment}">
+					    <div th:case="'카드결제'">
+					     	<div class="order_detail_title2">결제정보</div>
+						      <div class="pay_detail">
+						        <div class="table">주문금액</div>
+						        <div class="table" th:text="${foundOrder.oprice}">270,000원</div>
+						      </div>
+						      <div class="pay_detail">
+						        <div class="table">결제금액</div>
+						        <div class="table" th:text="|${foundOrder.oprice}원+${foundOrder.ocardcom}|" >270,000원 <span>삼성카드</span></div>
+						      </div>
+					     </div> 
+				     <div th:case="'무통장입금'">
+					      <div class="order_detail_title2">입금정보</div>
+					      <div class="pay_detail">
+					        <div class="table">입금할 금액</div>
+					        <div class="table" th:text="${foundOrder.oprice}">270,000원</div>
+					      </div>
+					      <div class="pay_detail">
+					        <div class="table">입금 계좌 정보</div>
+					        <div class="table" th:text="|111-11-1111 ${foundOrder.obank} 어딜가든|" ></div>
+					      </div>
+					    </div> 
+				     <div th:case="*">값없음</div>
+				    </div>
+				
+	          <div class="order_detail_title2">받는사람 정보</div>
+	          <div class="deliver_detail">
+				      <div class="table">받으시는 분</div>
+				      <div class="table" th:text="${foundOrder.oname}">홍길동</div>
+				    </div>
+				    <div class="deliver_detail">
+				      <div class="table">연락처</div>
+				      <div class="table" th:text="${foundOrder.ophone}">010-****-1111</div>
+				    </div>
+				    <div class="deliver_detail">
+				      <div class="table">주소</div>
+				      <div class="table" th:text="|[${foundOrder.opost}] ${foundOrder.oroadname} ${foundOrder.oaddress}|">[12345] 울산 남구 삼산동</div>
+				    </div>
+	    </div>
+			<div class="button_container">
+				<button class="button" id="listBtn">목록으로</button>
+			</div>
+			
+			<div class="button_container">
+			 <button class="button" id="homeBtn">홈으로</button>
+			</div>
+	 </div>
+	</main>
+	<footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
+	<script>
+		$homeBtn = document.getElementById('homeBtn');
+		$homeBtn.addEventListener('click', e=>{
+			location.href='/';
+		});
+		
+		$listBtn = document.getElementById('listBtn');
+		$listBtn.addEventListener('click', e=>{
+			location.href='/order/myOrderList';
+		});
+	</script>
+</body>
+</html>

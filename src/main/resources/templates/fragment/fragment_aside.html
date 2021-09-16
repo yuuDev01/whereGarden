@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/css/mainCss.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css">
+	 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+  <title></title>
+</head>
+
+<body>
+	<div class="aside" th:fragment="fragment_aside">
+	
+	    <ul class="aside">
+	      <li class="mylist"><a href="#" th:href="@{/mypage/myinfo}">내 정보 수정</a></li>
+	      <li class="mylist"><a href="">주문 내역 확인</a></li>
+	      <li class="mylist"><a href="">내가 쓴 글 보기</a></li>
+	      <li class="mylist"><a href="">내 관심 식물</a></li>
+	      
+	    </ul>
+	</div>
+</body>
+</html>

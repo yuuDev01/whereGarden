@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+  <title>어딜, 가든</title>
+  <style>
+  	.all_container{
+      width: 1000px;
+      display: grid;
+      justify-content: center;
+    }
+    .order_cancel{
+      display: grid;
+      grid-template-columns: 200px 400px;
+      justify-content: center;
+    }
+    .table{
+      border: 1px solid black;
+      border-collapse: collapse;
+      text-align: center;
+      font-family: 'NanumSquare';
+    }
+    #homeBtn{
+      width: 100px;
+    }
+  </style>
+</head>
+<body>
+  <header th:replace="/fragment/fragment_header :: fragment_header"></header>
+	
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+  	
+	<main>
+		<div class="all_container" th:object="${canceledOrderDTO}">
+      <div class="title" th:text="|${memberDTO.mname} 님,|"></div>
+      <div class="title">주문이 취소되었습니다.</div>
+      <div>고객님이 어딜가든에서 취소하신 내역입니다.</div>
+        <div class="order_cancel">
+          <div class="table">구매자명</div>
+          <div class="table" th:text="*{oname}"></div>
+        </div>
+        <div class="order_cancel" th:each="ele : ${orderDetails}">
+          <div class="table">상품명</div>
+          <div class="table" th:text="${ele.odpname}"></div>
+        </div>
+        <div class="order_cancel">
+          <div class="table">취소일시</div>
+          <div class="table" th:text="*{rdate}"></div>
+        </div>
+        <div class="order_cancel">
+          <div class="table">주문번호</div>
+          <div class="table" th:text="*{onum}"></div>
+        </div>
+        <div class="order_cancel">
+          <div class="table">결제수단</div>
+          <div class="table" th:text="*{opayment}"></div>
+        </div>
+        <div class="order_cancel">
+          <div class="table">취소금액</div>
+          <div class="table" th:text="|*{oprice}원|"></div>
+        </div>
+        <button type="button" onclick="javascript:location.href='/'">홈으로</button>
+    </div>
+	</main>
+	
+	<footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
+</body>
+</html>

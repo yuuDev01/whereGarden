@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>상품 상세</title>
+</head>
+<body>
+  <h3>상품 상세</h3>
+  <hr />
+  <form th:method="post">
+  <div th:object="${cartForm}" >
+  	<ul>
+  		<li><label for="">상품번호</label><input type="text" th:field="*{cpid}" /></li>
+  		<li><label for="">식물번호</label><input type="text" th:field="*{cpnum}" /></li>
+  		<li><label for="">식물명</label><input type="text" th:field="*{cname}" /></li>
+  		<li><label for="">가격</label><input type="text" th:field="*{cprice}" /></li>
+  		<li><label for="">재고량</label><input type="text" th:field="*{cpstock}" /></li>
+  		<li><label for="">등록일자</label><input type="text" th:field="*{cpdate}" /></li>
+  		<li><label for="">수량</label><input type="number" min=1 th:field="*{cqty}"/></li>
+  		<li>
+	  		<input id="cartBtn" type="submit" th:formaction="@{/cart/myCartAdd}" value="새로운 장바구니에 담기"/>
+	  		<input id="orderBtn" type="submit" th:formaction="@{/order/form/express}" value="바로 주문하기"/>
+	  		<button type="button" id="listBtn">목록으로</button>
+  		</li>
+  		</ul>
+  </div>
+  </form>
+  
+  <script>
+  	const $cartBtn = document.getElementById("cartBtn");
+  	$cartBtn.addEventListener("click",e => {
+  		alert("장바구니에 등록되었습니다.");
+  	});
+  	
+  	const $orderBtn = document.getElementById("orderBtn");
+  	$orderBtn.addEventListener("click", e=> {
+  		const cartForm = e.target.dataset.cartForm;
+  		location.href=`/order/form/express`;
+  		
+  	})
+  	
+  	const $listBtn = document.getElementById("listBtn");
+  	$listBtn.addEventListener("click",e => {
+  		location.href="/productList";
+  	});
+  </script>
+  
+</body>
+</html>

@@ -23,7 +23,7 @@
   }
 
   /* header안에 div.header_top안에 button#header_login, button#header_join 존재  */
-  div.header_top{
+  div.top{
     width: 100%;
     height: 30px;
     margin-top: 20px;
