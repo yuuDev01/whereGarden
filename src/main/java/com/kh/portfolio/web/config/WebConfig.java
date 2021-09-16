@@ -19,23 +19,23 @@ public class WebConfig implements WebMvcConfigurer{
 //						
 //	}
 	
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new LoginCheckInterceptor())
-				.order(1)
-				.addPathPatterns("/**")
-				.excludePathPatterns(
-						"/",
-						"/login/**",
-						"/logout",
+//	@Override
+//	public void addInterceptors(InterceptorRegistry registry) {
+//		registry.addInterceptor(new LoginCheckInterceptor())
+//				.order(1)
+//				.addPathPatterns("/**")
+//				.excludePathPatterns(
+//						"/",
+//						"/login/**",
+//						"/logout",
 //						"/board/**",
-						"/members/join",
-						"/help/**",
-						"/css/**",
-						"/js/**",
-						"/img/**",
-						"/webjars/**",
-						"/error/**"
-				);
-	}
+//						"/member/**",
+//						"/help/**",
+//						"/css/**",
+//						"/js/**",
+//						"/img/**",
+//						"/webjars/**",
+//						"/error/**"
+//				);
+//	}
 }

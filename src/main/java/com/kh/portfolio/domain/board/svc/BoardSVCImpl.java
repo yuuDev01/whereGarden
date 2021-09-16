@@ -133,6 +133,37 @@ public class BoardSVCImpl implements BoardSVC{
 
 		return boardDAO.totoalRecordCount(bcategory, searchType, keyword);
 	}
+
+	
+	// 내가 쓴 글
+	// 1. 검색어 없을시
+	// 내가 쓴 글 전체 카테고리별 레코드 총수
+	@Override
+	public long myTotalRecordCount(String category, String mid) {
+		
+		return boardDAO.myTotalRecordCount(category, mid);
+	}
+	// 내가 쓴 글 카테고리별 게시글 리스트
+	@Override
+	public List<BoardDTO> myList(String bcategory, String mid, int startRec, int endRec) {
+		
+		return boardDAO.myList(bcategory, mid, startRec, endRec);
+	}
+
+	//2. 검색어 있을시
+	// 내가 쓴 글 전체 카테고리별 검색된 레코드 총 수 
+	@Override
+	public long myTotalRecordCount(String bcategory, String mid, String searchType, String keyword) {
+		
+		return boardDAO.myTotalRecordCount(bcategory, mid, searchType, keyword);
+	}
+	//내가 쓴 글 카테고리별 검색결과 목록
+	@Override
+	public List<BoardDTO> myList(SearchDTO searchDTO, String mid) {
+		
+		return boardDAO.myList(searchDTO, mid);
+	}
+	
 	
 
 }

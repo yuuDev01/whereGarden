@@ -9,8 +9,13 @@
   font-style: normal;
 }
 
-/* 바디에 그리드 적용 */
-body{
+/* 캐러셀 css*/
+div.carousel-inner{ height: 100%; }
+div.carousel-inner>div{ height: 100%; }
+
+/* *{outline: 1px solid red;} */
+
+div.mainAllContainer{
   display: grid;
   justify-content: center;
 }
@@ -20,51 +25,46 @@ body{
 section.section1{
   width: 1000px; height: 520px;
   display: grid;
-  grid-template-rows: 350px 150px;
+  grid-template-rows: 400px 150px;
   gap: 20px 0; /*height = rows + gap 이렇게 계산 안하면 밑으로 삐져나옴*/
   margin-top: 50px;
 }
-img#sec1_img{
+img#mainImg{
   width: 100%; height: 100%;
 }
 div.sec1_explane{
   width: 100%; height: 100%;
   text-align: center;
+  font-size: 50px;
 }
 
 /* section2 시작 */
 /* section2안에 sec2_title와 sec2_container의 배치를 rows로 높이 설정 */
 section.section2{
-  width: 1000px; height: 380px;
+  width: 1000px;
   display: grid;
-  grid-template-rows: 30px 300px;
+  grid-template-rows: auto auto auto;
   gap: 20px 0;
   margin-top: 50px;
 }
-div.sec2_title{
-  width: 100%; height: 100%;
-  font-family: 'NanumSquare';
-  font-size: 25px;
-  font-weight: 800;
-  text-align: center;
+section.section2 h2{ text-align: center; }
+
+div.card{
+  width: 200px; height: 400px;
 }
-/* section2안에 sec2_container의 배치를 rows로 높이 설정 */
-div.sec2_todayFlowerContainer{
-  width: 100%; height: 100%;
+div.card>h3{ text-align: center; }
+
+div.top-section2{
   display: grid;
+  grid-template-columns: auto auto auto auto;
+  gap: 10px;
   justify-content: center;
-  grid-template-columns: 50% 50%;
 }
-
-div.sec2_todayFlower{
-  margin: 0 auto;
-}
-div.sec2_todayFlower>h3{
-  text-align: center;
-}
-
-div.sec2_todayFlowerInfo>li{
-  margin-bottom: 20px;
+div.bottom-section2{
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 10px;
+  justify-content: center;
 }
 
 /* section3 시작 */

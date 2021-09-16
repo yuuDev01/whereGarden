@@ -50,7 +50,7 @@ public class LoginController {
 			@Valid
 			@ModelAttribute LoginForm loginForm,
 			BindingResult bindingResult,
-			@RequestParam(name="redirectUrl",required = false) String redirectUrl,
+			@RequestParam(name="redirectUrl", defaultValue="/") String redirectUrl,
 			HttpServletRequest request
 			) {
 		

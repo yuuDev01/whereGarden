@@ -376,4 +376,150 @@ public class BoardDAOImpl implements BoardDAO {
 		long totalCount = jt.queryForObject(sql.toString(), Long.class, bcategory);
 		return totalCount;
 	}
+	
+	// 내가 쓴 글
+	// 1. 검색어 없을시
+	
+	// 내가 쓴 글 카테고리별 레코드수
+	@Override
+	public long myTotalRecordCount(String category, String mid) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("select count(*) ");
+		sql.append("	from board ");
+		sql.append(" where bcategory = ? and bmid = ?");
+		long totalCount = jt.queryForObject(sql.toString(), Long.class, category, mid);
+		return totalCount;
+	}
+	// 내가 쓴 글 카테고리별 리스트
+	@Override
+	public List<BoardDTO> myList(String bcategory, String mid, int startRec, int endRec) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("select t1.* ");
+		sql.append("  from (select row_number() over(order by bgroup desc, bstep asc) as num, ");
+		sql.append("               bnum,    ");
+		sql.append("               bmid,    ");
+		sql.append("               bnickname,   ");
+		sql.append("               bcategory,   ");
+		sql.append("               btitle,    ");
+		sql.append("               bhit,  ");
+		sql.append("               bpnum,   ");
+		sql.append("               bgroup,  ");
+		sql.append("               bstep,   ");
+		sql.append("               bindent,   ");
+		sql.append("               bcdate,  ");
+		sql.append("               budate   ");
+		sql.append("          from board ");
+		sql.append("         where bcategory = ? and bmid = ? ) t1  ");
+		sql.append(" where num between ? and ?  ");
+		
+		List<BoardDTO> list = jt.query(
+				sql.toString(), 
+				new BeanPropertyRowMapper<>(BoardDTO.class),
+				bcategory, mid, startRec, endRec
+				);
+		
+		return list;
+	}
+	
+	// 2. 검색어 있을시
+	
+	//게시판 카테고리별 검색결과 레코드수
+	@Override
+	public long myTotalRecordCount(String bcategory, String mid, String searchType, String keyword) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("select count(*) ");
+		sql.append("	from board t1");
+		sql.append(" where bcategory = ? and bmid = ?");
+		
+		switch (searchType) {
+		case "TC": //제목+내용
+			sql.append("and ( t1.btitle  like '%" + keyword + "%' ");
+			sql.append("   or t1.bcontent like '%" + keyword + "%' ) ");
+			break;
+		case "T":	//제목
+			sql.append("and t1.btitle  like '%" + keyword + "%' ");
+			break;
+		case "C":	//내용
+			sql.append("and t1.bcontent  like '%" + keyword + "%' ");
+			break;
+		default:
+			break;
+		}				
+		long totalCount = jt.queryForObject(sql.toString(), Long.class, bcategory, mid);
+		return totalCount;
+	}
+
+	//게시글 카테고리별 검색결과 목록
+	@Override
+	public List<BoardDTO> myList(SearchDTO searchDTO, String mid) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("select t1.* ");
+		sql.append("  from (select row_number() over(order by bgroup desc, bstep asc) as num, ");
+		sql.append("               bnum,    ");
+		sql.append("               bmid,    ");
+		sql.append("               bnickname,   ");
+		sql.append("               bcategory,   ");
+		sql.append("               btitle,    ");
+		sql.append("               bhit,  ");
+		sql.append("               bpnum,   ");
+		sql.append("               bgroup,  ");
+		sql.append("               bstep,   ");
+		sql.append("               bindent,   ");
+		sql.append("               bcdate,  ");
+		sql.append("               budate   ");
+		sql.append("          from board t1");
+		sql.append("         where bcategory = ? and bmid = ? ");
+		
+		switch (searchDTO.getSearchType()) {
+		case "TC": //제목+내용
+			sql.append("and ( t1.btitle  like '%" + searchDTO.getKeyword() + "%' ");
+			sql.append("   or t1.bcontent like '%" + searchDTO.getKeyword() + "%' ) ");
+			break;
+		case "T":	//제목
+			sql.append("and t1.btitle  like '%" + searchDTO.getKeyword() + "%' ");
+			break;
+		case "C":	//내용
+			sql.append("and t1.bcontent  like '%" + searchDTO.getKeyword() + "%' ");
+			break;
+		default:
+			break;
+		}				
+		sql.append(") t1  ");		
+		sql.append(" where num between ? and ?  ");
+		
+	
+		List<BoardDTO> list = jt.query(
+				sql.toString(), 
+				new BeanPropertyRowMapper<>(BoardDTO.class),
+				searchDTO.getScategory(), mid, searchDTO.getStarcRec(), searchDTO.getEndRec()
+				);	
+		
+		return list;
+	}
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

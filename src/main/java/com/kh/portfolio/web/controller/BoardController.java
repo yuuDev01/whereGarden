@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.portfolio.domain.board.dao.BoardDAO;
 import com.kh.portfolio.domain.board.dto.BoardDTO;
 import com.kh.portfolio.domain.board.dto.SearchDTO;
 import com.kh.portfolio.domain.board.svc.BoardSVC;
@@ -47,6 +48,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardController {
 	
 	private final BoardSVC boardSVC;
+	private final BoardDAO boardDAO;
 	private final FileStore fileStore;
 //	@Autowired @Qualifier("pc10")
 //	private PageCriteria pc;
@@ -289,5 +291,70 @@ public class BoardController {
 		
 		redirectAttributes.addAttribute("bnum", rbnum);
 		return "redirect:/board/{bnum}";
-	}	
+	}
+	
+	//내가 쓴 글 목록
+	@GetMapping({"/myBoardList",
+							 "/myBoardList/{reqPage}",
+							 "/myBoardList/{reqPage}/{searchType}/{keyword}"})
+	public String myBoardList(
+			@RequestParam(required = false) String category,
+			@PathVariable(required = false) Integer reqPage,
+			@PathVariable(required = false) String searchType,
+			@PathVariable(required = false) String keyword,
+			HttpServletRequest request,
+			Model model
+			) {
+		
+		//세션 가져오기
+		HttpSession session = request.getSession(false);
+		//if(session == null) return "redirect:/login";
+		
+		LoginMember loginMember = (LoginMember)session.getAttribute("loginMember");
+		log.info("로그인 된 아이디:{}",loginMember.getId());
+		
+		List<BoardDTO> list = null;
+		
+		//요청페이지가 없으면 1페이지로
+		if(reqPage == null) reqPage = 1;
+		//사용자가 요청한 페이지번호
+		fc.getRc().setReqPage(reqPage);	
+		
+		//검색어 유무
+		if((searchType == null || searchType.equals(""))
+				&& (keyword == null || keyword.equals(""))) {
+			
+			//게시판 전체레코드수 설정
+			fc.setTotalRec(boardSVC.myTotalRecordCount(category, loginMember.getId()));
+			log.info("찾은 레코드수 :{}",boardSVC.myTotalRecordCount(category, loginMember.getId()));
+			list = boardSVC.myList(
+					category,
+					loginMember.getId(),
+					fc.getRc().getStartRec(),
+					fc.getRc().getEndRec());
+			log.info("검색어 없는 myBoardList:{}",list);
+		}
+		else {
+			//게시판 전체레코드수
+			fc.setTotalRec(boardSVC.myTotalRecordCount(category, loginMember.getId(), searchType, keyword));
+			
+			list = boardSVC.myList(
+					new SearchDTO(
+							category, 
+							fc.getRc().getStartRec(), fc.getRc().getEndRec(), 
+							searchType, keyword)
+					, loginMember.getId()
+			);
+			log.info("검색어 있는 myBoardList:{}",list);
+		}
+		
+		fc.setSearchType(searchType);
+		fc.setKeyword(keyword);
+				
+		model.addAttribute("boardList", list);
+		model.addAttribute("fc", fc);
+		model.addAttribute("category",category);
+		
+		return "board/myBoardList";
+	}
 }

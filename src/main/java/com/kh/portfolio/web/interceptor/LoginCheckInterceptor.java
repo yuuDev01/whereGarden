@@ -25,7 +25,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor{
 		//웹 서버로 요청 시, 요청에 사용된 QueryString을 리턴한다.
 		String queryString = URLEncoder.encode(request.getQueryString(),"UTF-8");
 		
-		if(queryString !=null ) {
+		if(queryString != null ) {
 			StringBuffer str = new StringBuffer();
 			str.append(requestURI)
 				 .append("?")
