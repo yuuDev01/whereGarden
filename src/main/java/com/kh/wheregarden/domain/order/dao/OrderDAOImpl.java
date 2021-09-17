@@ -102,7 +102,7 @@ public class OrderDAOImpl implements OrderDAO {
 			
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {	
-					ps.setString(1, orderDTO.getOrderDetails().get(i).getOdpid());
+					ps.setInt(1, orderDTO.getOrderDetails().get(i).getOdpid());
 					ps.setString(2, orderDTO.getOrderDetails().get(i).getOdpname());
 					ps.setInt(3, orderDTO.getOrderDetails().get(i).getOdqty());
 					ps.setInt(4, orderDTO.getOrderDetails().get(i).getOdsum());

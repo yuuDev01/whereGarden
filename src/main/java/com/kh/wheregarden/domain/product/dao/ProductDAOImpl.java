@@ -37,11 +37,20 @@ public class ProductDAOImpl implements ProductDAO {
 		sql.append("select pid,ppnum,pname,pprice,pstock,pdate ");
 		sql.append(" from product ");
 		sql.append(" where pid = ? ");
-		
+		System.out.println(sql.toString());
 		ProductDTO productDTO = jt.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(ProductDTO.class), pid);
 		return productDTO;
 	}
 	
-	
+	@Override
+	public ProductDTO findProductByPnum(Long pnum) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("select pid,ppnum,pname,pprice,pstock,pdate ");
+		sql.append(" from product ");
+		sql.append(" where ppnum = ? ");
+		ProductDTO productDTO = jt.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(ProductDTO.class), pnum);
+		System.out.println(productDTO.toString());
+		return productDTO;
+	}
 
 }

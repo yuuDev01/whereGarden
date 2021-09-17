@@ -1,5 +1,6 @@
 package com.kh.wheregarden.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,11 +13,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.wheregarden.domain.cart.dto.CartDTO;
 import com.kh.wheregarden.domain.cart.svc.CartSVC;
 import com.kh.wheregarden.web.form.cart.CartForm;
 import com.kh.wheregarden.web.form.login.LoginMember;
+import com.kh.wheregarden.web.form.order.PlantAndProductForm;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,53 +31,44 @@ import lombok.extern.slf4j.Slf4j;
 public class CartController {
 	private final CartSVC cartSVC;
 	
-	/**
-	 * 장바구니 등록
-	 */
-	@PostMapping("/myCartAdd")
-	public String add(@ModelAttribute CartForm cartForm, HttpServletRequest request) {
-		log.info("장바구니 등록 호출됨");
-		log.info("컨트롤러에서 받아진 CartForm:{}", cartForm);
-		
-		HttpSession session = request.getSession(false);
-		LoginMember loginMember = (LoginMember) session.getAttribute("loginMember");
-//		
-//		//세션이 없으면 로그인페이지로 이동
-//		if(loginMember == null) {
-//			return "member/loginPage";
-//		}
-		
-		//정상로직
-		CartDTO newCartDTO = new CartDTO(
-				0,loginMember.getId(), cartForm.getCpid(), cartForm.getCname(), cartForm.getCqty(), cartForm.getCprice()
-		);
-		
-		CartDTO findedCartDTO = cartSVC.findProduct(cartForm.getCpid());
-		log.info("찾아진 findedCartDTO:{}", findedCartDTO);
-		if(findedCartDTO==null) {
-			log.info("findedCartDTO 널일때:{}", findedCartDTO);
-			cartSVC.add(newCartDTO);
-		}
-		else {
-			log.info("newCartDTO 널 아닐때:{}", newCartDTO);
-			cartSVC.updateQty(newCartDTO);
-		}
-
-		return "/product/productDetail";
-		//HttpSession session = request.getSession(false);
-		//LoginMember loginMember = (LoginMember) session.getAttribute("loginMember");
-		
-		//세션이 없으면 로그인페이지로 이동
-		//if(session == null) return "index";
-		
-		//cartDTO.setCmid(loginMember.getId());
-//		CartDTO newCartDTO = new CartDTO(cartForm);
-//		cartSVC.add(cartDTO);
-//		return "/product/productDetail";
-//		model.addAttribute("cartDTO", storedCartDTO);
-//		redirectAttributes.addAttribute("cmid", storedCartDTO.getCmid());
-//		return "redirect:/myCartList/{cmid}";
-	}
+  /**
+   * 장바구니 등록
+   */
+  @PostMapping("/myCartAdd")
+  public String addCart(
+        @ModelAttribute PlantAndProductForm plantAndProductForm,
+        Model model,
+        HttpServletRequest request,
+        RedirectAttributes redirectAttributes) {
+     
+     HttpSession session = request.getSession(false);
+     LoginMember loginMember = (LoginMember) session.getAttribute("loginMember");
+     
+     log.info("입력받은 상품:{}",plantAndProductForm);
+     
+     //폼에서 전달받은 값 장바구니DTO로 넣기
+     CartDTO newCartDTO = new CartDTO(
+    		 0, loginMember.getId(), plantAndProductForm.getPid(),
+    		 plantAndProductForm.getPNAME(),
+    		 plantAndProductForm.getPqty(), plantAndProductForm.getPprice());
+     
+    // 장바구니 추가시 중복 품목은 수량만 변경
+ 		CartDTO findedCartDTO = cartSVC.findProduct(newCartDTO.getCpid());
+ 		if(findedCartDTO==null) {
+ 			cartSVC.add(newCartDTO);
+ 		}
+ 		else {
+ 			cartSVC.updateQty(newCartDTO);
+ 		}
+     
+     if(plantAndProductForm.getCartFlag() == 1) {
+    	 return "redirect:/cart/myCartList";
+     }
+     
+     Long pnum = plantAndProductForm.getPNUM();
+     
+     return "redirect:/plant/"+pnum;
+  }
 	
 	/**
 	 * 장바구니 조회
@@ -89,27 +83,22 @@ public class CartController {
 		return cartDTO.toString();
 	}
 	
-	/**
-	 * 장바구니 목록
-	 */
-	@GetMapping("/myCartList")
-	public String list(HttpServletRequest request, Model model) {
-		
-//		HttpSession session = request.getSession(false);
-//		LoginMember loginMember = (LoginMember) session.getAttribute("loginMember");
-		
-		//세션이 없으면 로그인페이지로 이동
-//			if(loginMember == null) {
-//				return "member/loginPage";
-//			}
-		List<CartDTO> foundList = cartSVC.list("test@test.com");
-			
-		model.addAttribute("cartList", foundList);
-		log.info("내 장바구니 목록 호출됨");
-		log.info("cartList:{}",foundList);
-		
-		return "cart/cartList";
-	}
+  /**
+   * 장바구니 목록
+   */
+  @GetMapping("/myCartList")
+  public String list(HttpServletRequest request, Model model) {
+     
+     HttpSession session = request.getSession(false);
+     LoginMember loginMember = (LoginMember) session.getAttribute("loginMember");
+     
+     List<CartDTO> foundCartList = cartSVC.list(loginMember.getId());
+     
+     log.info("회원아이디로 찾아진 카트리스트:{}", foundCartList);
+     model.addAttribute("foundCartList", foundCartList);
+     
+     return "cart/cartList";
+  }
 	
 	/**
 	 * 장바구니 수정

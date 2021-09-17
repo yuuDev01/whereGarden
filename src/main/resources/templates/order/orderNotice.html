@@ -35,7 +35,7 @@
 					     	<div class="order_notice_title2">결제정보</div>
 						      <div class="pay_notice">
 						        <div class="table">주문금액</div>
-						        <div class="table" th:text="${orderDTO.oprice}">270,000원</div>
+						        <div class="table" th:text="|${orderDTO.oprice}원|">270,000원</div>
 						      </div>
 						      <div class="pay_notice">
 						        <div class="table">결제금액</div>
@@ -50,7 +50,7 @@
 					      </div>
 					      <div class="pay_notice">
 					        <div class="table">입금 계좌 정보</div>
-					        <div class="table" th:text="|111-11-1111 ${orderDTO.obank} 어딜가든|" ></div>
+					        <div class="table" th:text="|111-11-1111 ${orderDTO.obank} (예금주: 어딜가든)|" ></div>
 					      </div>
 					    </div> 
 				     <div th:case="*">값없음</div>

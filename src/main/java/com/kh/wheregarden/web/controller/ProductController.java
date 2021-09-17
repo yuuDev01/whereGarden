@@ -46,12 +46,9 @@ public class ProductController {
 		ProductDTO findedProductDTO = productSVC.findProduct(pid);
 		CartForm cartForm = new CartForm(
 				findedProductDTO.getPid(), 
-				findedProductDTO.getPpnum(), 
 				findedProductDTO.getPname(), 
-				1,
 				findedProductDTO.getPprice(),
-				findedProductDTO.getPstock(), 
-				findedProductDTO.getPdate(),
+				1,
 				0);
 		//pDetail 대신 cartForm 으로 연결하기
 

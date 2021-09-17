@@ -4,6 +4,7 @@
   width: 1000px;
   display: grid;
   justify-content: center;
+  padding: 20px;
 }
 .order_detail_title1{
 	text-align: center;
@@ -17,8 +18,7 @@
 }
 .product_detail{
   display: grid;
-  grid-template-columns: repeat(3, 200px);
-  justify-content: center;
+  grid-template-columns: repeat(3, 266px);
 }
 .table{
 	border: 1px solid black;
@@ -26,6 +26,7 @@
   border-collapse: collapse;
   text-align: center;
   font-family: 'NanumSquare';
+  margin: 0;
 }
 .pay_detail, .deliver_detail{
   display: grid;
@@ -35,12 +36,13 @@
 .button_container{
   display: grid;
   justify-content: center;
-  gap: 10px;
+  padding-top: 20px;
 }
 .button{
   font-family: 'NanumSquare';
   height: 30px;
   width: 80px;
-  margin-top: 20px;
+  margin-top: 10px;
   border: 1px solid black;
+  margin: 0;
 }

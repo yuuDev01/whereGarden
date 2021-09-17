@@ -42,3 +42,17 @@
 		document.getElementById('d-post').value = '';
 		document.getElementById('d-roadname').value = '';
 	})
+	
+	const $sumLists = document.querySelectorAll('#sum');
+	let sum = 0;
+	for( const product of $sumLists){
+		sum = sum + parseInt(product.value);
+		}
+	document.getElementById('totalSum').value = sum;
+	
+	
+	
+	
+	
+	
+	

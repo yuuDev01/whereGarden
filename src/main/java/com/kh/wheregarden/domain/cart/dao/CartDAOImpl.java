@@ -29,7 +29,7 @@ public class CartDAOImpl implements CartDAO {
 	@Override
 	public void add(CartDTO cartDTO) {
 		StringBuffer sql = new StringBuffer();
-		sql.append("insert into cart(cnum,cmid,cpid,cname,cqty,cprice) ");
+		sql.append("insert into cart(cnum,cmid,cpid,cpname,cqty,cprice) ");
 		sql.append("values (cart_cnum_seq.nextval,?,?,?,?,?) ");
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -41,7 +41,7 @@ public class CartDAOImpl implements CartDAO {
 				PreparedStatement pstmt = con.prepareStatement(sql.toString(), new String[] {"cnum"});
 				pstmt.setString(1, cartDTO.getCmid());
 				pstmt.setInt(2, cartDTO.getCpid());
-				pstmt.setString(3, cartDTO.getCname());
+				pstmt.setString(3, cartDTO.getCpname());
 				pstmt.setString(4, Integer.toString(cartDTO.getCqty()));
 				pstmt.setInt(5, cartDTO.getCprice());
 				return pstmt;
@@ -56,7 +56,7 @@ public class CartDAOImpl implements CartDAO {
 	@Override
 	public CartDTO findCart(int cnum) {
 		StringBuffer sql = new StringBuffer();
-		sql.append("select cnum,cmid,cpid,cname,cqty,cprice ");
+		sql.append("select cnum,cmid,cpid,cpname,cqty,cprice ");
 		sql.append("from cart ");
 		sql.append("where cnum = ? ");
 		
@@ -69,7 +69,7 @@ public class CartDAOImpl implements CartDAO {
 	public CartDTO findProduct(int cpid) {
 		CartDTO findedCartDTO = null;
 		StringBuffer sql = new StringBuffer();
-		sql.append("select cnum,cmid,cpid,cname,cqty,cprice ");
+		sql.append("select cnum,cmid,cpid,cpname,cqty,cprice ");
 		sql.append("from cart ");
 		sql.append("where cpid = ? ");
 		
@@ -88,7 +88,7 @@ public class CartDAOImpl implements CartDAO {
 	@Override
 	public List<CartDTO> list(String cmid) {
 		StringBuffer sql = new StringBuffer();
-		sql.append("select cnum,cmid,cpid,cname,cqty,cprice  ");
+		sql.append("select cnum,cmid,cpid,cpname,cqty,cprice  ");
 		sql.append("from cart ");
 		sql.append("where cmid = ? ");
 		
@@ -128,7 +128,7 @@ public class CartDAOImpl implements CartDAO {
 	public void deleteByCname(String cname) {
 		StringBuffer sql = new StringBuffer();
 		sql.append("delete from cart ");
-		sql.append("where cname = ? ");
+		sql.append("where cpname = ? ");
 		
 		jt.update(sql.toString(), cname);
 

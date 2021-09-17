@@ -2,10 +2,12 @@ package com.kh.wheregarden.web.controller;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.wheregarden.domain.plant.dto.PlantDTO;
 import com.kh.wheregarden.domain.plant.dto.PlantTagDTO;
 import com.kh.wheregarden.domain.plant.svc.PlantSVC;
+import com.kh.wheregarden.domain.product.dto.ProductDTO;
+import com.kh.wheregarden.domain.product.svc.ProductSVC;
+import com.kh.wheregarden.web.form.cart.CartForm;
+import com.kh.wheregarden.web.form.order.PlantAndProductForm;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PlantController {
 
 	private final PlantSVC plantSVC;
+	private final ProductSVC productSVC;
 
 	// 전체 식물조회
 	@GetMapping("/list")
@@ -56,9 +63,23 @@ public class PlantController {
  
 	
 	@GetMapping("/{pnum}")
-	public String PlantDetail(@PathVariable Long pnum, Model model) {
-		model.addAttribute("plantDetail", plantSVC.plantDetail(pnum));
-
+	public String PlantDetail(
+			@PathVariable Long pnum,
+			@ModelAttribute PlantAndProductForm plantAndProductForm
+			) {
+		
+		PlantDTO foundPlantDTO = plantSVC.plantDetail(pnum);
+		
+		BeanUtils.copyProperties(foundPlantDTO, plantAndProductForm);
+		log.info("식물정보 복사 plantAndProductForm:{}",plantAndProductForm);
+		
+		ProductDTO foundProductDTO = productSVC.findProductByPnum(pnum);
+		plantAndProductForm.setPid(foundProductDTO.getPid());
+		plantAndProductForm.setPprice(foundProductDTO.getPprice());
+		plantAndProductForm.setPqty(1);
+		
+		log.info("상품정보 복사 plantAndProductForm:{}",plantAndProductForm);
+		
 		return "plant/plantDetail";
 	}
 }

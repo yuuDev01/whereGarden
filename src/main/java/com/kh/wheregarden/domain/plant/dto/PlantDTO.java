@@ -17,7 +17,7 @@ public class PlantDTO {
 	  private String PMANAGELV; // PMANAGELV VARCHAR2(40),관리요구도
 	  private String PFLCOLOR; // PFLCOLOR VARCHAR2(40), 꽃색
 	  private String PGRWHSTLE; // PGRWHSTLE VARCHAR2(40),
-	  private long PGROWTH; // PGROWTH NUMBER(38), 성장높이
+	  private Long PGROWTH; // PGROWTH NUMBER(38), 성장높이
 	  private String PWATERSP; //PWATERSP VARCHAR2(26), 봄 물주기
 	  private String PWATERSU; //PWATERSU VARCHAR2(26), 여름
 	  private String PWATERA; //PWATERA VARCHAR2(26),    가을 

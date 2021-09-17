@@ -49,12 +49,12 @@
 		  		<div>수량</div>
 		  		<div>합계</div>
 		  	</div>
-		  	<div class="row data" th:each="list,idx : ${cartDTOList}">
-		  		<input type="hidden" th:value="${list.cpid}" th:name="|orderDetails[${idx.index}].odpid|" >
-		  		<input type="text" th:value="${list.cname}" th:name="|orderDetails[${idx.index}].odpname|" readonly/>
-		  		<div th:text="${list.cprice}"></div>
-		  		<div><input type="number" th:value="${list.cqty}" id="cartAmount" th:name="|orderDetails[${idx.index}].odqty|" readonly/></div>
-		  		<div><input type="text" th:value="${list.cprice}*${list.cqty}" th:name="|orderDetails[${idx.index}].odsum|" readonly/></div>
+		  	<div class="row data" th:each="list,idx : ${orderForm.orderDetails}">
+		  		<input type="hidden" th:value="${list.odpid}" th:name="|orderDetails[${idx.index}].odpid|" >
+		  		<input type="text" th:value="${list.odpname}" th:name="|orderDetails[${idx.index}].odpname|" readonly/>
+		  		<div th:text="${list.odsum}/${list.odqty}"></div>
+		  		<div><input type="number" th:value="${list.odqty}" id="cartAmount" th:name="|orderDetails[${idx.index}].odqty|" readonly/></div>
+		  		<div><input type="text" id="sum" th:value="${list.odsum}" th:name="|orderDetails[${idx.index}].odsum|" readonly/></div>
 		  	</div>
 		  </div>
 		  
@@ -131,7 +131,7 @@
 		      	</div>
 		      </li>
 		      <li><p>최종결제금액</p></li>
-		      <li><div class="sum"></div></li>
+		      <li><input type="text" id="totalSum" th:field="${orderForm.oprice}"/></li>
 		      <li><button th:type="submit">결제하기</button></li>
 		    </ul>
 		    </div>

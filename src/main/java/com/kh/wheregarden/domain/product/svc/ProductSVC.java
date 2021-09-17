@@ -11,4 +11,7 @@ public interface ProductSVC {
 	
 	//상품 조회
 	ProductDTO findProduct(int pid);
+	
+	//상품 조회 by 식물번호
+	ProductDTO findProductByPnum(Long pnum);
 }

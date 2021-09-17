@@ -27,4 +27,9 @@ public class ProductSVCImpl implements ProductSVC {
 		return productDAO.findProduct(pid);
 	}
 
+ //상품 조회 by 식물번호
+	@Override
+	public ProductDTO findProductByPnum(Long pnum) {
+		return productDAO.findProductByPnum(pnum);
+	}
 }

@@ -21,10 +21,14 @@
 	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
 	
  	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
-  <div class="plantDetail_allContainer" th:object="${plantDetail}">
+  <div class="plantDetail_allContainer" th:object="${plantAndProductForm}">
+  	<form th:method="post" action="">
   	<div class="category">식물 찾기 > 식물 조회</div>
+  	<input type="hidden" th:field="*{PNUM}"/>
+  	<input type="hidden" th:field="*{PNAME}"/>
+  	<div style="display: none" th:text="*{PNUM}" th:name="*{PNUM}"></div>
     <div class="top">
-      <div class="pName" th:text="*{PNAME}">튤립</div>
+      <div class="pName" th:text="*{PNAME}" th:name="*{PNAME}">튤립</div>
       <i class="fas fa-heart"></i>
     </div>
     <div class="info">
@@ -39,28 +43,33 @@
                 <p>- 분류 : <span th:text="*{PCLCODE}"></span></p> 
                 <p>- 생육형태 : <span th:text="*{PGRWHSTLE}"></span></p> 
                 <p>- 꽃 색 : <span th:text="*{PFLCOLOR}"></span></p> 
-                <p>- 크기 : <span th:text="*{PGROWTH}"></span> cm</p> 
+                <p>- 크기 : <span th:text="*{PGROWTH}"></span></p> 
                 
             </div>
             <div class="con2">
                 <div class="product item">
+                <input type="hidden" th:field="*{pid}"/>
                     <div class="price">
-                        <p> 소비자가 &nbsp;&nbsp;&nbsp;<span>40,000원</span></p> 
+                        <p> 소비자가 &nbsp;&nbsp;&nbsp;<input type="text" th:field="*{pprice}"/></p> 
                     </div>
                     <div class="count">
                         <td class="label item">수량</td>
-                        <button class="amount minus" onclick="fnCalCount('m');">-</button>
-                        <input type="text" id="cnt" value="0">
-                        <button class="amonut plus" onclick="fnCalCount('p');">+</button>
+                        <button type="button" class="amount minus" onclick="fnCalCount('m');">-</button>
+                        <input type="text" id="cnt" value="1" th:field="*{pqty}">
+                        <button type="button" class="amonut plus" onclick="fnCalCount('p');">+</button>
                     </div>
                 </div>
                 <div class="productBtn item">
                     <button class="pay btn">바로결제</button>
                     <button class="cart btn">장바구니 담기</button>
+                    <input type="submit" class="pay btn" th:formaction="@{/order/form/express}" value="바로 주문하기"/>
+                    <input type="submit" class="cart btn" id="cartBtn" th:formaction="@{/cart/myCartAdd}" value="장바구니에 담기" />
+                    <input type="hidden" th:field="*{cartFlag}"/>
                 </div>
             </div>
         </div>
     </div>
+    </form>
     <hr>
     <div class="content">
 

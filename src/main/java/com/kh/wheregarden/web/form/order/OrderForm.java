@@ -6,11 +6,13 @@ import java.util.List;
 import com.kh.wheregarden.domain.order.dto.OrderDetailDTO;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class OrderForm {
 	
-	private List<OrderDetailDTO> orderDetails;
+	public List<OrderDetailDTO> orderDetails;
 	private String onum;
 	//@NotNull(message="배송정보를 선택하세요")
 	private String oinfo;

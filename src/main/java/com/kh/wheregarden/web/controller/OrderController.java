@@ -1,5 +1,6 @@
 package com.kh.wheregarden.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,10 +21,12 @@ import com.kh.wheregarden.domain.cart.svc.CartSVC;
 import com.kh.wheregarden.domain.member.dto.MemberDTO;
 import com.kh.wheregarden.domain.member.svc.MemberSVC;
 import com.kh.wheregarden.domain.order.dto.OrderDTO;
+import com.kh.wheregarden.domain.order.dto.OrderDetailDTO;
 import com.kh.wheregarden.domain.order.svc.OrderSVC;
 import com.kh.wheregarden.web.form.cart.CartForm;
 import com.kh.wheregarden.web.form.login.LoginMember;
 import com.kh.wheregarden.web.form.order.OrderForm;
+import com.kh.wheregarden.web.form.order.PlantAndProductForm;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,38 +43,65 @@ public class OrderController {
 	private final MemberSVC memberSVC;
 	
 	
-	//장바구니 주문양식
-	@GetMapping("/form")
+	//장바구니 주문처리
+	@PostMapping("/form")
 	public String cartOrderForm(
+			@ModelAttribute OrderForm orderForm,
 			HttpServletRequest request,
 			Model model) {
 		
 		HttpSession session = request.getSession(false);
 		LoginMember loginMember = (LoginMember) session.getAttribute("loginMember");
 		
-		MemberDTO memberDTO = memberSVC.findMemberById(loginMember.getId());
+		log.info("바로주문에서 받아진 orderForm:{}",orderForm);
 		
+		for(int i=0; i<orderForm.getOrderDetails().size(); i++) {
+			if(orderForm.getOrderDetails().get(i).getOdpname() == null) {
+				orderForm.getOrderDetails().remove(i);
+			}
+		}
+		
+		log.info("체크된 상품 orderForm:{}",orderForm);
+		model.addAttribute("orderForm", orderForm);
+		
+		MemberDTO memberDTO = memberSVC.findMemberById(loginMember.getId());
 		model.addAttribute("memberDTO",memberDTO);
 		
-		List<CartDTO> cartDTOList = cartSVC.list(loginMember.getId());
-		model.addAttribute("cartDTOList",cartDTOList);
-		OrderForm orderForm = new OrderForm();
-		model.addAttribute("orderForm", orderForm);
-		log.info("주문 양식 호출됨");
 		return "order/orderFormPage";
 	}
 	
-	//바로주문
+	//바로주문 처리
 	@PostMapping("/form/express")
-	public String orderForm(@ModelAttribute CartForm cartForm, HttpServletRequest request, Model model) {
+	public String orderForm(
+			@ModelAttribute PlantAndProductForm plantAndProductForm,
+			HttpServletRequest request,
+			Model model) {
+		
 		HttpSession session = request.getSession(false);
 		LoginMember loginMember = (LoginMember) session.getAttribute("loginMember");
 		
-		log.info("바로주문에서 받아진 cartForm:",cartForm);
-		model.addAttribute("cartDTOList", cartForm);
-		OrderForm orderForm = new OrderForm();
+		log.info("바로주문에서 받아진 plantAndProductForm:{}",plantAndProductForm);
+		
+		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
+		
+		orderDetailDTO.setOdpid(plantAndProductForm.getPid());
+		orderDetailDTO.setOdpname(plantAndProductForm.getPNAME());
+		orderDetailDTO.setOdqty(plantAndProductForm.getPqty());
+		orderDetailDTO.setOdsum(plantAndProductForm.getPqty()*plantAndProductForm.getPprice());
+		
+		List<OrderDetailDTO> list = new ArrayList<>();
+		list.add(orderDetailDTO);
+		
+		log.info("옮겨준 list:{}",orderDetailDTO);
+		
+		OrderForm orderForm = new OrderForm();		
+		
+		orderForm.setOrderDetails(list);
+		orderForm.setOprice(plantAndProductForm.getPqty()*plantAndProductForm.getPprice());
+		
+		log.info("완성된 orderForm:{}",orderForm);
+		
 		model.addAttribute("orderForm", orderForm);
-		log.info("바로주문 페이지 호출됨");
 		
 		MemberDTO memberDTO = memberSVC.findMemberById(loginMember.getId());
 		
@@ -80,7 +110,7 @@ public class OrderController {
 		return "order/orderFormPage";
 	}
 	
-	//주문처리
+	//결제처리
 	@PostMapping("")
 	public String order(
 			@ModelAttribute OrderForm orderForm,
@@ -107,12 +137,6 @@ public class OrderController {
 //		newOrderDTO.setOrderDetails(cartForm.getCname(),cartForm.getCqty());
 		
 		log.info("카피된 newOrderDTO:{}", newOrderDTO);
-		
-//		log.info("orderForm 0번째 상품명:{}", orderForm.getOrderDetails().get(0).getOdpname());
-//		log.info("orderForm 0번째 수량:{}", orderForm.getOrderDetails().get(0).getOdqty());
-//		log.info("orderForm 1번째 상품명:{}", orderForm.getOrderDetails().get(1).getOdpname());
-//		log.info("orderForm 1번째 수량:{}", orderForm.getOrderDetails().get(1).getOdqty());
-//		로그 찍을때 인덱스 주의해서 적기. 해당 인덱스 없으면 오류남.
 		
 		//주문 처리
 		OrderDTO orderedDTO = orderSVC.order(newOrderDTO);
