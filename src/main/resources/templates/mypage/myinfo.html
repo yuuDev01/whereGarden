@@ -5,6 +5,7 @@
   <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
 	
 	<link rel="stylesheet" href="/css/member/myinfo.css" />
+	<link rel="stylesheet" href="/css/main.css">
   
   <title>어딜, 가든</title>
 </head>
@@ -29,9 +30,11 @@
       				</div>
     <div>  				
 		<div><label class="pw" for="mpw" > 비밀번호를 입력하세요</label></div>
-		<div><input type="password" th:field="*{mpw}" ></div>
+		<div><input class="form-control" type="password" th:field="*{mpw}" ></div>
 		<div><p style="margin-top: 0px;margin-bottom: 16px;" th:errors="*{mpw}" th:errorclass="field-msg"></div>
-		<button type="submit" class="btn" id="Btn">내 정보 확인</button>
+		<div class="Btn_container">
+    	<button type="submit" class="btn btn-success">내 정보 확인</button>
+    </div>
 		</div>
 	 </form>
 	 </main>

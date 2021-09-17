@@ -2,23 +2,29 @@
 h1.title{
 	justify-content: center;
 	color: green;
-	margin-left:60px
+	text-align: center;
 }
 main{
-display:flex;
+display:grid;
 justify-content: center;
 }
 
 form{
 border: 1px solid grey;
-  width: 300px;
+  width: 500px;
   padding-left: 30px;
+  padding-right: 30px;
   padding-bottom: 10px;
+  margin-left: 300px;
 }
+ form .form-control{
+  width: 100%;
+  }
+  .addBtn{
+  background-color: burlywood;
+  height:38px;
+  }
 .button{
+	text-align: center;
 	margin-top:10px;
-	margin-left:90px;
-}
-#sample4_roadAddress, #sample4_detailAddress {
-	width: 200px;
 }

@@ -5,7 +5,7 @@
     text-align: center;
     justify-content: center;
     border: 1px solid grey;
-    height: 240px;
+    height: 270px;
     width: 600px;
     padding-top: 30px;
     margin-left: 320px;
@@ -14,12 +14,18 @@
 	font-size: 40px;
 	color: darkcyan;
 }
+.form-control{
+	text-align:center; 
+	display:block; 
+	margin: 0 auto;
+
+}
 #mpw{
 	margin-top: 10px;
     margin-bottom: 10px;
     width: 200px;
-    height: 20px;
-    font-size: 20px;
+    height: 40px;
+    font-size: 30px;
 }
 
 #Btn{

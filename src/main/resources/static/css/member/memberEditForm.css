@@ -2,20 +2,30 @@
 h1.title{
 	justify-content: center;
 	color: green;
-	margin-left:30px;
+	text-align: center;
+}
+main{
+display:grid;
+justify-content: center;
 }
 
-#writeForm{
-display:flex;
+form{
 border: 1px solid grey;
-  width: 300px;
+  width: 500px;
   padding-left: 30px;
+  padding-right: 30px;
   padding-bottom: 10px;
-  justify-content: center;
-  margin-left: 400px; 
+  margin-left: 300px;
 }
+ form .form-control{
+  width: 100%;
+  height:30px;
+  }
+  .addBtn{
+  background-color: burlywood;
+  height:38px;
+  }
 .button{
-	margin-left: 38px;
+	text-align: center;
 	margin-top:10px;
-	justify-content: center;
 }

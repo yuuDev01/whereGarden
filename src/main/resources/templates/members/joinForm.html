@@ -9,6 +9,8 @@
 	
 	<title>회원가입 정보입력</title>
 	
+	<script src="/js/common/address.js" defer></script>
+
 </head>
 <body>
 <header th:replace="/fragment/fragment_header :: fragment_header">
@@ -20,60 +22,59 @@
 
     <div class="all_container">
     	<main>
-      <form th:method="post" th:action="@{/members/join}" th:object="${joinForm}" >
+      <form class="row g-3 needs-validation" th:method="post" th:action="@{/members/join}" th:object="${joinForm}" novalidate>
         <ul>
           <li><h1 class="title">회원 가입</h1></li>
-          <li><label for="mid" >아이디</label></li>
-      	  <li><input type="text" th:field="*{mid}"/></li>
-     	    <li th:errors="*{mid}" th:errorclass="field-msg"></li> 
+          <li><label for="mid" class="form-label">아이디</label></li>
+      	  <li><input class="form-control"  type="text" th:field="*{mid}" placeholder="abc@wheregarden.com"/></li>
+     	    <li  th:errors="*{mid}" th:errorclass="field-msg"></li> 
       	  <li th:errors="*{delmid}" th:errorclass="field-msg"></li>
-     	    <li><label for="mpw">비밀번호</label></li>	 
-          <li><input type="password" th:field="*{mpw}"/></li>
+     	    <li><label for="mpw" class="form-label">비밀번호</label></li>	 
+          <li><input class="form-control" type="password" th:field="*{mpw}"/></li>
           <li th:errors="*{mpw}" th:errorclass="field-msg"></li> 
-          <li><label for="mpwchk">비밀번호 확인</label></li>
-          <li><input type="password" th:field="*{mpwchk}"></li> 
+          <li><label for="mpwchk" class="form-label">비밀번호 확인</label></li>
+          <li><input class="form-control" type="password" th:field="*{mpwchk}"></li> 
 		 		  <li th:errors="*{mpwchk}" th:errorclass="field-msg"></li> 
-          <li><label for="mquestion" >비밀번호 찾기 질문</label></li>
-          <li><select name="mquestion" th:field="*{mquestion}">
+          <li><label for="mquestion" class="form-label">비밀번호 찾기 질문</label></li>
+          <li><select class="form-control" name="mquestion" th:field="*{mquestion}">
           	  <option value="">-- 선택 --</option>
       				<option value="나의 보물 1호는?">나의 보물 1호는?</option>
              	<option value="학창시절 나의 별명은?">학창시절 나의 별명은?</option>
          		 	<option value="가장 친한 친구 이름은?">가장 친한 친구 이름은?</option>
           		<option value="가장 기억에 남는 선생님 성함은?">가장 기억에 남는 선생님 성함은?</option>
-					</select></li>
+							</select></li>
 					<li th:errors="*{mquestion}" th:errorclass="field-msg"></li>
-          <li><label for="manswer">비밀번호 찾기 답변</label></li>
-          <li><input type="text" th:field="*{manswer}" /></li>
+          <li><label class="form-label" for="manswer">비밀번호 찾기 답변</label></li>
+          <li><input class="form-control" type="text" th:field="*{manswer}" /></li>
           <li th:errors="*{manswer}" th:errorclass="field-msg"></li>
-          <li><label for="mname">이름</label></li>
-          <li><input type="text"  th:field="*{mname}"/></li>
+          <li><label class="form-label" for="mname">이름</label></li>
+          <li><input class="form-control" type="text"  th:field="*{mname}"/></li>
           <li th:errors="*{mname}" th:errorclass="field-msg"></li>
-          <li><label for="mbirth">생년월일</label></li>
-          <li><input type="date"  th:field="*{mbirth}" /></li>
-          <li><label for="mgender">성별</label></li>
+          <li><label class="form-label" for="mbirth">생년월일</label></li>
+          <li><input class="form-control" type="date"  th:field="*{mbirth}" /></li>
+          <li><label class="form-label" for="mgender">성별</label></li>
          	<li th:each="ele : ${gender}">
-						<input type="radio" th:field="*{gender}" th:value="${ele.decode}"/>
-						<label th:for="${#ids.prev('gender')}"
+						<input class="form-check-input" type="radio" th:field="*{gender}" th:value="${ele.decode}"/>
+						<label class="form-label" th:for="${#ids.prev('gender')}"
 									 th:text="${ele.decode}"></label></li>
 				  <li th:errors="*{gender}" th:errorclass="field-msg"></li>
-          <li><label for="mtel">전화번호</label></li>
-          <li><input type="text" name="mtel" th:field="*{mtel}"/></li>
+          <li><label class="form-label" for="mtel">전화번호</label></li>
+          <li><input class="form-control" type="text" name="mtel" th:field="*{mtel}"/></li>
           <li th:errors="*{mtel}" th:errorclass="field-msg"></li>
-          <li><label for="maddress">주소</label></li>
-          <li><input type="text" id="sample4_postcode" th:field="*{mpost}" placeholder="우편번호"></li>
-					<li><input type="button" onclick="sample4_execDaumPostcode()" th:field="*{maddress}" value="우편번호 찾기">
-					<li><input type="text" id="sample4_roadAddress" th:field="*{mroadname}" placeholder="도로명주소" >
+          <li><label class="form-label" for="maddress">주소</label></li>
+          <li><input class="form-control" type="text" id="sample4_postcode" th:field="*{mpost}" placeholder="우편번호"></li>
+					<li><input class="addBtn" type="button" id="findBtn"onclick="sample4_execDaumPostcode()" th:field="*{maddress}" value="우편번호 찾기">
+					<li><input class="form-control" type="text" id="sample4_roadAddress" th:field="*{mroadname}" placeholder="도로명주소" >
 					<li><input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
-					<li><span  id="guide" style="color:#999;display:none" ></span>
-					<li><input type="text" id="sample4_detailAddress" th:field="*{maddress}" placeholder="상세주소">
+					<li><input class="form-control" type="text" id="sample4_detailAddress" th:field="*{maddress}" placeholder="상세주소">
 					<li><input type="hidden" id="sample4_extraAddress" placeholder="참고항목" >
 					<li th:errors="*{maddress}" th:errorclass="field-msg"></li>
-          <li><label for="mnickname">닉네임</label></li>
-          <li><input type="text" name="mnickname" th:field="*{mnickname}" /></li>
+          <li><label class="form-label" for="mnickname">닉네임</label></li>
+          <li><input class="form-control" type="text" name="mnickname" th:field="*{mnickname}" /></li>
           <li th:errors="*{mnickname}" th:errorclass="field-msg"></li>
           <li class=button>
-            <button type="submit" value="회원가입" id="joinBtn">저장</button>
-            <button type="reset">취소</button>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" value="회원가입" id="joinBtn">저장</button>
+            <button class="btn btn-primary btn-lg btn-block" type="reset">취소</button>
           </li>
         </ul>
         </form>
