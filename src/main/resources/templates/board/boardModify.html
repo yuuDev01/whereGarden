@@ -9,6 +9,9 @@
   
   <!-- 추가 CSS -->
   <link rel="stylesheet" href="/css/board/boardModify.css">
+  <style>
+  	.field-msg{ text-align: right; }
+  </style>
   
   <!-- 추가 js -->
   <script src="/js/ajaxCall.js" defer></script>
@@ -27,9 +30,9 @@
   <div class="boardList_allContainer">
     <div class="Board_menu">
       <ul>
-        <li>커뮤니티</li>
-        <li><a th:href="@{/board/boardList(category=자유게시판)}">자유게시판</a></li>
-        <li><a th:href="@{/board/boardList(category=QnA)}">QnA</a></li>
+        <li><h3>커뮤니티</h3></li>
+        <li><a id="" th:href="@{/board/boardList(category=자유게시판)}"><h5>자유게시판</h5></a></li>
+        <li><a th:href="@{/board/boardList(category=QnA)}"><h5>QnA</h5></a></li>
       </ul>
     </div>
     <form th:action="@{|/board/boardModify/*{bnum}|}" th:method="patch" th:object="${modifyForm}" enctype="multipart/form-data">
@@ -56,7 +59,6 @@
       <textarea id="content" name="" th:field="*{bcontent}"></textarea>
       <div class="mb-3">
       	<div class="attachfileBox">
-	      	<label for="file" class="col-sm-2 col-form-label text-center">첨부파일</label>
 	        <p th:each="file : *{files}">
 	       	<!-- <a th:href="@{|/attach/${file.store_fname}/${file.upload_fname}}|"
 	       	 th:text="${file.upload_fname}"></a> -->
@@ -65,6 +67,7 @@
 	       	</p>
       	</div>
       	<input type="file" class="form-control" th:field="*{files}" multiple="multiple">
+      	<div th:errors="*{global}" th:errorclass="field-msg"><label for="" th:errors="*{global}"></label></div>
       </div>
       <div class="writeForm_buttonBox">
         <button type="submit" class="btn btn-success">수정</button>

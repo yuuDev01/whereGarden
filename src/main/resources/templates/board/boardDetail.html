@@ -27,40 +27,77 @@
   <div class="boardList_allContainer" th:with="mid=${session?.loginMember?.id}">
     <div class="Board_menu">
       <ul>
-        <li>커뮤니티</li>
-        <li><a th:href="@{/board/boardList(category=자유게시판)}">자유게시판</a></li>
-        <li><a th:href="@{/board/boardList(category=QnA)}">QnA</a></li>
+        <li><h3>커뮤니티</h3></li>
+        <li><a id="" th:href="@{/board/boardList(category=자유게시판)}"><h5>자유게시판</h5></a></li>
+        <li><a th:href="@{/board/boardList(category=QnA)}"><h5>QnA</h5></a></li>
       </ul>
     </div>
     <div class="writeForm_container" th:object="${boardDetail}">
-    <div class="writeForm_titleBox">
-      <span th:text="*{btitle}">제목</span>
-      <div th:if="*{budate} == null"><span  th:text="|*{bnickname} / ${#temporals.format(boardDetail.bcdate, 'yyyy-MM-dd hh:mm')}|">작성자 / 작성일시란</span></div>
-      <div th:if="*{budate} != null"><span th:text="|*{bnickname} / ${#temporals.format(boardDetail.budate, 'yyyy-MM-dd hh:mm')}|">작성자 / 작성일시란</span></div>
-    </div>
-    <div class="writeForm_contentBox">
-      <textarea id="content" name="" cols="100" rows="10" th:field="*{bcontent}" readonly="readonly"></textarea>
-      <div class="file">
-        <label for="">첨부파일</label>
-        <div class="fileListBox">
-          <p th:each="file : *{files}">
-          <a href="" th:text="${file.upload_fname}"></a>
-          </p>
-         	<!-- <a th:href="@{|/attach/${file.store_fname}/${file.upload_fname}}|"
-         	 th:text="${file.upload_fname}"></a> -->
-        </div>
-      </div>
-      <div class="writeForm_buttonBox">
-	      <button th:if="${mid} == *{bmid}" type="button" class="btn btn-success" id="modifyBtn" th:data-bnum="*{bnum}">수정</button>
-        <button th:if="${mid} == *{bmid}" type="button" class="btn btn-success" id="deleteBtn" th:data-bnum="*{bnum}" th:data-category="*{bcategory}">삭제</button>
-        <button th:if="*{bcategory} == 'QnA'" type="button" class="btn btn-success" id="replyBtn" th:data-bnum="*{bnum}">답글</button>
-        <button type="button" class="btn btn-success" id="listBtn" th:data-category="*{bcategory}">목록</button>
-      </div>
-    </div>
+	    <div class="writeForm_titleBox">
+	      <h4 th:text="*{btitle}">제목</h4>
+	      <div th:if="*{budate} == null"><span th:text="|*{bnickname} / ${#temporals.format(boardDetail.bcdate, 'yyyy-MM-dd HH:mm')}|">작성자 / 작성일시란</span></div>
+	      <div th:if="*{budate} != null"><span th:text="|*{bnickname} / ${#temporals.format(boardDetail.budate, 'yyyy-MM-dd HH:mm')}|">작성자 / 작성일시란</span></div>
+	    </div>
+	    
+	    <div class="writeForm_contentBox">
+	    	<div class="parentBoard">
+	    		<h4 th:if="${pBoardDTO}">질문글</h4>
+		    	<div th:if="${pBoardDTO}" th:text="|제목 : ${pBoardDTO.btitle}|">부모글 제목란</div>
+		    	<div th:if="${pBoardDTO}" th:text="|내용 : ${pBoardDTO.bcontent}|">부모글 내용란</div>
+		    </div>
+	      <textarea id="content" name="" cols="100" rows="10" th:field="*{bcontent}" readonly="readonly"></textarea>
+	      <div class="file">
+	        <div class="fileListBox">
+	          <p th:each="file : *{files}">
+	          <a href="" th:text="${file.upload_fname}"></a>
+	          </p>
+	         	<!-- <a th:href="@{|/attach/${file.store_fname}/${file.upload_fname}}|"
+	         	 th:text="${file.upload_fname}"></a> -->
+	        </div>
+	      </div>
+	      <div class="writeForm_buttonBox">
+		      <button th:if="${mid} == *{bmid}" type="button" class="btn btn-success" id="modifyBtn" th:data-bnum="*{bnum}">수정</button>
+	        <button th:if="${mid} == *{bmid}" type="button" class="btn btn-success" id="deleteBtn" th:data-bnum="*{bnum}" th:data-category="*{bcategory}">삭제</button>
+	        <button th:if="*{bcategory} == 'QnA'" type="button" class="btn btn-success" id="replyBtn" th:data-bnum="*{bnum}">답글</button>
+	        <button type="button" class="btn btn-success" id="listBtn" th:data-category="*{bcategory}">목록</button>
+	      </div>
+	    </div>
+    
+	    <div class="commentWriteForm" th:if="*{bcategory} == '자유게시판'">
+	  		<form id="commentBox" th:action="@{|/board/comment/${boardDetail.bnum}|}" th:object="${CommentWriteForm}" th:method="post">
+	    		<textarea id="commentForm" cols="30" rows="5" placeholder="내용을 입력해주세요" th:field="*{ccontent}"></textarea>
+	        	<div class="commentBtnBox"><button type="submit" class="btn btn-success">등록</button><button type="reset" class="btn btn-success">취소</button></div>
+	    	</form>
+	  	</div>
+  
+			<div class="commentListBox" th:if="${commentsDTOList != null}">
+	  		<div class="oneCommentBox" th:each="comments : ${commentsDTOList}" >
+	  			<div class="commentTop" th:if="${comments.cudate} == null">
+	  				<input type="text" th:value="${comments.cnickname}" readonly="readonly"/> / <input type="text" th:value="${#temporals.format(comments.ccdate, 'yyyy-MM-dd HH:mm:ss')}" readonly="readonly"/>
+	  				<button type="button" class="btn btn-success" th:if="${mid} == *{bmid}">수정</button>
+	  				<button th:if="${mid} == *{bmid}" type="button" class="btn btn-success" id="commentDelBtn" th:data-cnum="${comments.cnum}">삭제</button>
+	  			</div>
+	  			<div class="commentTop" th:if="${comments.cudate} != null">
+	  				<input type="text" th:value="${comments.cnickname}" readonly="readonly"/> / <input type="text" th:value="${#temporals.format(comments.cudate, 'yyyy-MM-dd HH:mm:ss')}" readonly="readonly"/>
+	  				<button type="button" class="btn btn-success" th:if="${mid} == *{bmid}">수정</button>
+	  				<button th:if="${mid} == *{bmid}" type="button" class="btn btn-success" id="commentDelBtn" h:data-cnum="${comments.cnum}">삭제</button>
+	  			</div>
+	  			<div class="commentContent">
+	  				<textarea class="autosize" onkeydown="resize(this)" onkeyup="resize(this)" th:text="${comments.ccontent}" readonly="readonly"></textarea>
+	  			</div>	
+	  		</div>
+	  	</div>
+  	
     </div>
   </div>
-    
+  
 	<footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
 	
+	<script>
+		function resize(obj) {
+		  obj.style.height = "1px";
+		  obj.style.height = (12+obj.scrollHeight)+"px";
+		}
+	</script>
 </body>
 </html>

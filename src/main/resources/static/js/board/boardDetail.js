@@ -5,6 +5,8 @@ const $delBtn 		= document.getElementById('deleteBtn');
 const $replyBtn 	= document.getElementById('replyBtn');		
 const $listBtn 		= document.getElementById('listBtn');
 
+const $commentDelBtn 		= document.querySelectorAll('commentDelBtn');
+
 const handler = (res, e) => {
 	//console.log(e);
 	if(res.rtcd == '00'){
@@ -43,9 +45,18 @@ $replyBtn?.addEventListener("click",e=>{
 
 //목록
 $listBtn?.addEventListener("click", e=>{
-	console.log("클릭");
 	const category = e.target.dataset.category;
-	location.href = `/board/boardList?category=${category}`;
+	if(confirm('목록으로 돌아가시겠습니까?')){
+		location.href = `/board/boardList?category=${category}`;
+		}	
+});
+
+//댓글삭제
+$commentDelBtn?.addEventListener("click", e=>{
+	const cnum = e.target.dataset.cnum;
+	if(confirm('댓글을 삭제 하시겠습니까?')){
+		location.href = `/board/comment/del/${cnum}`;
+		}	
 });
 
 

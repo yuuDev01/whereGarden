@@ -27,6 +27,9 @@ import com.kh.wheregarden.domain.board.dao.BoardDAO;
 import com.kh.wheregarden.domain.board.dto.BoardDTO;
 import com.kh.wheregarden.domain.board.dto.SearchDTO;
 import com.kh.wheregarden.domain.board.svc.BoardSVC;
+import com.kh.wheregarden.domain.comments.dao.CommentsDAO;
+import com.kh.wheregarden.domain.comments.dto.CommentsDTO;
+import com.kh.wheregarden.domain.comments.svc.CommentsSVC;
 import com.kh.wheregarden.domain.common.dto.MetaOfUploadFile;
 import com.kh.wheregarden.domain.common.dto.UpLoadFileDTO;
 import com.kh.wheregarden.domain.common.file.FileStore;
@@ -34,6 +37,7 @@ import com.kh.wheregarden.domain.common.paging.FindCriteria;
 import com.kh.wheregarden.web.form.board.ModifyForm;
 import com.kh.wheregarden.web.form.board.ReplyForm;
 import com.kh.wheregarden.web.form.board.WriteForm;
+import com.kh.wheregarden.web.form.comment.CommentWriteForm;
 import com.kh.wheregarden.web.form.login.LoginMember;
 
 import lombok.RequiredArgsConstructor;
@@ -53,6 +57,8 @@ public class BoardController {
 	@Autowired
 	@Qualifier("fc10")
 	private FindCriteria fc;
+	
+	private final CommentsSVC commentsSVC;
 	
 	//게시글 목록
 	@GetMapping({"/boardList",
@@ -115,6 +121,21 @@ public class BoardController {
 		
 		model.addAttribute("boardDetail", boardSVC.boardDetail(bnum));
 		
+		//댓글 작성 양식
+		CommentWriteForm newCommentWriteForm = new CommentWriteForm();
+		model.addAttribute("CommentWriteForm", newCommentWriteForm);
+		
+		//댓글불러오기
+		List<CommentsDTO> commentsDTOList = commentsSVC.showComment(bnum);
+		
+		//불러온 댓글 null 체크
+		if(commentsDTOList.isEmpty()) {
+			model.addAttribute("commentsDTOList", null);
+		}
+		else {
+			model.addAttribute("commentsDTOList", commentsDTOList);
+		}
+		
 		return "board/boardDetail";
 	}
 	
@@ -135,9 +156,6 @@ public class BoardController {
 			writeForm.setBnickname(loginMember.getNickname());
 			writeForm.setBcategory(category);
 			}
-//		else {
-//			return "redirect:/login/loginPage";
-//		}
 		
 		model.addAttribute("writeForm", writeForm);
 		model.addAttribute("category", category);
@@ -154,9 +172,11 @@ public class BoardController {
 			BindingResult bindingResult,
 			RedirectAttributes redirectAttributes) throws IllegalStateException, IOException {
 	
-//		if(bindingResult.hasErrors()) {
-//			return "board/boardWrite";
-//		}
+		//제목 및 내용이 비어있을시
+		if(bindingResult.hasErrors()) {
+			bindingResult.reject("error.write", "제목 및 내용에 빈칸이 존재합니다.");
+			return "board/boardWrite";
+		}
 		
 		log.info("writeForm:{}",writeForm);
 		BoardDTO boardDTO = new BoardDTO();
@@ -209,9 +229,10 @@ public class BoardController {
 			BindingResult bindingResult,
 			RedirectAttributes redirectAttributes) throws IllegalStateException, IOException {
 		
+		//제목 및 내용이 비어있을시
 		if(bindingResult.hasErrors()) {
-			log.info("게시글수정처리오류:{}",bindingResult);
-			return "bbs/editForm";
+			bindingResult.reject("error.write", "제목 및 내용에 빈칸이 존재합니다.");
+			return "board/boardModify";
 		}
 		
 		BoardDTO boardDTO = new BoardDTO();
@@ -253,6 +274,7 @@ public class BoardController {
 		replyForm.setBcategory(pBoardDTO.getBcategory());
 		replyForm.setBtitle("답글 : " + pBoardDTO.getBtitle());
 		
+		model.addAttribute("pBoardDTO", pBoardDTO);
 		model.addAttribute("replyForm", replyForm);
 		
 		return "board/replyWrite";
@@ -266,8 +288,10 @@ public class BoardController {
 			BindingResult bindingResult,
 			RedirectAttributes redirectAttributes) throws IllegalStateException, IOException {
 	
+		//제목 및 내용이 비어있을시
 		if(bindingResult.hasErrors()) {
-			return "board/replyForm";
+			bindingResult.reject("error.write", "제목 및 내용에 빈칸이 존재합니다.");
+			return "board/replyWrite";
 		}
 		
 		BoardDTO replyboardDTO = new BoardDTO();
@@ -355,4 +379,49 @@ public class BoardController {
 		
 		return "board/myBoardList";
 	}
+	
+	
+	//댓글 작성
+	@PostMapping("/comment/{cbnum}")
+	public String commentWrite(
+			CommentWriteForm commentWriteForm,
+			@PathVariable Long cbnum,
+			HttpServletRequest request,
+			RedirectAttributes redirectAttributes) {
+		
+		CommentsDTO newCommentsDTO = new CommentsDTO();
+		BeanUtils.copyProperties(commentWriteForm, newCommentsDTO);
+		
+		newCommentsDTO.setCbnum(cbnum);
+		
+		HttpSession session = request.getSession(false);
+		if(session != null && session.getAttribute("loginMember") != null) {
+			LoginMember loginMember = (LoginMember)session.getAttribute("loginMember");
+			
+			newCommentsDTO.setCid(loginMember.getId());
+			newCommentsDTO.setCnickname(loginMember.getNickname());
+			}
+		
+		log.info("작성된 댓글 DTO : {}", newCommentsDTO);
+		commentsSVC.writeComment(newCommentsDTO);
+		
+		redirectAttributes.addAttribute("bnum", cbnum);
+		return "redirect:/board/{bnum}";
+	}
+	
+	//댓글 삭제
+	@GetMapping("/comment/del/{cnum}")
+	public String delComment(
+			@PathVariable Long cnum,
+			RedirectAttributes redirectAttributes){
+		
+		CommentsDTO foundCommentsDTO = commentsSVC.findParentComment(cnum);
+		Long cbnum = foundCommentsDTO.getCbnum();
+		
+		commentsSVC.delComment(cnum);
+		
+		redirectAttributes.addAttribute("bnum", cbnum);
+		return "redirect:/board/{bnum}";
+	}
+	
 }

@@ -2,7 +2,7 @@
 
 const $delFiles 	= document.querySelectorAll('i.fas.fa-backspace');  		
 const $listBtn 		= document.getElementById('listBtn');
-const $cancelBtn 		= document.getElementById('cancelBtn');
+const $cancelBtn 	= document.getElementById('cancelBtn');
 
 const handler = (res,target) => {
 	//console.log(e);
@@ -44,5 +44,7 @@ $cancelBtn?.addEventListener("click", e=>{
 //목록
 $listBtn?.addEventListener("click", e=>{
 	const category = e.target.dataset.category;
-	location.href = `/board/list?category=${category}`;
+	if(confirm('목록으로 돌아가시겠습니까?')){
+		location.href = `/board/boardList?category=${category}`;
+		}	
 });

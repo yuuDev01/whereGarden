@@ -8,7 +8,10 @@
   <title>어딜, 가든</title>
   
   <!-- CSS 추가 -->
-  <link rel="stylesheet" href="/css/board/boardWrite.css">
+  <link rel="stylesheet" href="/css/board/replyWrite.css">
+  <style>
+  	.field-msg{ text-align: right; }
+  </style>
   
   <!-- js 추가 -->
 	<script src="/js/board/replywrite.js" defer></script>
@@ -25,9 +28,9 @@
   <div class="boardList_allContainer">
     <div class="Board_menu">
       <ul>
-        <li>커뮤니티</li>
-        <li><a th:href="@{/board/boardList(category=자유게시판)}">자유게시판</a></li>
-        <li><a th:href="@{/board/boardList(category=QnA)}">QnA</a></li>
+        <li><h3>커뮤니티</h3></li>
+        <li><a id="" th:href="@{/board/boardList(category=자유게시판)}"><h5>자유게시판</h5></a></li>
+        <li><a th:href="@{/board/boardList(category=QnA)}"><h5>QnA</h5></a></li>
       </ul>
     </div>
     <form action="" th:method="post" th:object="${replyForm}" enctype="multipart/form-data">
@@ -36,7 +39,6 @@
 		<input type="hidden" th:field="*{bnickname}"/>
 		<input type="hidden" th:field="*{bcategory}"/>
     <div class="writeForm_titleBox">
-      </select>
       <select th:if="*{bcategory} == 'QnA'" th:field="*{bcategory}" disabled>
         <option value="">카테고리를 선택하세요</option>
         <option th:name="*{bcategory}" th:value="자유게시판" >자유게시판</option>
@@ -45,9 +47,15 @@
       <input type="text" th:field="*{btitle}">
     </div>
     <div class="writeForm_contentBox">
+    	<div class="parentBoard">
+    		<h4>질문글</h4>
+	    	<div th:text="|제목 : ${pBoardDTO.btitle}|">부모글 제목란</div>
+	    	<div th:text="|내용 : ${pBoardDTO.bcontent}|">부모글 내용란</div>
+	    </div>
       <textarea id="content" name="" th:field="*{bcontent}"></textarea>
       <div class="mb-3">
         <input type="file" class="form-control" th:field="*{files}" multiple="multiple">
+        <div th:errors="*{global}" th:errorclass="field-msg"><label for="" th:errors="*{global}"></label></div>
       </div>
       <div class="writeForm_buttonBox">
         <button type="submit" class="btn btn-success">등록</button>
@@ -57,6 +65,8 @@
     </div>
     </form>
   </div>
+  
+  	<footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
 
   <!-- <script src="https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js"></script>
   <script>

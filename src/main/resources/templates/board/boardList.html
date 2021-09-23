@@ -25,13 +25,13 @@
   <div class="boardList_allContainer">
     <div class="Board_menu">
       <ul>
-        <li>커뮤니티</li>
-        <li><a th:href="@{/board/boardList(category=자유게시판)}">자유게시판</a></li>
-        <li><a th:href="@{/board/boardList(category=QnA)}">QnA</a></li>
+        <li><h3>커뮤니티</h3></li>
+        <li><a id="" th:href="@{/board/boardList(category=자유게시판)}"><h5>자유게시판</h5></a></li>
+        <li><a th:href="@{/board/boardList(category=QnA)}"><h5>QnA</h5></a></li>
       </ul>
     </div>
     <div class="boardList_container">
-    <p th:text="${category}"></p>
+    <h3 th:text="|※ ${category} ※|" style='margin-bottom: 20px'></h3>
       <table class="table table-hover">
         <thead>
           <tr>
