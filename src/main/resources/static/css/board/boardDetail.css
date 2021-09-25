@@ -44,11 +44,15 @@ div.writeForm_contentBox{
   outline: 1px solid black;
 }
 
-div.file{
+textarea#content:focus {
+    outline: none;
+}
+
+/* div.file{
   display: grid;
   grid-template-columns: 100px 500px;
   gap: 10px;
-}
+} */
 
 div.writeForm_buttonBox{
   text-align: right;
@@ -72,6 +76,7 @@ form#commentBox{
 textarea#commentForm{
     width: 700px; height: 100%;
     padding: 0;
+    resize: none;   
 }
 
 form#commentBox div{
@@ -84,8 +89,9 @@ form#commentBox div{
 div.commentBtnBox button{
 	height: 100%;
 }
+
 div.commentListBox button{
-	width: 50px; height: 30px;
+	width: 100px; height: 30px;
 	padding: 0;
 	margin-left: 5px;
 }
@@ -94,7 +100,8 @@ div.commentListBox{
 	padding: 20px;
 }
 div.oneCommentBox{
-	border: 1px soild black;
+	border-bottom: 1px solid;
+	margin-bottom: 20px;
 }
 
 div.commentTop{
