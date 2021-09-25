@@ -73,7 +73,7 @@
           <li class=button>
             <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="return confirm('정말로 수정 하시겠습니까?')" id="modifyBtn">수정하기</button>
             <button class="btn btn-primary btn-lg btn-block" type="reset">취소</button>
-            <a href="/mypage/out" onclick="return confirm('정말로 탈퇴 하시겠습니까?')">탈퇴</a>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" th:formaction="@{/mypage/out}" onclick="return confirm('정말로 탈퇴 하시겠습니까?')">탈퇴</button>
           </li>
           </ul>
           </form>

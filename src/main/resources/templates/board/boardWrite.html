@@ -15,16 +15,14 @@
   
   <!-- 추가 js -->
   <script src="/js/board/boardWrite.js" defer></script>
-	
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous" defer></script>
+  
 </head>
 
 <body>
 	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
 	
  	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
-    
-<body>
+ 	
   <div class="boardList_allContainer">
     <div class="Board_menu">
       <ul>
@@ -56,7 +54,7 @@
       <input type="text" placeholder="제목을 입력하세요" th:field="*{btitle}">
     </div>
     <div class="writeForm_contentBox">
-      <textarea id="content" name="" th:field="*{bcontent}"></textarea>
+      <textarea id="editor" name="" th:field="*{bcontent}"></textarea>
       <div class="mb-3">
         <input type="file" class="form-control" th:field="*{files}" multiple="multiple">
         <div th:errors="*{global}" th:errorclass="field-msg"><label for="" th:errors="*{global}"></label></div>
@@ -69,23 +67,14 @@
     </div>
     </form>
   </div>
-
-  <!-- <script src="https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js"></script>
+  
+<!--   <script src="https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js"></script>
   <script>
     ClassicEditor
-      .create( document.querySelector( '#content' ) )
-      .then( editor => {
-        console.log( editor );
-        editor.extraPlugins = 'autogrow'
-        editor.autoGrow_minHeight = 200;
-        editor.autoGrow_maxHeight = 200;  
-      } )
-      .catch( error => { 
-        console.error( error );
-      } );
+        .create( document.querySelector( '#editor' ) )
+        .catch( error => {
+            console.error( error );
+        } );
   </script> -->
-</body>
-  
-  
 </body>
 </html>

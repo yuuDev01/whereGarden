@@ -4,6 +4,9 @@
   <title>주문하기</title>
   <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
   <style>
+  *{
+  	font-family: NanumSquare;
+  }
   .row{
  		display: grid;
  		grid-template-columns: 160px 140px 140px 160px;
@@ -19,6 +22,12 @@
  	}
  	.hidden{
  		display:none;
+ 	}
+ 	.order_title2{
+ 		font-size: 20px;
+ 	}
+ 	li{
+ 		padding: 3px;
  	}
   </style>
   
@@ -57,10 +66,10 @@
 		  		<div><input type="text" id="sum" th:value="${list.odsum}" th:name="|orderDetails[${idx.index}].odsum|" readonly/></div>
 		  	</div>
 		  </div>
-		  
+		  <br />
 		  <div class="deliver_container">
 		  	<ul>
-		      <li><p class="order_title3">배송정보</p></li>
+		      <li><p class="order_title2">배송정보</p></li>
 		      <li><p>배송정보 선택</p></li>
 		      <li>
 		        <input type="radio" name="orderInfo" value="회원정보" id="memberInfo" th:field="${orderForm.oinfo}">
@@ -97,7 +106,8 @@
 		        <textarea th:field="${orderForm.omemo}" cols="30" rows="5" placeholder="배송메모를 입력해주세요"></textarea>
 		      	</div>
 		      </li>
-		      <li><p class="order_title3">결제정보</p></li>
+		      <br />
+		      <li><p class="order_title2">결제정보</p></li>
 		      <li >
 		      	<div>결제수단</div>
 		        <input id="bank" type="radio" value="무통장입금" th:field="${orderForm.opayment}">
@@ -131,7 +141,7 @@
 		      	</div>
 		      </li>
 		      <li><p>최종결제금액</p></li>
-		      <li><input type="text" id="totalSum" th:field="${orderForm.oprice}"/></li>
+		      <li><input type="text" id="totalSum" th:field="${orderForm.oprice}" readonly="readonly"/></li>
 		      <li><button th:type="submit">결제하기</button></li>
 		    </ul>
 		    </div>

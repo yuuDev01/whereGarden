@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
@@ -113,7 +114,7 @@ public class OrderController {
 	//결제처리
 	@PostMapping("")
 	public String order(
-			@ModelAttribute OrderForm orderForm,
+			@Valid @ModelAttribute OrderForm orderForm,
 			@ModelAttribute CartForm cartForm,
 			BindingResult bindingResult,
 			HttpServletRequest request,

@@ -148,7 +148,7 @@ public class MyPageController {
 	}
 	
 
-	@GetMapping("/out")
+	@PatchMapping("/out")
 	public String out(
 			HttpServletRequest request,
 			Model model) {

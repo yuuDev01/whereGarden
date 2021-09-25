@@ -34,12 +34,12 @@
 					    <div th:case="'카드결제'">
 					     	<div class="order_notice_title2">결제정보</div>
 						      <div class="pay_notice">
-						        <div class="table">주문금액</div>
+						        <div class="table">결제금액</div>
 						        <div class="table" th:text="|${orderDTO.oprice}원|">270,000원</div>
 						      </div>
 						      <div class="pay_notice">
-						        <div class="table">결제금액</div>
-						        <div class="table" th:text="|${orderDTO.oprice}원+${orderDTO.ocardcom}|" >270,000원 <span>삼성카드</span></div>
+						        <div class="table">결제카드</div>
+						        <div class="table" th:text="|${orderDTO.ocardcom}|"><span>삼성카드</span></div>
 						      </div>
 					     </div> 
 				     <div th:case="'무통장입금'">
@@ -71,7 +71,7 @@
 				    </div>
 	        
 	        <div class="button_container">
-	          <button th:type="submit">주문취소</button>
+	          <button th:type="submit" id="cancelBtn">주문취소</button>
 	        </div>
 	    </div>
 	  
