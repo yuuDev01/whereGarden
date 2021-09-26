@@ -1,4 +1,4 @@
-package com.kh.wheregarden.web.controller;
+package com.kh.wheregarden.web.apiController;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
