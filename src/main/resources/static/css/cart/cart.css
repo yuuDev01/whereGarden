@@ -1,0 +1,31 @@
+*{
+	font-family:NanumSquare;
+}
+  .row{
+     display: grid;
+     grid-template-columns: 50px 160px 140px 200px 160px 100px;
+/*      grid-template-rows: auto; */
+     gap: 10px;
+  }
+  #p_num1{
+     width: 100px;
+  }
+  
+  div.basketdiv{
+  	display: grid;
+  	justify-content: center;
+  	gap: 10px
+  }
+  
+  div.sumAndBtn{
+	  display: grid;
+	  grid-template-columns: 70px 200px auto auto;
+	  justify-content: right;
+	  gap: 10px;
+	  margin-top: 10px;
+  }
+  
+  input[type=checkbox]{
+  	margin: 0 auto;
+  	margin-top: 10px;
+  }

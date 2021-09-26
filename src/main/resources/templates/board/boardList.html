@@ -31,8 +31,8 @@
       </ul>
     </div>
     <div class="boardList_container">
-    <div><h3 th:if="${category} == '자유게시판'" th:text="|＃ ${category}|" style='margin-bottom: 20px;'></h3></div>
-    <div><h3 th:if="${category} == 'QnA'" th:text="|＃ ${category}|" style='margin-bottom: 20px;'></h3></div>
+    <div class="boardTitle" th:if="${category} == '자유게시판'"><i class="far fa-list-alt fa-2x"></i><h3  th:text="${category}" style='margin-bottom: 20px;'></h3></div>
+    <div class="boardTitle" th:if="${category} == 'QnA'"><i class="far fa-list-alt fa-2x"></i><h3  th:text="${category}" style='margin-bottom: 20px;'></h3></div>
       <table class="table table-hover">
         <thead>
           <tr>

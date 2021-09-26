@@ -8,29 +8,7 @@
   <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/main/main.css">
-  <style>
-  	*{
-  		font-family:NanumSquare;
-  	}
-     .row{
-        display: grid;
-        grid-template-columns: 50px 160px 140px 200px 160px 100px;
-        grid-template-rows: auto;
-        gap: 10px;
-     }
-     #p_num1{
-        width: 100px;
-     }
-     #orderBtn{
-     	border: 1px solid black;
-     	background-color: transparent;
-     }
-     #allBtn{
-     	border: 1px solid black;
-     	color:black;
-     	padding: 6px 1px;
-     }
-  </style>
+  <link rel="stylesheet" href="/css/cart/cart.css">
   
   <script src="/js/common/ajaxCall.js" defer></script>
   <script src="/js/cart/cartList.js" th:inline="javascript" defer></script>
@@ -68,10 +46,10 @@
               <input id="sum" type="text" th:value="${cList.cprice}*${cList.cqty}" th:name="|orderDetails[${idx.index}].odsum|" readonly="readonly"/>
               <button type="button" class="delBtn" th:id="${cList.cnum}" th:data-cnum="${cList.cnum}">삭제</button>
            </div>
-           <div>
-                 <button type="submit" class="btn btn-light" id="orderBtn">선택상품주문</button>
-                 <button type="submit" class="btn btn-light" id="allBtn">전체상품주문</button>
-                 <label for="">총 합계 : </label> <input type="text" id="allSum" readonly="readonly"/>
+           <div class="sumAndBtn">
+          	 <h4> 합계 : </h4> <input type="text" id="allSum" readonly="readonly"/>
+          	 <button type="submit" class="btn btn-success" id="orderBtn">선택상품주문</button>
+          	 <button type="submit" class="btn btn-success" id="allBtn">전체상품주문</button>
            </div>
         </div>
      </form>
