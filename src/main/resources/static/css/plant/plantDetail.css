@@ -2,6 +2,7 @@
 
  *{
        font-family: 'NanumSquare';
+       
     }
 
     p{
@@ -11,11 +12,12 @@
         margin: 50px;
         /* height : 30px; */
     }
+    
+
     .plantDetail_allContainer{
     		padding-top : 50px;
-        width : 100%;
-        height : 100%;
-        display: gird;
+        width:1300px;
+        display: grid;
         align-items: center;
  				justify-content: center;
     }
@@ -108,7 +110,7 @@
    		}
    		
    		/* 바로결제, 장바구니 버튼 */
-			.info .item .con2 .productBtn button {
+			.info .item .con2 .productBtn .btn {
 					width:120px;
    				border : none;
    				background-color : #FFBB00;

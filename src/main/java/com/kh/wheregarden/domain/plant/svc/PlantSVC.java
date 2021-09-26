@@ -20,7 +20,11 @@ public interface PlantSVC {
 	 */
 	List<PlantDTO> list(String keyword);
 	
-	
+	/**
+	 * 태그 선택
+	 * @param dto
+	 * @return
+	 */
 	List<PlantDTO> list(PlantTagDTO dto);
 	
 	/**
