@@ -65,12 +65,12 @@
                           th:data-cpid="${cList.cpid}"
                           th:data-cnum="${cList.cnum}"
                           th:data-cprice="${cList.cprice}">
-              <input id="sum" type="text" th:value="${cList.cprice}*${cList.cqty}"  th:name="|orderDetails[${idx.index}].odsum|" readonly="readonly"/>
+              <input id="sum" type="text" th:value="${cList.cprice}*${cList.cqty}" th:name="|orderDetails[${idx.index}].odsum|" readonly="readonly"/>
               <button type="button" class="delBtn" th:id="${cList.cnum}" th:data-cnum="${cList.cnum}">삭제</button>
            </div>
            <div>
-                 <button type="submit" class="btn btn-light">선택상품주문</button>
-                 <button type="submit" class="btn btn-light">전체상품주문</button>
+                 <button type="submit" class="btn btn-light" id="orderBtn">선택상품주문</button>
+                 <button type="submit" class="btn btn-light" id="allBtn">전체상품주문</button>
                  <label for="">총 합계 : </label> <input type="text" id="allSum" readonly="readonly"/>
            </div>
         </div>
