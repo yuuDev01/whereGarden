@@ -48,7 +48,7 @@ public class PlantDAOImpl implements PlantDAO {
 		sql.append("  pspecial,   ");
 		sql.append("  pimgurl,   ");
 		sql.append("  pcount   ");
-		sql.append(" from plant_info  ");
+		sql.append(" from plant_info  order by pnum");
 		List<PlantDTO> list = jt.query(
 				sql.toString(),
 				new BeanPropertyRowMapper<>(PlantDTO.class));
