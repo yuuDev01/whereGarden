@@ -35,6 +35,14 @@ $orderBtn.addEventListener('click', e => {
       document.getElementById('allSum').disabled = true;
    }
 });
+
+const $allBtn = document.getElementById('allBtn');
+$allBtn.addEventListener('click', e=>{
+	const checkedProduct = document.querySelectorAll('input[type="checkbox"]:not(:checked)');
+	for( const unChecked of checkedProduct) {
+		unchecked.checked = true;
+	}
+});
    
    //장바구니 수량 및 합계 변경
        const cartNums = document.querySelectorAll(".cartNum");

@@ -15,6 +15,9 @@
   
   <!-- bootStrap js -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous" defer></script>
+	 <!-- CKEditor js -->
+	<script src="https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js" defer></script>
+
 </head>
 
 <body>
@@ -74,17 +77,17 @@
 	  		<div class="oneCommentBox" th:each="comments : ${commentsDTOList}" >
 	  			<div class="commentTop" th:if="${comments.cudate} == null">
 	  				<input type="text" th:value="${comments.cnickname}" readonly="readonly"/> / <input type="text" th:value="${#temporals.format(comments.ccdate, 'yyyy-MM-dd HH:mm:ss')}" readonly="readonly"/>
-	  				<button type="button" class="btn btn-success" th:if="${mid} == *{bmid}">수정</button>
+	  				<button th:if="${mid} == *{bmid}" type="button" class="btn btn-success" id="commentMoiBtn" th:data-bnum="${boardDetail.bnum}">수정하기</button>
 	  				<button th:if="${mid} == *{bmid}" type="button" class="btn btn-success" id="commentDelBtn" th:data-cnum="${comments.cnum}">삭제</button>
 	  			</div>
 	  			<div class="commentTop" th:if="${comments.cudate} != null">
 	  				<input type="text" th:value="${comments.cnickname}" readonly="readonly"/> / <input type="text" th:value="${#temporals.format(comments.cudate, 'yyyy-MM-dd HH:mm:ss')}" readonly="readonly"/>
-	  				<button type="button" class="btn btn-success" th:if="${mid} == *{bmid}">수정</button>
-	  				<button th:if="${mid} == *{bmid}" type="button" class="btn btn-success" id="commentDelBtn" h:data-cnum="${comments.cnum}">삭제</button>
+	  				<button th:if="${mid} == *{bmid}" type="button" class="btn btn-success" id="commentMoiBtn" th:data-bnum="${boardDetail.bnum}">수정하기</button>
+	  				<button th:if="${mid} == *{bmid}" type="button" class="btn btn-success" id="commentDelBtn" th:data-cnum="${comments.cnum}">삭제</button>
 	  			</div>
 	  			<div class="commentContent">
-	  				<textarea class="autosize" onkeydown="resize(this)" onkeyup="resize(this)" th:text="${comments.ccontent}" readonly="readonly"></textarea>
-	  			</div>	
+	  				<textarea class="autosize" id="commentTextarea" onkeydown="resize(this)" onkeyup="resize(this)" th:text="${comments.ccontent}" readonly="readonly"></textarea>
+	  			</div>
 	  		</div>
 	  	</div>
   	
@@ -92,7 +95,7 @@
   </div>
   
 	<footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
-	
+	<script src="https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js"></script>
 	<script>
 		function resize(obj) {
 		  obj.style.height = "1px";

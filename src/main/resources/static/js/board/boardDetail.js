@@ -5,7 +5,8 @@ const $delBtn 		= document.getElementById('deleteBtn');
 const $replyBtn 	= document.getElementById('replyBtn');		
 const $listBtn 		= document.getElementById('listBtn');
 
-const $commentDelBtn 		= document.querySelectorAll('commentDelBtn');
+const $commentDelBtn 		= document.getElementById('commentDelBtn');
+const $commentMoiBtn 		= document.getElementById('commentMoiBtn');
 
 const handler = (res, e) => {
 	//console.log(e);
@@ -13,18 +14,18 @@ const handler = (res, e) => {
 		const category = e.target.dataset.category;
 		location.href = `/board/boardList?category=${category}`;
 	}else{
-		//alert('삭제오류!');
+		alert('댓글이 있어 삭제가 불가능합니다');
 		return false;
 	}
 }
 
-//수정
+//게시글 수정
 $modifyBtn?.addEventListener("click", e=>{
 	const bnum = e.target.dataset.bnum;
 	location.href = `/board/boardModify/${bnum}`;
 });
 
-//삭제
+//게시글 삭제
 $delBtn?.addEventListener("click", e=>{
 	const bnum = e.target.dataset.bnum;
 	const url = `/board/${bnum}`;
@@ -58,6 +59,37 @@ $commentDelBtn?.addEventListener("click", e=>{
 		location.href = `/board/comment/del/${cnum}`;
 		}	
 });
+
+//댓글수정
+$commentMoiBtn?.addEventListener("click", e=>{
+	/*부모의 다음 형제의 자식*/
+	const bnum = e.target.dataset.bnum;	//th-data로 글번호 받아옴
+	
+	console.log($commentMoiBtn.parentNode.nextElementSibling.firstElementChild);		//댓글내용창
+	$commentMoiBtn.parentNode.nextElementSibling.firstElementChild.readOnly=false;	// readonly삭제
+	$commentMoiBtn.parentNode.nextElementSibling.firstElementChild.style.border="solid";
+	$commentMoiBtn.nextElementSibling.remove(); //삭제버튼 제거
+	$commentMoiBtn.innerHTML="수정완료";
+	var cancelButton = document.createElement("button");
+	cancelButton.className = 'btn btn-success';
+	cancelButton.id = 'commentModiCancel';
+	cancelButton.innerHTML = "취소";
+	$commentMoiBtn.parentNode.appendChild(cancelButton);
+	
+	cancelButton.addEventListener("click", e=>{
+		location.href = `/board/${bnum}`;
+		});
+		
+		$commentMoiBtn.addEventListener("click", e=>{
+			const $commentTextarea = document.getElementById('commentTextarea');
+			$commentTextarea.style.border="0";
+			$commentTextarea.readOnly=true;
+			$commentMoiBtn.innerHTML="수정하기";
+		/*location.href = `/`;*/
+		});
+});
+
+
 
 
 

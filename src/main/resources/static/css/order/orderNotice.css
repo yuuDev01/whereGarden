@@ -44,8 +44,13 @@
   font-family: 'NanumSquare';
   height: 30px;
   width: 80px;
-  margin-top: 20px;
+  margin: 0;
 }
 .button_container{
+  display: grid;
   justify-content: center;
+  margin: 0;
+}
+#cancelBtn{
+	margin-top: 10px;
 }
