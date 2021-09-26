@@ -117,21 +117,28 @@ public class MyPageController {
 		log.info("수정입력처리 확인");
 		
 	
-	//세션이 없으면 로그인 페이지로 이동
-	if(loginMember == null) return "redirect:/login";
-	
-	//비밀번호 확인 체크
-		if(!editForm.getMpw().equals(editForm.getMpwchk())) {
-			//bindingResult.reject("error.mypage.editForm", "비밀번호가 다릅니다.");
-			bindingResult.rejectValue("mpwchk", "mpwchk", "비밀번호가 일치하지 않습니다.");
-			return "mypage/memberEditForm";			
-		}
+		//세션이 없으면 로그인 페이지로 이동
+		if(loginMember == null) return "redirect:/login";
 		
-	//닉네임 존재유무
-//		if(memberSVC.isExistNickname(editForm.getMnickname())) {
-//			bindingResult.reject("error.mypage.editForm", "동일한 닉네임이 존재합니다");
-//			return "mypage/memberEditForm";
-//		}
+		//비밀번호 확인 체크
+			if(!editForm.getMpw().equals(editForm.getMpwchk())) {
+				//bindingResult.reject("error.mypage.editForm", "비밀번호가 다릅니다.");
+				bindingResult.rejectValue("mpwchk", "mpwchk", "비밀번호가 일치하지 않습니다.");
+						
+			}
+
+		// 전화번호 중복유무
+			MemberDTO findMemberDTO = memberSVC.findByEmail(loginMember.getId());
+			if(memberSVC.isExistTell(editForm.getMtel()) && !(editForm.getMtel().equals(findMemberDTO.getMtel()))){
+				bindingResult.rejectValue("mtel", "mtel", "동일한 전화번호가 존재합니다");
+				
+			}
+			
+			//닉네임 존재유무
+			if(memberSVC.isExistNickname(editForm.getMnickname()) && !(editForm.getMnickname().equals(loginMember.getNickname()))) {
+				bindingResult.rejectValue("mnickname", "mnickname", "동일한 닉네임이 존재합니다");
+				
+			}
 		
 	if(bindingResult.hasErrors()) {
 		log.info("errors={}",bindingResult);
