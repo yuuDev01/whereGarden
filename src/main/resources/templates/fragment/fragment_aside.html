@@ -17,17 +17,10 @@
 	    <ul class="aside">
 	      <li class="mylist"><a href="#" th:href="@{/mypage/myinfo}">내 정보 수정</a></li>
 	      <li class="mylist"><a href="" th:href="@{/order/myOrderList}">주문 내역 확인</a></li>
-	      <li class="mylist"><a href="">내가 쓴 글 보기</a></li>
+	      <li class="mylist"><a href="/board/myBoardList?category=자유게시판">내가 쓴 글 보기</a></li>
 	      <li class="mylist"><a href="">내 관심 식물</a></li>
-	      
 	    </ul>
 	</div>
-	<script>
-		const $myOrderList = document.getElementById('myOrderList');
-		$myOrderList.addEventListener('click',e=>{
-			console.log('주문내역 클릭됨');
-			location.href = 
-		})
-	</script>
+
 </body>
 </html>

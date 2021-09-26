@@ -27,12 +27,12 @@ public class APIMemberController {
 	//아이디(이메일) 중복체크
 	@GetMapping("/email/dupchk")
 	public JsonResult<String> dupChkEmail(
-			@RequestParam String Mid
+			@RequestParam String mid
 			){
 		
 		JsonResult<String> result = null;
-		if(memberSVC.isExistEmail(Mid)) {
-			result = new JsonResult<String>("00", "OK", Mid);
+		if(memberSVC.isExistEmail(mid)) {
+			result = new JsonResult<String>("00", "OK", mid);
 		}else {
 			result = new JsonResult<String>("01", "NOK", null);
 		}

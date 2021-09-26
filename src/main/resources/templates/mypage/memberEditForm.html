@@ -68,7 +68,7 @@
 						 <li><input type="hidden" id="sample4_extraAddress" placeholder="참고항목" >
           	 <li><label class="form-label" for="mnickname">닉네임</label></li>
           	 <li><input class="form-control" type="text" name="mnickname" th:field="*{mnickname}" /></li>
-          
+          	 <li th:errors="*{mnickname}" th:errorclass="field-msg"></li>
           
           <li class=button>
             <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="return confirm('정말로 수정 하시겠습니까?')" id="modifyBtn">수정하기</button>
