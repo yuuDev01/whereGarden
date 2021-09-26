@@ -8,7 +8,7 @@
     font-weight: normal;
     font-style: normal;
   }
-  
+  *{font-family: 'NanumSquare';}
   /* 바디에 그리드 적용 */
   body{
     display: grid;
