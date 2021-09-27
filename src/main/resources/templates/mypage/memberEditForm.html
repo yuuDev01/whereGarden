@@ -8,6 +8,10 @@
 	<link rel="stylesheet" href="/css/member/memberEditForm.css" />
 	<link rel="stylesheet" href="/css/main.css">
   <script src="/js/common/address.js" defer></script>  
+<<<<<<< HEAD
+=======
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+>>>>>>> prj1/master
    <title>회원가입 정보입력</title>
 
 </head>
@@ -30,10 +34,17 @@
          	  <li><label for="mid" class="form-label">아이디</label></li>
       	    <li><input class="form-control" type="text" th:field="*{mid}" readonly/></li>
      	      <li><label class="form-label" for="mpw">변경할 비밀번호</label></li>	 
+<<<<<<< HEAD
             <li><input class="form-control" type="password" th:field="*{mpw}"/></li>
             <li th:errors="*{mpw}" th:errorclass="field-msg"></li> 
             <li><label class="form-label" for="mpwchk">비밀번호 확인</label></li>
             <li><input class="form-control" type="password" th:field="*{mpwchk}"></li> 
+=======
+            <li><input id="pwinput" class="form-control" type="password" th:field="*{mpw}"/></li>
+            <li th:errors="*{mpw}" th:errorclass="field-msg"></li> 
+            <li><label class="form-label" for="mpwchk">비밀번호 확인</label></li>
+            <li><input id="pwinput" class="form-control" type="password" th:field="*{mpwchk}"></li> 
+>>>>>>> prj1/master
 				    <li th:errors="*{mpwchk}" th:errorclass="field-msg"></li> 
             <li><label class="form-label" for="mquestion" >비밀번호 찾기 질문</label></li>
             <li><select th:field="*{mquestion}">

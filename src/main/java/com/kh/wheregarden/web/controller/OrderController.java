@@ -48,6 +48,10 @@ public class OrderController {
 	@PostMapping("/form")
 	public String cartOrderForm(
 			@ModelAttribute OrderForm orderForm,
+<<<<<<< HEAD
+=======
+			BindingResult bindingResult,
+>>>>>>> prj1/master
 			HttpServletRequest request,
 			Model model) {
 		
@@ -68,6 +72,14 @@ public class OrderController {
 		MemberDTO memberDTO = memberSVC.findMemberById(loginMember.getId());
 		model.addAttribute("memberDTO",memberDTO);
 		
+<<<<<<< HEAD
+=======
+		if(orderForm.orderDetails == null) {
+			bindingResult.rejectValue("orderDetails", "orderDetails", "선택된 상품이 없습니다");
+			return "order/orderFormPage";
+		}
+		
+>>>>>>> prj1/master
 		return "order/orderFormPage";
 	}
 	
@@ -108,20 +120,33 @@ public class OrderController {
 		
 		model.addAttribute("memberDTO",memberDTO);
 		
+<<<<<<< HEAD
+=======
+		
+		
+>>>>>>> prj1/master
 		return "order/orderFormPage";
 	}
 	
 	//결제처리
 	@PostMapping("")
 	public String order(
+<<<<<<< HEAD
 			@Valid @ModelAttribute OrderForm orderForm,
 			@ModelAttribute CartForm cartForm,
 			BindingResult bindingResult,
+=======
+			@ModelAttribute CartForm cartForm,
+			@Valid @ModelAttribute OrderForm orderForm,
+			BindingResult bindingResult,
+			// valid 뒤에 BindingResult 와야함
+>>>>>>> prj1/master
 			HttpServletRequest request,
 			Model model) {
 		
 		HttpSession session = request.getSession(false);
 		LoginMember loginMember = (LoginMember) session.getAttribute("loginMember");
+<<<<<<< HEAD
 		
 		//세션이 없으면 로그인페이지로 이동
 		
@@ -131,11 +156,17 @@ public class OrderController {
 		
 		log.info("사용자가 입력한 orderForm:{}", orderForm);
 		
+=======
+
+>>>>>>> prj1/master
 		//사용자가 입력한 주문정보를 DTO에 저장
 		OrderDTO newOrderDTO = new OrderDTO();
 		BeanUtils.copyProperties(orderForm, newOrderDTO);
 		newOrderDTO.setOmid(loginMember.getId());
+<<<<<<< HEAD
 //		newOrderDTO.setOrderDetails(cartForm.getCname(),cartForm.getCqty());
+=======
+>>>>>>> prj1/master
 		
 		log.info("카피된 newOrderDTO:{}", newOrderDTO);
 		
@@ -153,6 +184,14 @@ public class OrderController {
 		MemberDTO memberDTO = memberSVC.findMemberById(loginMember.getId());
 		model.addAttribute("memberDTO",memberDTO);
 		
+<<<<<<< HEAD
+=======
+		if(bindingResult.hasErrors()) {
+			log.info("errors={}", bindingResult);
+		
+			return "order/orderFormPage";
+		}
+>>>>>>> prj1/master
 		return "order/orderNotice";
 	}
 	

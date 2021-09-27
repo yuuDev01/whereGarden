@@ -6,7 +6,13 @@
 	<th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
 	
 	<link rel="stylesheet" href="/css/member/login.css" />
+<<<<<<< HEAD
 	
+=======
+	<script src="/js/member/loginForm.js" defer></script>
+	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+
+>>>>>>> prj1/master
   <title>로그인</title>
 </head>
 <style>
@@ -37,7 +43,11 @@ cursor:pointer;
                  th:field="*{mid}"/></li>
       <li th:errors="*{mid}" th:errorclass="field-msg">오류메세지</li>       									 
       <li><input class="frm-ctr" type="password" placeholder="비밀번호를 입력하세요"
+<<<<<<< HEAD
                  th:field="*{mpw}"/></li>
+=======
+                 id="pwinput" th:field="*{mpw}"/></li>
+>>>>>>> prj1/master
      <li th:errors="*{mpw}" th:errorclass="field-msg">오류메세지</li> 
       </ul> 
         <div class="Btn_container">
