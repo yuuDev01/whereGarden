@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+ 
+  <title>어딜, 가든</title>
+  
+
+  <style>
+	  div.boardList_allContainer{
+	  	display: grid;
+	  	grid-template-columns: 150px 800px;
+	  	gap: 100px;
+	  	margin-top:30px;
+	  }
+	  .Board_menu{
+	  margin-bottom:20px;
+	  }
+	  .Board_menu a{
+	  font-size:30px;
+	  margin-right:20px;
+	  border:1px solid grey;
+	  padding:5px;
+	  border-radius:5px;
+	  background-color:green;
+	  color:white;
+	  }
+	  
+  </style>
+  
+	<!-- js 추가 -->
+	<script src="/js/board/myBoardList.js" defer></script>
+	
+	<!-- bootStrap js -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous" defer></script>
+
+</head>
+
+<body>
+	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
+	
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+  <div class="boardList_allContainer">
+ 	<nav th:replace="/fragment/fragment_aside :: fragment_aside"></nav>
+ 	<div>
+    <div class="Board_menu">
+    	<a th:href="@{/board/myBoardList(category=자유게시판)}">자유게시판</a>
+    	<a th:href="@{/board/myBoardList(category=QnA)}">QnA</a>
+    </div>
+    <div class="boardList_container">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">글번호</th>
+            <th scope="col" id="freeBoardTitle">제목</th>
+            <th scope="col">닉네임</th>
+            <th scope="col">작성일</th>
+            <th scope="col">조회수</th>
+          </tr>
+        </thead>
+        <tbody>
+       			<tr th:each="board : ${boardList}">
+	            <th scope="row" th:text="${board.bnum}">글 번호</th>
+	            <td class="w-50">
+	            	<th:block th:if="${board.bindent} > 0">
+	            		<span th:each="cnt : ${#numbers.sequence(1,board.bindent)}">&nbsp;&nbsp;</span>
+	            		<i class="far fa-comment-dots"></i>
+	            	</th:block>
+	            	<a href="#" th:href="@{|/board/${board.bnum}/|}" th:text="${board.btitle}">글 제목</a>
+	            </td>
+	            <td th:text="${board.bnickname}">작성자</td>
+	            <td th:text="${#temporals.format(board.Bcdate, 'yyyy-MM-dd')}">작성날짜</td>
+	            <td th:text="${board.bhit}">조회수</td>
+	          </tr>
+          </tbody>
+        </table>
+      </div>
+     </div>
+    </div>
+      
+	<!-- 페이징 -->
+	<div class="wrap-bbs-paging">
+	  <ul class="pagination pagination-sm justify-content-center">
+	  	<th:block th:if="${fc.prev}">
+		  	<li class="page-item">
+			    	<a class="page-link" href="#" th:href="@{/bbs/list/1/{searchType}/{keyword}(searchType=${fc.searchType},keyword=${fc.keyword},category=${category})}"><i class="fas fa-angle-double-left"></i></a>
+			  </li>
+		  	<li class="page-item">
+			    	<a class="page-link" href="#" th:href="@{/bbs/list/{reqPage}/{searchType}/{keyword}(reqPage=${fc.startPage-1},searchType=${fc.searchType},keyword=${fc.keyword},category=${category})}"><i class="fas fa-angle-left"></i></a>
+			  </li>
+		  </th:block>
+	    <th:block th:each="pnum : ${#numbers.sequence(fc.startPage,fc.endPage)}">
+	    	<th:block th:if="${pnum != 0}">
+					<li class="page-item active" aria-current="page"
+							th:if="${fc.rc.reqPage == pnum}">
+		      <span class="page-link" th:text="${pnum}">1</span>
+		    </li>							    
+		    <li class="page-item" 
+		    		th:if="${fc.rc.reqPage != pnum}">
+		    	<a class="page-link" href="#" th:href="@{/bbs/list/{reqPage}/{searchType}/{keyword}(reqPage=${pnum},searchType=${fc.searchType},keyword=${fc.keyword},=${category})}" th:text="${pnum}">3</a>
+		    </li>
+		    </th:block>
+	    </th:block>
+	    <th:block th:if="${fc.next}">
+		  	<li class="page-item">
+			    	<a class="page-link" href="#" th:href="@{/bbs/list/{reqPage}/{searchType}/{keyword}(reqPage=${fc.endPage+1},searchType=${fc.searchType},keyword=${fc.keyword},category=${category})}"><i class="fas fa-angle-right"></i></a>
+			  </li>
+		  	<li class="page-item">
+			    	<a class="page-link" href="#" 
+			    		th:href="@{/bbs/list/{reqPage}/{searchType}/{keyword}(reqPage=${fc.finalEndPage},searchType=${fc.searchType},keyword=${fc.keyword},category=${category})}">
+			    		<i class="fas fa-angle-double-right"></i>
+			    	</a>
+			  </li>		
+			</th:block>
+	  </ul>
+	</div>
+	<!-- 검색 -->
+	<div class="wrap-bbs-search mt-4 row g-1 justify-content-center" >
+		<div class="col-md-2">
+				<select class="form-select form-select-sm" name="searchType" id="searchType" th:field="${fc.searchType}">
+					<option th:value="TC">제목+내용</option>
+					<option th:value="T">제목</option>
+					<option th:value="C">내용</option>
+				</select>
+		</div>
+		<div class="col-md-3">
+			<input class="form-control form-control-sm" type="text" name="keyword" id="keyword" th:field="${fc.keyword}" th:data-category="${category}"/>
+		</div>
+		<div class="col-md-1">
+			<button id="searchBtn" type="button" class="btn btn-outline-secondary btn-sm" th:data-category="${category}">검색</button>
+		</div>
+	</div>
+  
+	<footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
+	
+</body>
+</html>

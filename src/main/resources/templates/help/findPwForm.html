@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko" 
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+	
+	<link rel="stylesheet" href="/css/member/findPwForm.css" />
+	
+  <title>Help</title>
+  
+  <style>
+  #pw{
+	color:red;
+	}
+  </style>
+  <script src="/js/common/ajaxCall.js" defer></script>
+  <script>
+    let $hiddens = null;
+  
+    //찾은 아이디 표시
+		const displayPw = res => {
+      Array.from($hiddens).forEach(ele=>ele.classList.remove("hidden"));
+
+      if(res.rtcd == '00'){
+	      pw.textContent = res.data;			    	  
+      }else{
+    	  pw.textContent = res.data;
+      }
+		}
+		
+		//Ajax Call 통신오류 발생시
+		const displayError = err => {	pw.textContent = err };		
+		
+  	const init = e => {
+  		$hiddens = document.querySelectorAll(".hidden");
+  		const $mid = document.getElementById('mid');
+	  	
+	    findPwBtn.addEventListener("click",e=>{
+	      console.log('click!');
+	      console.log($mid);
+	      //유효성 체크
+	      if($mid.value.trim().length == 0) {
+	    	  Array.from($hiddens).forEach(ele=>ele.classList.remove("hidden"));
+	    	  pw.textContent = '아이디를 입력하세요';
+	    	  $mid.focus();
+	    	  $mid.select();
+	    	  return ;
+	      }
+	      if(mquestion.value.trim().length == 0) {
+	    	  Array.from($hiddens).forEach(ele=>ele.classList.remove("hidden"));
+	    	  pw.textContent = '질문을 입력하세요';
+	    	  mquestion.focus();
+	    	  mquestion.select();
+	    	  return;
+	      }
+	      if(manswer.value.trim().length == 0) {
+	    	  Array.from($hiddens).forEach(ele=>ele.classList.remove("hidden"));
+	    	  pw.textContent = '답변을 입력하세요';
+	    	  manswer.focus();
+	    	  manswer.select();
+	    	  return;
+	      }
+	      
+	      //ajax call!
+	      const url = '/api/members/pw';
+	      const payload = {
+	    		mid: $mid.value,
+	    		mquestion: mquestion.value,
+	    		manswer: manswer.value
+	      };
+				request.post(url,payload)
+							 .then(res=>res.json())
+							 .then(res=>displayPw(res))
+							 .catch(err=> {
+								 displayError(err);
+								 console.log(err);
+							 });
+	    });
+  	}
+  	//현재 문서가 dom객체가 메모리에 로딩되면.
+    window.addEventListener("DOMContentLoaded", init);
+  	
+  </script>  
+  <style>
+  .hidden {display:none;}
+  .namebox{margin: 0;}
+  </style>
+</head>
+<body>
+<header th:replace="/fragment/fragment_header :: fragment_header">
+  	연습용 빈 헤더입니다.
+  </header>
+  <nav th:replace="/fragment/fragment_nav :: fragment_nav">
+  	연습용 빈 nav입니다.
+  </nav>
+    
+  	<div class="id_container">
+
+    <div class="idFbody">
+     <form action=""  th:object="${findPwReq}" > 
+  <h3>비밀번호 찾기</h3>
+  <p>비밀번호를 찾고자 하는 아이디를 입력해주세요</p>
+  <div class="namebox">
+  <div><label for="mid">아이디</label><br>
+    <input type="text" th:field="*{mid}">
+    </div>
+    <div><label for="mquestion">아이디 찾기 질문</label> <br>
+    <select name="mquestion" id="mquestion" th:field="*{mquestion}">
+          	<option value="mquestion">-- 선택 --</option>
+          	<option value="나의 보물 1호는?">나의 보물 1호는?</option>
+          	<option value="학창시절 나의 별명은?">학창시절 나의 별명은?</option>
+          	<option value="가장 친한 친구 이름은?">가장 친한 친구 이름은?</option>
+          	<option value="가장 기억에 남는 선생님 성함은?">가장 기억에 남는 선생님 성함은?</option>
+    </select>
+    </div>
+    <div><label for="manswer">아이디 찾기 답변</label> <br>
+    <input type="text" th:field="*{manswer}" >
+    </div>
+		<div class="hidden"><span class="pw">비밀번호</sapn></div>
+		<div class="hidden"><span class="pw" id="pw"></span></div>
+  </div>
+    <div class="button1">
+    <button type="button" id="home" th:onclick="location.href='http://localhost:9050'">홈으로</button>
+    <button type="button" id="findPwBtn" >비밀번호찾기</button>
+		<button type="button" id='login' th:onclick="location.href='http://localhost:9050/login'">로그인</button>  
+  </div>
+   </form>
+</div>
+  	
+  	
+  	
+  	
+  	
+ </div> 	
+<footer th:replace="/fragment/fragment_footer :: fragment_footer">
+  	연습용 빈 footer입니다.
+  	</footer>
+</body>
+</html>

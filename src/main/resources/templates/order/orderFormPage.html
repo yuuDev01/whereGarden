@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>주문하기</title>
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+  <script src="/js/common/address.js" defer></script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <style>
+  *{
+  	font-family: NanumSquare;
+  }
+  .row{
+ 		display: grid;
+ 		grid-template-columns: 160px 140px 140px 160px;
+ 	}
+ 	.row.head{
+ 		font-weight: bold;
+ 	}
+ 	#cartAmount{
+ 		width: 100px;
+ 	}
+ 	.error-msg{
+ 		color:red;
+ 	}
+ 	.hidden{
+ 		display:none;
+ 	}
+ 	.bank {
+ 		width: 200px;
+ 		border: none;
+ 	}
+ 	.card {
+ 		width: 200px;
+ 		border: none;
+ 	}
+ 	.order_title2{
+ 		font-size: 20px;
+ 	}
+ 	li{
+ 		padding: 3px;
+ 	}
+  </style>
+  
+  <script src="/js/order/orderFormPage.js" defer></script>
+  
+</head>
+<body>
+	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
+	
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+ 	<main>
+ 		<input type="hidden" th:value="${memberDTO.mname}"		id="hiddenName"/>
+ 		<input type="hidden" th:value="${memberDTO.maddress}" id="hiddenAddress"/>
+ 		<input type="hidden" th:value="${memberDTO.mtel}" id="hiddenTel"/>
+ 		<input type="hidden" th:value="${memberDTO.mpost}" id="hiddenPost"/>
+ 		<input type="hidden" th:value="${memberDTO.mroadname}" id="hiddenRoadName"/>
+ 	
+		<form th:action="@{/order}" th:method="post" th:object="${orderForm}">
+		  <h3>주문하기</h3>
+		  <hr />
+		  <p class="order_title2">주문내역</p>
+		 	
+		 	<input type="hidden" th:value="${orderForm.onum}">
+		  <div class="order_cart">
+		  	<div class="row head">
+		  		<div>상품정보</div>
+		  		<div>판매가</div>
+		  		<div>수량</div>
+		  		<div>합계</div>
+		  	</div>
+		  	<div class="row data" th:each="list,idx : ${orderForm.orderDetails}">
+		  		<input type="hidden" th:value="${list.odpid}" th:name="|orderDetails[${idx.index}].odpid|" >
+		  		<input type="text" th:value="${list.odpname}" th:name="|orderDetails[${idx.index}].odpname|" readonly/>
+		  		<div th:text="${list.odsum}/${list.odqty}"></div>
+		  		<div><input type="number" th:value="${list.odqty}" id="cartAmount" th:name="|orderDetails[${idx.index}].odqty|" readonly/></div>
+		  		<div><input type="text" id="sum" th:value="${list.odsum}" th:name="|orderDetails[${idx.index}].odsum|" readonly/></div>
+		  	</div>
+		  </div>
+		  <br />
+		  <div class="deliver_container">
+		  	<ul>
+		      <li><p class="order_title2">배송정보</p></li>
+		      <li><p>배송정보 선택</p></li>
+		      <li>
+		        <input type="radio" name="orderInfo" value="회원정보" id="memberInfo" th:field="${orderForm.oinfo}">
+		        <label for="member">회원정보와 동일</label>
+		        <input type="radio" name="orderInfo" value="새로운 배송정보" id="newInfo" th:field="${orderForm.oinfo}">
+		        <label for="member">새로운 배송정보</label>
+		      </li>
+		      <li><p th:errors="${orderForm.oinfo}" th:errorclass="field-msg"></p></li>
+		      <li><p>받으시는 분</p></li>
+		      <li>
+		        <input type="text" th:field="${orderForm.oname}" id="d-name">
+		      </li>
+		      <li><p th:errors="${orderForm.oname}" th:errorclass="field-msg"></p></li>
+		      <li><p>주소</p></li>
+		      <li>
+		      	<div>
+		        <input type="text" th:field="${orderForm.opost}" id="sample4_postcode" placeholder="우편번호">
+		        <button class="addBtn" type="button" id="findBtn"onclick="sample4_execDaumPostcode()"  value="우편번호 찾기">우편번호 찾기</button>
+		      	</div>
+		      	<div>
+		      		<input type="text" th:field="${orderForm.oroadname}" id="sample4_roadAddress" placeholder="도로명주소">
+		      		<input type="text" th:field="${orderForm.oaddress}" id="sample4_detailAddress" placeholder="나머지 주소를 입력해주세요">
+		      		<input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
+		      		<input type="hidden" id="sample4_extraAddress" placeholder="참고항목" >
+		      	</div>	
+		      </li>
+		      <li><p th:errors="${orderForm.opost}" th:errorclass="field-msg"></p>
+		      <p th:errors="${orderForm.oroadname}" th:errorclass="field-msg"></p>
+		      <p th:errors="${orderForm.oaddress}" th:errorclass="field-msg"></p></li>
+		      <li><p>휴대전화</p></li>
+		      <li>
+		        <input type="text" th:field="${orderForm.ophone}" id="d-tel">
+		      </li>
+		      <li><p th:errors="${orderForm.ophone}" th:errorclass="field-msg"></p></li>
+		      <li><p>배송 메모</p></li>
+		      <li>
+		      	<div>
+		        <textarea th:field="${orderForm.omemo}" cols="30" rows="5" placeholder="배송메모를 입력해주세요"></textarea>
+		      	</div>
+		      </li>
+		      <br />
+		      <li><p class="order_title2">결제정보</p></li>
+		      <li >
+		      	<div>결제수단</div>
+		        <input id="bank" type="radio" value="무통장입금" th:field="${orderForm.opayment}">
+		        <label>무통장입금</label>
+		        <input id="card" type="radio" value="카드결제" th:field="${orderForm.opayment}">
+		        <label>카드결제</label>
+		      </li>
+		      
+		      <li><p th:errors="${orderForm.opayment}" th:errorclass="field-msg"></p></li>
+		      <li>
+		      	<div class="bank hidden">
+			      	<div>은행명</div>
+			        <select th:field="${orderForm.obank}">
+			          <option value="" selected>은행명</option>
+			          <option value="농협은행">농협은행</option>
+			          <option value="국민은행">국민은행</option>
+			          <option value="경남은행">경남은행</option>
+			        </select>
+			        
+		      	</div>
+		      </li>
+		      <li>
+		      	<div class="card hidden">
+			      	<div>카드사</div>
+			        <select th:field="${orderForm.ocardcom}">
+			          <option value="" selected>카드사</option>
+			          <option value="삼성카드">삼성카드</option>
+			          <option value="신한카드">신한카드</option>
+			          <option value="현대카드">현대카드</option>
+			        </select>
+			        <div>카드번호</div>
+			        <input type="text" th:field="${orderForm.ocardnum}">
+		      	</div>
+		      </li>
+		      <li><p>최종결제금액</p></li>
+		      <li><input type="text" id="totalSum" th:field="${orderForm.oprice}" readonly="readonly"/></li>
+		      <li><button th:type="submit">결제하기</button></li>
+		    </ul>
+		    </div>
+		   </form>
+		 </main>
+	 <footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
+</body>
+</html>

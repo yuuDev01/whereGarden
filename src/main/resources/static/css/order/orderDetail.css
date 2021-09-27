@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+.all_container{
+  width: 1000px;
+  display: grid;
+  justify-content: center;
+  padding: 20px;
+}
+.order_detail_title1{
+	text-align: center;
+  font-size: 20px;
+  font-family: 'NanumSquare';
+}
+.order_detail_title2{
+  font-size: 20px;
+  font-family: 'NanumSquare';
+  padding: 10px;
+}
+.product_detail{
+  display: grid;
+  grid-template-columns: repeat(3, 266px);
+}
+.table{
+	border: 1px solid black;
+	border-spacing: 0;
+  border-collapse: collapse;
+  text-align: center;
+  font-family: 'NanumSquare';
+  margin: 0;
+}
+.pay_detail, .deliver_detail{
+  display: grid;
+  grid-template-columns: repeat(2, 400px);
+  justify-content: center;
+}
+.button_container{
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 15px;
+}

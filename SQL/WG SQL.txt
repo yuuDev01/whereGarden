@@ -1,0 +1,175 @@
+-- 1. date : 년월시분 (밀리초X)  /  timestamp : 년월시분 (밀리초o)
+drop table Member;
+drop table board;
+drop table uploadfile;
+drop table orders;
+drop table orders_detail;
+drop table cart;
+drop table product;
+drop table plant_color;
+drop table fav_plant;
+--drop table plant_info;
+
+--Member 테이블 
+drop table Member;
+create table Member(
+  mid         varchar2(50) PRIMARY key,
+  mpw         varchar2(30) not null,
+  mquestion   varchar2(50) not null,
+  manswer     varchar2(30) not null,
+  mname       varchar2(20) not null,
+  mbirth      date         not null,
+  mgender     varchar2(6)  not null,
+  mtel        varchar2(20) not null,
+  mpost       varchar2(10) not null,
+  mroadname   varchar2(50) not null,
+  maddress    varchar2(50) not null,
+  mnickname   varchar2(30) not null,
+  mresign     number(1)    not null
+);
+
+--Board 테이블 
+drop table Board;
+drop sequence Board_bnum_seq;
+create sequence Board_bnum_seq
+increment by 1 --증감치
+start with 1 --시작값
+maxvalue 9999999999 --최대값
+nocycle;  --순환하지않음
+create table Board(
+  BNUM        NUMBER(10,0),
+  BMID	      VARCHAR2(40 BYTE),
+  BNICKNAME	  VARCHAR2(30 BYTE),
+  BCATEGORY 	VARCHAR2(20 BYTE),
+  BTITLE	    VARCHAR2(150 BYTE),
+  BCONTENT	  CLOB,
+  BHIT	      NUMBER(5,0),
+  BPNUM       NUMBER(10,0),
+  BGROUP	    NUMBER(10,0),
+  BSTEP	      NUMBER(3,0),
+  BINDENT	    NUMBER(3,0),
+  --STATUS	    CHAR(1 BYTE),
+  BCDATE	    DATE default sysdate not null,
+  BUDATE      DATE,
+  CONSTRAINT board_bnum_pk PRIMARY KEY(BNUM),
+  CONSTRAINT board_bmid_fk FOREIGN KEY(bmid) REFERENCES member(mid)
+);
+
+-- uploadfile 테이블
+drop table uploadfile;
+create table uploadfile(
+  fid           NUMBER(10),
+  rid           NUMBER(10) not null,
+  store_fname   varchar2(50) not null,
+  upload_fname  varchar2(50) not null,
+  fsize         varchar2(45) not null,
+  ftype         varchar2(100) not null,
+  cdate         timestamp default systimestamp,
+  udate         timestamp,
+  constraint uploadfile_fid_pk primary key(fid),
+  constraint uploadfile_rid_fk FOREIGN key(rid) references board
+);
+drop sequence uploadfile_fid_seq;
+create sequence uploadfile_fid_seq
+increment by 1 --증감치
+start with 1 --시작값
+maxvalue 9999999999 --최대값
+nocycle;  --순환하지않음
+
+-- 식물정보 테이블
+--식물정보
+drop table PLANT_INFO;
+CREATE TABLE PLANT_INFO ( 
+  PNUM NUMBER(38) primary key,
+  PNAME VARCHAR2(80),
+  PENAME VARCHAR2(128),
+  PCLCODE VARCHAR2(80),
+  PORGPLCE VARCHAR2(128),
+  PFNCLTY VARCHAR2(4000),
+  PADVISE VARCHAR2(500),
+  PPRPGT VARCHAR2(80),
+  PLIGHT VARCHAR2(40),
+  PMANAGELV VARCHAR2(40),
+  PFLCOLOR VARCHAR2(40),
+  PGRWHSTLE VARCHAR2(40),
+  PGROWTH NUMBER(38),
+  PWATERSP VARCHAR2(80),
+  PWATERSU VARCHAR2(80),
+  PWATERA VARCHAR2(80),
+  PWATERW VARCHAR2(80),
+  PPLACE VARCHAR2(500),
+  PLTHTS VARCHAR2(80),
+  PSPECIAL VARCHAR2(1024),
+  PIMGURL VARCHAR2(128),
+  PCOUNT NUMBER(38)
+  );
+  
+--상품 테이블
+drop table product;
+drop sequence product_pid_seq;
+create sequence product_pid_seq;
+create table product(
+  pid number(10) primary key,
+  pname varchar2(50),
+  ppnum number(10),
+  pprice number(10),
+  pstock number(10),
+  pdate timestamp default systimestamp,
+  CONSTRAINT product_ppnum_fk1 FOREIGN KEY(ppnum) REFERENCES PLANT_INFO(PNUM)
+);
+
+--상품 임의 추가
+insert into product(pid,pname,ppnum,pprice,pstock) values (1,'덕구리난',26,30000,10);
+insert into product(pid,pname,ppnum,pprice,pstock) values (2,'데코라고무나무',27,40000,10);
+commit;
+
+--주문 테이블
+drop table orders;
+drop sequence orders_onum_seq;
+create sequence orders_onum_seq;
+create table orders(
+  onum  varchar2(50) primary key,
+  omid  varchar2(40),
+  odate timestamp default systimestamp,
+  oname varchar2(20),
+  opost varchar2(10),
+  oroadname varchar2(50),
+  oaddress  varchar2(50),
+  ophone  varchar2(20),
+  omemo clob,
+  opayment varchar2(20),
+  obank varchar2(20),
+  ocardCom  varchar2(20),
+  ocardNum  varchar2(20),
+  oprice  number(10),
+  oresign number(1),
+  rdate timestamp default systimestamp,
+  constraint orders_omid_fk foreign key(omid) references member(mid)
+  );
+  
+--주문상세 테이블
+drop table orders_detail;
+drop sequence od_odid_seq;
+create sequence od_odid_seq;
+create table orders_detail(
+  odid    varchar2(10) primary key,
+  odonum  varchar2(30),
+  odpid   varchar2(30),
+  odpname varchar2(50),
+  odqty   number(10),
+  odsum   number(10),
+  constraint orders_detail_odonum_fk foreign key(odonum) references orders(onum)
+);
+
+--장바구니 테이블
+drop table cart;
+drop SEQUENCE cart_cnum_seq;
+create SEQUENCE cart_cnum_seq;
+create table cart(
+  cnum varchar2(50) primary key,
+  cmid varchar2(50),
+  cpid number(10),
+  cpname varchar2(50),
+  cqty number(10),
+  cprice number(10)
+);

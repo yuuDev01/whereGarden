@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+    
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+	
+	<link rel="stylesheet" href="/css/member/memberEditForm.css" />
+	<link rel="stylesheet" href="/css/main.css">
+  <script src="/js/common/address.js" defer></script>  
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+   <title>회원가입 정보입력</title>
+
+</head>
+<body>
+	<header th:replace="/fragment/fragment_header :: fragment_header">
+  		메인화면 헤더
+ 	</header>
+  <nav th:replace="/fragment/fragment_nav :: fragment_nav">
+  	연습용 빈 nav입니다.
+  </nav>
+    	<main>
+    	<div>
+    	<nav th:replace="/fragment/fragment_aside :: fragment_aside">
+  	연습용 빈 nav입니다.
+  	</nav>
+      <form  th:method="patch" th:action="@{/mypage/edit}" th:object="${editForm}" >
+  	
+         <ul>
+         		<li><h1 class="title">회원 수정</h1></li>
+         	  <li><label for="mid" class="form-label">아이디</label></li>
+      	    <li><input class="form-control" type="text" th:field="*{mid}" readonly/></li>
+     	      <li><label class="form-label" for="mpw">변경할 비밀번호</label></li>	 
+            <li><input id="pwinput" class="form-control" type="password" th:field="*{mpw}"/></li>
+            <li th:errors="*{mpw}" th:errorclass="field-msg"></li> 
+            <li><label class="form-label" for="mpwchk">비밀번호 확인</label></li>
+            <li><input id="pwinput" class="form-control" type="password" th:field="*{mpwchk}"></li> 
+				    <li th:errors="*{mpwchk}" th:errorclass="field-msg"></li> 
+            <li><label class="form-label" for="mquestion" >비밀번호 찾기 질문</label></li>
+            <li><select th:field="*{mquestion}">
+          			<option  value="">-- 선택 --</option>
+      					<option value="나의 보물 1호는?">나의 보물 1호는?</option>
+      					<option value="나의 학창시절 별명은?">나의 학창시절 별명은?</option>
+     						<option value="가장 친한 친구 이름은?">가장 친한 친구 이름은?</option>
+      					<option value="가장 기억에 남는 선생님 성함은?">가장 기억에 남는 선생님 성함은?</option>
+   							</select></li>
+   					 <li th:errors="*{mquestion}" th:errorclass="field-msg"></li>
+          	 <li><label class="form-label" for="manswer">비밀번호 찾기 답변</label></li>
+          	 <li><input class="form-control" type="text" th:field="*{manswer}" /></li>
+             <li th:errors="*{manswer}" th:errorclass="field-msg"></li>
+          	 <li><label class="form-label" for="mname">이름</label></li>
+         	   <li><input class="form-control" type="text"  th:field="*{mname}" readonly/></li>
+          	 <li><label class="form-label" for="mbirth">생년월일</label></li>
+          	 <li><input class="form-control" type="date"  th:field="*{mbirth}" readonly/></li>
+          	 <li>
+          	 		 <label class="form-label" for="" >성별 </label>
+          			 <input class="form-control" type="text" th:field="*{mgender}" style="border: 0;" readonly/>
+
+          		</li>
+          	 <li><label class="form-label" for="mtel">전화번호</label></li>
+          	 <li><input class="form-control" type="text" name="mtel" th:field="*{mtel}"/></li>
+          	 <li th:errors="*{mtel}" th:errorclass="field-msg"></li>
+          	 <li><label class="form-label" for="maddress">주소변경</label></li>
+          	 <li><input class="form-control" type="text" id="sample4_postcode" th:field="*{mpost}" placeholder="우편번호"></li>
+						 <li><input type="button" onclick="sample4_execDaumPostcode()" th:field="*{maddress}" value="우편번호 찾기">
+				     <li><input class="form-control" type="text" id="sample4_roadAddress" th:field="*{mroadname}" placeholder="도로명주소" >
+						 <li><input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
+						 <li><input class="form-control" type="text" id="sample4_detailAddress" th:field="*{maddress}" placeholder="상세주소">
+						 <li><input type="hidden" id="sample4_extraAddress" placeholder="참고항목" >
+          	 <li><label class="form-label" for="mnickname">닉네임</label></li>
+          	 <li><input class="form-control" type="text" name="mnickname" th:field="*{mnickname}" /></li>
+          	 <li th:errors="*{mnickname}" th:errorclass="field-msg"></li>
+          
+          <li class=button>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="return confirm('정말로 수정 하시겠습니까?')" id="modifyBtn">수정하기</button>
+            <button class="btn btn-primary btn-lg btn-block" type="reset">취소</button>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" th:formaction="@{/mypage/out}" onclick="return confirm('정말로 탈퇴 하시겠습니까?')">탈퇴</button>
+          </li>
+          </ul>
+          </form>
+<!--           <li>
+          <form th:action="@{/mypage/out}" th:method="delete" >
+						<button type="submit" class="btn" id='Btn'>탈퇴하기</button>
+					 </form>
+          </li> -->
+        </div>
+        </main>
+
+    
+    <footer th:replace="/fragment/fragment_footer :: fragment_footer">
+  	연습용 빈 footer입니다.
+    
+</body>
+</html>
+
+

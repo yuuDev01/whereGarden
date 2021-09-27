@@ -1,0 +1,160 @@
+@charset "UTF-8";
+
+.plant_container{
+  display: grid;
+}
+hr{
+  /* color: black; */
+}
+.plantSearch{
+  display: grid;
+  margin: 5px;
+
+}
+
+/* 식물명 검색 */
+.textSearch {
+  display: grid;
+  padding-bottom: 50px;
+  padding-top: 50px;
+  align-items: center;
+  justify-content: center;
+}
+.textSearch .searchForm{
+  display: grid;
+  grid-template-columns: 300px 50px;
+  grid-template-rows: 45px;
+  align-items: center;
+  justify-content: center;
+  width: 360px;
+  border: 1px solid rgb(114, 114, 114);
+  border-radius: 15px;
+}
+.textSearch .searchForm #keyword{
+  margin-left: 10px;
+  padding-left: 5px;
+  height: 25px;
+  border: none;
+}
+.textSearch .searchForm .searchBtn{
+  font-size: 20px;
+  color: rgb(114, 114, 114);
+  border: none;
+ 
+  cursor: pointer;
+  background-color: unset;
+
+}
+
+/* tagBox */
+.tagBoxs{
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+.tagBtn1 {
+  width: 100px;
+  height: 32px;
+  border: hidden;
+  border-radius: 15px;
+  color: rgb(83, 83, 82);
+  font-weight: bold;
+  font-family: 'NanumSquare';
+  font-size: 17px;
+}
+.tagBtn1:hover{
+    cursor: pointer;
+}
+.tagBtn1:active{
+
+}
+/* 카테고리 */
+.tagBox1{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tagBox1 .tagBtn1{
+  margin: 5px;
+  background-color: #cff0e2;
+}
+.tagBox2 {
+  padding-top: 20px;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+.tagBox2 .tagBtn1{
+  width: 100px;
+  height: 32px;
+  margin: 7px;
+  background-color: rgb(100, 194, 163);
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+}
+
+.tagBox2 .tagBtn2{
+  width: 85px;
+  height: 32px;
+  border: hidden;
+  border-radius: 15px;
+  color: rgb(97, 97, 97);
+  background-color: rgb(236, 236, 236);
+  /* font-weight: bold; */
+}
+#tag1{
+}
+
+#tag2{
+    display: none;
+}
+
+.tagBox2 .selectTag{
+  background-color: rgb(192, 192, 192);
+  color: rgb(61, 61, 61);
+}
+
+
+/* 검색결과 */
+.plant_container .plant_view{
+  padding-top: 50px;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+
+  grid-template-columns: 20% 20% 20% 20%;
+}
+
+.plant_container .plant_view .plant{
+	 width: 270px;
+  height: 250px;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+.plant_container .plant_view .product-img {
+  width: 160px;
+  height: 160px;
+  border : 1px solid rgba(97, 97, 97, 0.3);
+  /* background-color: gray; */
+}
+/* .container .plantList .pic .product-img{
+  width: 140px;
+} */
+.plant_container .plant_view .fa-heart{
+  text-align: end;
+  font-size: 1.5rem;
+}
+.plant_container .plant_view .far.fa-heart{
+  color: rgb(255, 153, 0);
+}
+.plant_container .plant_view .fas.fa-heart{
+  color: rgb(255, 153, 0);
+}
+
+.plant_container .plant_view .pname{
+  text-align: center;
+  font-weight: bold;
+  color: rgb(97, 97, 97);
+}

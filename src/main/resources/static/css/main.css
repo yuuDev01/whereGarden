@@ -1,0 +1,100 @@
+@charset "UTF-8";
+
+/* 마포꽃섬 폰트적용 */
+/* font-family: 'MapoFlowerIsland'; 으로 사용가능 */
+@font-face {
+  font-family: 'MapoFlowerIsland';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoFlowerIslandA.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 캐러셀 css*/
+div.carousel-inner{ height: 100%; }
+div.carousel-inner>div{ height: 100%; }
+
+  
+
+div.mainAllContainer{
+  display: grid;
+  justify-content: center;
+}
+
+/* section1 시작 */
+/* section1안에 img와 div.explane의 배치를 rows로 높이 설정 */
+section.section1{
+  width: 1000px; height: 520px;
+  display: grid;
+  grid-template-rows: 400px 150px;
+  gap: 20px 0; /*height = rows + gap 이렇게 계산 안하면 밑으로 삐져나옴*/
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+img#mainImg{
+  width: 100%; height: 100%;
+}
+div.sec1_explane{
+  width: 100%; height: 100%;
+  text-align: center;
+  font-size: 50px;
+}
+
+/* section2 시작 */
+/* section2안에 sec2_title와 sec2_container의 배치를 rows로 높이 설정 */
+section.section2{
+  width: 1000px;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  gap: 20px 0;
+  margin-top: 50px;
+}
+section.section2 h2{ text-align: center; }
+
+div.card{
+  width: 200px; height: 400px;
+}
+div.card>h4{ text-align: center; margin-top:10px;}
+
+div.top-section2{
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  gap: 10px;
+  justify-content: center;
+}
+div.bottom-section2{
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* section3 시작 */
+section.section3{
+  width: 1000px; height: 730px;
+  display: grid;
+  grid-template-rows: 30px 650px;
+  gap: 50px 0;
+  margin-top: 70px;
+}
+div.sec3_title{
+  width: 100%; height: 100%;
+  font-family: 'NanumSquare';
+  font-size: 25px;
+  text-align: center;
+  font-weight: 800;
+}
+div.sec3_container{
+  width: 100%; height: 100%;
+}
+ul.sec3_flowerList{
+  width: 100%; height: 100%;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 0; padding: 0; list-style: none;
+}
+ul.sec3_flowerList>li{
+  text-align: center;
+}
+

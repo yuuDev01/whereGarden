@@ -1,0 +1,119 @@
+@charset "UTF-8";
+
+/* *{outline: 1px solid red;} */
+
+
+div.boardList_allContainer{
+  display: grid;
+  grid-template-columns: 150px 800px;
+  gap: 50px;
+}
+
+div.writeForm_container{
+	width: 100%;
+  display: grid;
+  grid-template-rows: 125px auto auto auto;
+  gap: 30px;
+}
+
+div.Board_menu{
+  text-align: center;
+}
+div.Board_menu h3{
+	margin-bottom: 20px;
+}
+div.Board_menu a:hover{
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+
+div.writeForm_titleBox{
+  display: grid;
+  grid-template-rows: 50px 30px;
+  width: 100%;
+  padding: 20px;
+  outline: 1px solid black;
+}
+
+div.writeForm_contentBox{
+  display: grid;
+  grid-template-rows: auto 200px auto auto;
+  row-gap: 10px;
+  padding: 20px;
+  outline: 1px solid black;
+}
+
+textarea#content:focus {
+    outline: none;
+}
+
+/* div.file{
+  display: grid;
+  grid-template-columns: 100px 500px;
+  gap: 10px;
+} */
+
+div.writeForm_buttonBox{
+  text-align: right;
+}
+
+ /* 댓글 css */
+div.commentWriteForm{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+form#commentBox{
+    width: 800px;
+    display: grid;
+    grid-template-rows: 100px 30px;
+    justify-content: center;
+    gap: 5px;
+}
+
+textarea#commentForm{
+    width: 700px; height: 100%;
+    padding: 0;
+    resize: none;   
+}
+
+form#commentBox div{
+    display: grid;
+    grid-template-columns: 60px 60px;
+    gap: 10px;
+    justify-content: right;
+    /* outline: 1px solid black; */
+}
+div.commentBtnBox button{
+	height: 100%;
+}
+
+div.commentListBox button{
+	width: 100px; height: 30px;
+	padding: 0;
+	margin-left: 5px;
+}
+div.commentListBox{
+	outline: 1px solid black;
+	padding: 20px;
+}
+div.oneCommentBox{
+	border-bottom: 1px solid;
+	margin-bottom: 20px;
+}
+
+div.commentTop{
+	margin-bottom: 20px;
+}
+div.commentListBox input, div.commentListBox input:focus{
+	border: 0;
+	outline: none;
+}
+div.commentListBox textarea, div.commentListBox textarea:focus{
+	width: 600px; height: auto;
+	border: 0;
+	outline: none;
+	resize: none;
+}

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+
+	<th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+	
+	<link rel="stylesheet" href="/css/member/joinForm.css" />
+	
+	<title>회원가입 정보입력</title>
+	
+	<script src="/js/common/address.js" defer></script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script src="/js/common/ajaxCall.js" defer></script>
+
+</head>
+ <script>
+  
+  	const success_f = res => {
+  		console.log(res);
+  		if(res.rtcd == '00'){
+  			errmsg.textContent = '동일한 이메일이 존재합니다.';
+  		}else{
+  			errmsg.textContent = '사용가능한 이메일입니다.';
+  			mid.readOnly = "readOnly";
+  			joinBtn.removeAttribute('disabled');					//속성제거
+  			dupChk.setAttribute('disabled','disabled');		//속성추가 및 수정
+  		}
+  	}
+  	
+  	const err_f = err => {
+  		console.log(err);
+  	}
+  	
+  	const dupChk_f = e => {
+  		console.log('버튼 클릭됨!');
+  		
+  		//공백 체크
+  		if(mid.value.trim().length == 0){
+  			mid.focus();
+  			mid.select();
+  			errmsg.textContent = '이메일을 입력하세요!';
+  			return false;
+  		}
+  		
+  		//이메일 유효성 체크
+  		const regexp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+  		if(!mid.value.match(regexp)){
+  			errmsg.textContent = '이메일 형식과 맞지 않습니다.';
+  			return false;
+  		}
+
+  		//ajax call
+  		const url = "/api/members/email/dupchk?"+"mid="+mid.value;
+  		request.get(url)
+  					 .then(res=>res.json())
+  					 .then(res=>success_f(res))
+  					 .catch(err=>err_f(err))
+  	}
+  
+  	const init = e => {
+  		dupChk.addEventListener("click", dupChk_f);
+  		joinBtn.disabled = 'disabled';
+  	}	
+  
+  	window.addEventListener("DOMContentLoaded", init);
+  
+  </script>
+<body>
+<header th:replace="/fragment/fragment_header :: fragment_header">
+  	연습용 빈 헤더입니다.
+  </header>
+  <nav th:replace="/fragment/fragment_nav :: fragment_nav">
+  	연습용 빈 nav입니다.
+  </nav>
+
+    <div class="all_container">
+    	<main>
+      <form class="row g-3 needs-validation" th:method="post" th:action="@{/members/join}" th:object="${joinForm}" novalidate>
+        <ul>
+          <li><h1 class="title">회원 가입</h1></li>
+          <li><p id="errmsg" class="field-msg"></p></li>
+          <li><label for="mid" class="form-label">아이디</label></li>
+      	  <li><input class="form-control"  type="text" th:field="*{mid}" placeholder="abc@wheregarden.com"/>
+     	  <button type="button" id="dupChk">중복체크</button></li>
+     	  <li  th:errors="${joinForm.mid}" th:errorclass="field-msg"></li> 
+      	  <li th:errors="*{delmid}" th:errorclass="field-msg"></li>
+     	    <li><label for="mpw" class="form-label">비밀번호</label></li>	 
+          <li><input id="pwinput" class="form-control" type="password" th:field="*{mpw}"/></li>
+          <li th:errors="*{mpw}" th:errorclass="field-msg"></li> 
+          <li><label for="mpwchk" class="form-label">비밀번호 확인</label></li>
+          <li><input id="pwinput" class="form-control" type="password" th:field="*{mpwchk}"></li> 
+		 		  <li th:errors="*{mpwchk}" th:errorclass="field-msg"></li> 
+          <li><label for="mquestion" class="form-label">비밀번호 찾기 질문</label></li>
+          <li><select class="form-control" name="mquestion" th:field="*{mquestion}">
+          	  <option value="">-- 선택 --</option>
+      				<option value="나의 보물 1호는?">나의 보물 1호는?</option>
+             	<option value="학창시절 나의 별명은?">학창시절 나의 별명은?</option>
+         		 	<option value="가장 친한 친구 이름은?">가장 친한 친구 이름은?</option>
+          		<option value="가장 기억에 남는 선생님 성함은?">가장 기억에 남는 선생님 성함은?</option>
+							</select></li>
+					<li th:errors="*{mquestion}" th:errorclass="field-msg"></li>
+          <li><label class="form-label" for="manswer">비밀번호 찾기 답변</label></li>
+          <li><input class="form-control" type="text" th:field="*{manswer}" /></li>
+          <li th:errors="*{manswer}" th:errorclass="field-msg"></li>
+          <li><label class="form-label" for="mname">이름</label></li>
+          <li><input class="form-control" type="text"  th:field="*{mname}"/></li>
+          <li th:errors="*{mname}" th:errorclass="field-msg"></li>
+          <li><label class="form-label" for="mbirth">생년월일</label></li>
+          <li><input class="form-control" type="date"  th:field="*{mbirth}" /></li>
+          <li><label class="form-label" for="mgender">성별</label></li>
+         	<li th:each="ele : ${gender}">
+						<input class="form-check-input" type="radio" th:field="*{gender}" th:value="${ele.decode}"/>
+						<label class="form-label" th:for="${#ids.prev('gender')}"
+									 th:text="${ele.decode}"></label></li>
+				  <li th:errors="*{gender}" th:errorclass="field-msg"></li>
+          <li><label class="form-label" for="mtel">전화번호</label></li>
+          <li><input class="form-control" type="text" name="mtel" th:field="*{mtel}"/></li>
+          <li th:errors="*{mtel}" th:errorclass="field-msg"></li>
+          <li><label class="form-label" for="maddress">주소</label></li>
+          <li><input class="form-control" type="text" id="sample4_postcode" th:field="*{mpost}" placeholder="우편번호"></li>
+					<li><input class="addBtn" type="button" id="findBtn"onclick="sample4_execDaumPostcode()" th:field="*{maddress}" value="우편번호 찾기">
+					<li><input class="form-control" type="text" id="sample4_roadAddress" th:field="*{mroadname}" placeholder="도로명주소" >
+					<li><input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
+					<li><input class="form-control" type="text" id="sample4_detailAddress" th:field="*{maddress}" placeholder="상세주소">
+					<li><input type="hidden" id="sample4_extraAddress" placeholder="참고항목" >
+					<li th:errors="*{maddress}" th:errorclass="field-msg"></li>
+          <li><label class="form-label" for="mnickname">닉네임</label></li>
+          <li><input class="form-control" type="text" name="mnickname" th:field="*{mnickname}" />
+          <li th:errors="*{mnickname}" th:errorclass="field-msg"></li>
+          <li class=button>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" value="회원가입" id="joinBtn">저장</button>
+            <button class="btn btn-primary btn-lg btn-block" type="reset">취소</button>
+          </li>
+        </ul>
+        </form>
+        </main>
+    </div>
+    
+    <footer th:replace="/fragment/fragment_footer :: fragment_footer">
+  	연습용 빈 footer입니다.
+    
+</body>
+</html>
+
+

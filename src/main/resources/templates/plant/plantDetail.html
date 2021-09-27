@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+ 
+  <title>어딜, 가든</title>
+  
+  <!-- 추가 CSS -->
+  <link rel="stylesheet" href="/css/plant/plantDetail.css">
+  
+	<!-- js 추가 -->
+	<script src="/js/plant/plantDetail.js" defer></script>
+	<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<!-- bootStrap js -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous" defer></script>
+</head>
+
+<body>
+	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
+	
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+  <div class="plantDetail_allContainer" th:object="${plantAndProductForm}">
+  	<form th:method="post" action="">
+  	<div class="category">식물 찾기 > 식물 조회</div>
+  	<input type="hidden" th:field="*{PNUM}"/>
+  	<input type="hidden" th:field="*{PNAME}"/>
+  	<div style="display: none" th:text="*{PNUM}" th:name="*{PNUM}"></div>
+    <div class="top">
+      <div class="pName" th:text="*{PNAME}" th:name="*{PNAME}">튤립</div>
+    <div class="favorite" id="favorite"> 
+      <div th:if ="${Fav} == 0">
+      <i class="far fa-heart" id="heart"></i>
+      </div>
+      <div th:unless ="${Fav} == 0">
+      <i class="fas fa-heart" id="heart"></i>
+      </div>
+    </div>
+    </div>
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        var pnum = /*[[ *{PNUM} ]]*/[];
+        
+        /*]]>*/
+    </script> 
+    <div class="info">
+        <div class="pImg item">
+            <img th:src="*{PIMGURL}" alt="">
+        </div>
+        <div class="pinfo item">
+            <div class="con1">
+                <p>- 식물명 : <span th:text="*{PNAME}"></span>
+                  (<span th:text="*{PENAME}"></span>)</p> 
+                <p>- 원산지 : <span th:text="*{PORGPLCE}"></span></p> 
+                <p>- 분류 : <span th:text="*{PCLCODE}"></span></p> 
+                <p>- 생육형태 : <span th:text="*{PGRWHSTLE}"></span></p> 
+                <p>- 꽃 색 : <span th:text="*{PFLCOLOR}"></span></p> 
+                <p>- 크기 : <span th:text="*{PGROWTH}"></span></p> 
+                
+            </div>
+            <div class="con2">
+                <div class="product item">
+                <input type="hidden" th:field="*{pid}"/>
+                    <div class="price">
+                        <p> 소비자가 &nbsp;&nbsp;&nbsp;<input type="text" th:field="*{pprice}" readonly="readonly"/></p> 
+                    </div>
+                    <div class="count">
+                        <td class="label item">수량</td>
+                        <button type="button" class="amount minus" onclick="fnCalCount('m');">-</button>
+                        <input type="text" id="cnt" value="1" th:field="*{pqty}">
+                        <button type="button" class="amonut plus" onclick="fnCalCount('p');">+</button>
+                    </div>
+                </div>
+                <div class="productBtn item">
+
+                    <input type="submit" class="pay btn" th:formaction="@{/order/form/express}" value="바로 주문하기"/>
+                    <input type="submit" class="cart btn" id="cartBtn" th:formaction="@{/cart/myCartAdd}" value="장바구니에 담기" />
+                    <input type="hidden" th:field="*{cartFlag}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+    <hr>
+    <div class="content">
+
+     	 <div class="con1" th:if="*{!PFNCLTY.equals('X')}">
+	       <p class="p1"> 저는 이런 식물이에요! </p> 
+        <p th:text="*{PFNCLTY}"></p>
+     	 </div>
+     	 <div class="con1" th:if="*{!PPRPGT.equals('X')}">
+	       <p class="p1"> 잘 자라는 시기는 언제? </p> 
+        <p th:text="*{PPRPGT}"></p>
+     	 </div>
+     	 <div class="con1" th:if="*{!PLIGHT.equals('X')}">
+	       <p class="p1">  빛은 얼마나 주면 될까요? </p> 
+        <p th:text="*{PLIGHT}"></p>
+     	 </div>
+     	 <div class="con1" th:if="*{!PWATERSP.equals('X')}">
+	       <p class="p1"> 물은 얼마나 주면 되나요? </p> 
+        <table>
+       	<tr>
+       		<td>봄</td>
+       		<td th:if="*{!PWATERSP.equals('X')}" th:text="*{PWATERSP}"></td>
+       		<td th:if="*{PWATERSP.equals('X')}" > </td>
+       	</tr>
+       	<tr>
+       		<td>여름</td>
+       		<td th:if="*{!PWATERSU.equals('X')}" th:text="*{PWATERSU}"></td>
+       		<td th:if="*{PWATERSU.equals('X')}" > </td>
+       	</tr>
+       	<tr>
+      	 	<td>가을</td>
+       		<td th:if="*{!PWATERA.equals('X')}" th:text="*{PWATERA}"></td>
+       		<td th:if="*{PWATERA.equals('X')}" > </td>
+       	</tr>
+       	<tr>
+       		<td>겨울</td>
+       		<td th:if="*{!PWATERW.equals('X')}" th:text="*{PWATERW}"></td>
+       		<td th:if="*{PWATERW.equals('X')}" > </td>
+       	</tr>
+       </table>
+     	 </div>
+     	 
+     	 <div class="con1" th:if="*{!PPLACE.equals('X')}">
+	       <p class="p1"> 이런 장소에 놓아두는걸 추천해요 </p> 
+        <p th:text="*{PPLACE}"></p>
+     	 </div>
+
+     	 <div class="con1" th:if="*{!PSPECIAL.equals('X')}">
+	       <p class="p1">특별히 관리해야 할 부분이 있어요 </p> 
+        <p th:text="*{PSPECIAL}"></p>
+     	 </div>
+     	 
+     	 <div class="con1" th:if="*{!PLTHTS.equals('X')}">
+	       <p class="p1">  이런 벌레는 조심해주세요! </p> 
+        <p th:text="*{PLTHTS}"></p>
+     	 </div>
+
+  </div>
+  </div>
+	<footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
+</body>
+</html>

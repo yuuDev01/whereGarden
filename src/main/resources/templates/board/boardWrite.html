@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+ 
+  <title>어딜, 가든</title>
+  
+  <!-- 추가 CSS -->
+  <link rel="stylesheet" href="/css/board/boardWrite.css">
+  <style>
+  	.field-msg{ text-align: right; }
+  </style>
+  
+  <!-- 추가 js -->
+  <script src="/js/board/boardWrite.js" defer></script>
+  
+</head>
+
+<body>
+	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
+	
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+ 	
+  <div class="boardList_allContainer">
+    <div class="Board_menu">
+      <ul>
+        <li><h3>커뮤니티</h3></li>
+        <li><a id="" th:href="@{/board/boardList(category=자유게시판)}"><h5>자유게시판</h5></a></li>
+        <li><a th:href="@{/board/boardList(category=QnA)}"><h5>QnA</h5></a></li>
+      </ul>
+    </div>
+    <form th:action="@{/board/boardWrite}" th:method="post" th:object="${writeForm}" enctype="multipart/form-data">
+    <div class="writeForm_container">
+    <input type="hidden" th:field="*{bmid}"/>
+		<input type="hidden" th:field="*{bnickname}"/>
+    <div class="writeForm_titleBox">
+    	<select th:if="${category} == null" th:field="*{bcategory}">
+        <option value="" selected>카테고리를 선택하세요</option>
+        <option th:name="*{bcategory}" th:value="자유게시판">자유게시판</option>
+        <option th:name="*{bcategory}" th:value="QnA" >QnA</option>
+      </select>
+      <select th:if="${category} == '자유게시판'" th:field="*{bcategory}">
+        <option value="">카테고리를 선택하세요</option>
+        <option th:name="*{bcategory}" th:value="자유게시판" selected>자유게시판</option>
+        <option th:name="*{bcategory}" th:value="QnA" >QnA</option>
+      </select>
+      <select th:if="${category} == 'QnA'" th:field="*{bcategory}">
+        <option value="">카테고리를 선택하세요</option>
+        <option th:name="*{bcategory}" th:value="자유게시판" >자유게시판</option>
+        <option th:name="*{bcategory}" th:value="QnA" selected>QnA</option>
+      </select>
+      <input type="text" placeholder="제목을 입력하세요" th:field="*{btitle}">
+    </div>
+    <div class="writeForm_contentBox">
+      <textarea id="editor" name="" th:field="*{bcontent}"></textarea>
+      <div class="mb-3">
+        <input type="file" class="form-control" th:field="*{files}" multiple="multiple">
+        <div th:errors="*{global}" th:errorclass="field-msg"><label for="" th:errors="*{global}"></label></div>
+      </div>
+      <div class="writeForm_buttonBox">
+        <button type="submit" class="btn btn-success">등록</button>
+        <button type="reset" class="btn btn-success" id="cancelBtn" th:data-category="*{bcategory}">취소</button>
+      </div>
+    </div>
+    </div>
+    </form>
+  </div>
+  
+<!--   <script src="https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js"></script>
+  <script>
+    ClassicEditor
+        .create( document.querySelector( '#editor' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+  </script> -->
+</body>
+</html>

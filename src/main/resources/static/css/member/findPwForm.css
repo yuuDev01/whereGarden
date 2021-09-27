@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+form{
+	border: 1px solid grey;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 10px;
+}
+.idFbody {
+  display: grid;
+  justify-content: center;
+}
+.namebox{
+margin-left: 30%;
+}
+.button1{
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+}
+.box{
+  display: block;
+  position: relative;
+}
+
+#name{
+  display: block;
+}
+
+.idFbody .button{
+  margin: 20px;
+}
+#next{
+  margin-left: 20px;
+}

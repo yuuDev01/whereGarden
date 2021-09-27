@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+  <link rel="stylesheet" href="/css/order/orderNotice.css">
+  <script src="/js/order/orderNotice.js"></script>
+
+  <title>Document</title>
+</head>
+<body>
+	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
+	
+ 	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+	<main>
+	  <div class="all_container" >
+		<form th:action="@{|/order/cancel/*{onum}/*{omid}|}" th:method="get" th:object="${orderDTO}"> 
+	    <div class="order_notice_container">
+	        <div class="order_notice_title1" th:text="|${memberDTO.mname}님, 구매내역을 확인해 주세요 (주문번호:${orderDTO.onum})|" ></div>
+	        
+	          <div class="order_notice_title2">구매 정보</div>
+				    <div class="product_notice">
+				      <div class="table">상품명</div>
+				      <div class="table">수량</div>
+				      <div class="table">구매금액</div>
+				    </div>
+				    <div class="product_notice" th:each="ele : ${orderDTO.orderDetails}">
+				      <div class="table" th:text="${ele.odpname}">올리브나무</div>
+				      <div class="table" th:text="${ele.odqty}">1</div>
+				      <div class="table" th:text="|${ele.odsum}원|">270,000원</div>
+				    </div>
+				    
+	          <div th:switch="${orderDTO.opayment}">
+					    <div th:case="'카드결제'">
+					     	<div class="order_notice_title2">결제정보</div>
+						      <div class="pay_notice">
+						        <div class="table">결제금액</div>
+						        <div class="table" th:text="|${orderDTO.oprice}원|">270,000원</div>
+						      </div>
+						      <div class="pay_notice">
+						        <div class="table">결제카드</div>
+						        <div class="table" th:text="|${orderDTO.ocardcom}|"><span>삼성카드</span></div>
+						      </div>
+					     </div> 
+				     <div th:case="'무통장입금'">
+					      <div class="order_notice_title2">입금정보</div>
+					      <div class="pay_notice">
+					        <div class="table">입금할 금액</div>
+					        <div class="table" th:text="${orderDTO.oprice}">270,000원</div>
+					      </div>
+					      <div class="pay_notice">
+					        <div class="table">입금 계좌 정보</div>
+					        <div class="table" th:text="|111-11-1111 ${orderDTO.obank} (예금주: 어딜가든)|" ></div>
+					      </div>
+					    </div> 
+				     <div th:case="*">값없음</div>
+				    </div>
+				
+	          <div class="order_notice_title2">받는사람 정보</div>
+	          <div class="deliver_notice">
+				      <div class="table">받으시는 분</div>
+				      <div class="table" th:text="${orderDTO.oname}">홍길동</div>
+				    </div>
+				    <div class="deliver_notice">
+				      <div class="table">연락처</div>
+				      <div class="table" th:text="${orderDTO.ophone}">010-****-1111</div>
+				    </div>
+				    <div class="deliver_notice">
+				      <div class="table">주소</div>
+				      <div class="table" th:text="|[${orderDTO.opost}] ${orderDTO.oroadname} ${orderDTO.oaddress}|">[12345] 울산 남구 삼산동</div>
+				    </div>
+	        
+	        <div class="button_container">
+	          <button th:type="submit" class="btn btn-success" id="cancelBtn">주문취소</button><button type="button" class="btn btn-success" id="homeBtn" onclick="javascript:location.href='/'">홈으로</button>
+	        </div>
+	        </div>
+	    </div>
+	  
+	 </form>
+
+	 </div>
+	</main>
+	<footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
+</body>
+</html>
