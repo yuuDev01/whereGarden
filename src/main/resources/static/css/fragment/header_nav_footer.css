@@ -8,11 +8,9 @@
     font-weight: normal;
     font-style: normal;
   }
-<<<<<<< HEAD
-  *{font-family: 'NanumSquare';}
-=======
+
  *{font-family: 'NanumSquare';} 
->>>>>>> prj1/master
+
   /* 바디에 그리드 적용 */
   body{
     display: grid;
@@ -168,14 +166,12 @@
     display: block;
 }
 
-<<<<<<< HEAD
-.dropdown-content a:hover {background-color: chartreuse;}
-=======
+
 .dropdown-content a:hover {
 	background-color: darkgray;
 	color:white;
 	}
->>>>>>> prj1/master
+
 
 .dropdown:hover .dropdown-content {
     display: block;
@@ -201,11 +197,9 @@ i#user:hover, i#shopping_basket:hover{
   .field-msg {
 	color: orange;
 	font-weight: bold;
-<<<<<<< HEAD
-=======
+
 	margin-bottom: 0;
 	}
 	#pwinput{
 	font-family:serif;
->>>>>>> prj1/master
 	}

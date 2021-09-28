@@ -1,17 +1,17 @@
 'use strict';
 
 	var favBtn = document.getElementById('heart');
-	//console.log(pnum);
+	
 
- // favBtn.onclick = function(){ changeHeart(); }
   
   favBtn.addEventListener('click',e=>{
-	//console.log('click!');
+	console.log(pnum);
 	changeHeart();
 })
  
  /* 좋아요 버튼 눌렀을떄 */
  function changeHeart(){ 
+ 
      $.ajax({
             type : "POST",  
             url : "/fav/"+pnum,       

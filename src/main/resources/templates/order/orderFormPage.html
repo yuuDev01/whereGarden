@@ -3,11 +3,8 @@
 <head>
   <title>주문하기</title>
   <th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
-<<<<<<< HEAD
-=======
   <script src="/js/common/address.js" defer></script>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
->>>>>>> prj1/master
   <style>
   *{
   	font-family: NanumSquare;
@@ -28,8 +25,7 @@
  	.hidden{
  		display:none;
  	}
-<<<<<<< HEAD
-=======
+
  	.bank {
  		width: 200px;
  		border: none;
@@ -38,7 +34,7 @@
  		width: 200px;
  		border: none;
  	}
->>>>>>> prj1/master
+
  	.order_title2{
  		font-size: 20px;
  	}
@@ -61,11 +57,8 @@
  		<input type="hidden" th:value="${memberDTO.mpost}" id="hiddenPost"/>
  		<input type="hidden" th:value="${memberDTO.mroadname}" id="hiddenRoadName"/>
  	
-<<<<<<< HEAD
-		<form th:action="@{/order}" th:method="post">
-=======
+
 		<form th:action="@{/order}" th:method="post" th:object="${orderForm}">
->>>>>>> prj1/master
 		  <h3>주문하기</h3>
 		  <hr />
 		  <p class="order_title2">주문내역</p>
@@ -97,30 +90,11 @@
 		        <input type="radio" name="orderInfo" value="새로운 배송정보" id="newInfo" th:field="${orderForm.oinfo}">
 		        <label for="member">새로운 배송정보</label>
 		      </li>
-<<<<<<< HEAD
-		      <li><p th:errors="${orderForm.oinfo}" th:errorclass="error-msg"></p></li>
-=======
 		      <li><p th:errors="${orderForm.oinfo}" th:errorclass="field-msg"></p></li>
->>>>>>> prj1/master
 		      <li><p>받으시는 분</p></li>
 		      <li>
 		        <input type="text" th:field="${orderForm.oname}" id="d-name">
 		      </li>
-<<<<<<< HEAD
-		      <li><p th:errors="${orderForm.oname}" th:errorclass="error-msg"></p></li>
-		      <li><p>주소</p></li>
-		      <li>
-		      	<div>
-		        <input type="text" th:field="${orderForm.opost}" id="d-post" placeholder="우편번호">
-		        <button>우편번호 찾기</button>
-		      	</div>
-		      	<div>
-		      		<input type="text" th:field="${orderForm.oroadname}" id="d-roadname" placeholder="도로명주소">
-		      		<input type="text" th:field="${orderForm.oaddress}" id="d-address" placeholder="나머지 주소를 입력해주세요">
-		      	</div>	
-		      </li>
-		      <li><p th:errors="${orderForm.oaddress}" th:errorclass="error-msg"></p></li>
-=======
 		      <li><p th:errors="${orderForm.oname}" th:errorclass="field-msg"></p></li>
 		      <li><p>주소</p></li>
 		      <li>
@@ -138,16 +112,11 @@
 		      <li><p th:errors="${orderForm.opost}" th:errorclass="field-msg"></p>
 		      <p th:errors="${orderForm.oroadname}" th:errorclass="field-msg"></p>
 		      <p th:errors="${orderForm.oaddress}" th:errorclass="field-msg"></p></li>
->>>>>>> prj1/master
 		      <li><p>휴대전화</p></li>
 		      <li>
 		        <input type="text" th:field="${orderForm.ophone}" id="d-tel">
 		      </li>
-<<<<<<< HEAD
-		      <li><p th:errors="${orderForm.ophone}" th:errorclass="error-msg"></p></li>
-=======
 		      <li><p th:errors="${orderForm.ophone}" th:errorclass="field-msg"></p></li>
->>>>>>> prj1/master
 		      <li><p>배송 메모</p></li>
 		      <li>
 		      	<div>
@@ -162,13 +131,8 @@
 		        <label>무통장입금</label>
 		        <input id="card" type="radio" value="카드결제" th:field="${orderForm.opayment}">
 		        <label>카드결제</label>
-		      </li>
-<<<<<<< HEAD
-		      <li><p th:errors="${orderForm.opayment}" th:errorclass="error-msg"></p></li>
-=======
-		      
+		      </li>	      
 		      <li><p th:errors="${orderForm.opayment}" th:errorclass="field-msg"></p></li>
->>>>>>> prj1/master
 		      <li>
 		      	<div class="bank hidden">
 			      	<div>은행명</div>
@@ -178,10 +142,6 @@
 			          <option value="국민은행">국민은행</option>
 			          <option value="경남은행">경남은행</option>
 			        </select>
-<<<<<<< HEAD
-=======
-			        
->>>>>>> prj1/master
 		      	</div>
 		      </li>
 		      <li>

@@ -64,10 +64,7 @@
   	}	
   
   	window.addEventListener("DOMContentLoaded", init);
-<<<<<<< HEAD
-=======
-  
->>>>>>> prj1/master
+
   </script>
 <body>
 <header th:replace="/fragment/fragment_header :: fragment_header">
@@ -86,15 +83,7 @@
           <li><label for="mid" class="form-label">아이디</label></li>
       	  <li><input class="form-control"  type="text" th:field="*{mid}" placeholder="abc@wheregarden.com"/>
      	  <button type="button" id="dupChk">중복체크</button></li>
-<<<<<<< HEAD
-     	  <li  th:errors="*{mid}" th:errorclass="field-msg"></li> 
-      	  <li th:errors="*{delmid}" th:errorclass="field-msg"></li>
-     	    <li><label for="mpw" class="form-label">비밀번호</label></li>	 
-          <li><input class="form-control" type="password" th:field="*{mpw}"/></li>
-          <li th:errors="*{mpw}" th:errorclass="field-msg"></li> 
-          <li><label for="mpwchk" class="form-label">비밀번호 확인</label></li>
-          <li><input class="form-control" type="password" th:field="*{mpwchk}"></li> 
-=======
+
      	  <li  th:errors="${joinForm.mid}" th:errorclass="field-msg"></li> 
       	  <li th:errors="*{delmid}" th:errorclass="field-msg"></li>
      	    <li><label for="mpw" class="form-label">비밀번호</label></li>	 
@@ -102,7 +91,7 @@
           <li th:errors="*{mpw}" th:errorclass="field-msg"></li> 
           <li><label for="mpwchk" class="form-label">비밀번호 확인</label></li>
           <li><input id="pwinput" class="form-control" type="password" th:field="*{mpwchk}"></li> 
->>>>>>> prj1/master
+
 		 		  <li th:errors="*{mpwchk}" th:errorclass="field-msg"></li> 
           <li><label for="mquestion" class="form-label">비밀번호 찾기 질문</label></li>
           <li><select class="form-control" name="mquestion" th:field="*{mquestion}">
@@ -139,11 +128,9 @@
 					<li><input type="hidden" id="sample4_extraAddress" placeholder="참고항목" >
 					<li th:errors="*{maddress}" th:errorclass="field-msg"></li>
           <li><label class="form-label" for="mnickname">닉네임</label></li>
-<<<<<<< HEAD
-          <li><input class="form-control" type="text" name="mnickname" th:field="*{mnickname}" /></li>
-=======
+
           <li><input class="form-control" type="text" name="mnickname" th:field="*{mnickname}" />
->>>>>>> prj1/master
+
           <li th:errors="*{mnickname}" th:errorclass="field-msg"></li>
           <li class=button>
             <button class="btn btn-primary btn-lg btn-block" type="submit" value="회원가입" id="joinBtn">저장</button>
