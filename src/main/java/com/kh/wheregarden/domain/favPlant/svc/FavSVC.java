@@ -29,4 +29,11 @@ public interface FavSVC {
 	 * @param pnum
 	 */
 	void addFav(String mid, Long pnum);
+	
+	/**
+	 * 관심식물 삭제
+	 * @param mid
+	 * @param pnum
+	 */
+	void delFav(String mid, Long pnum);
 }

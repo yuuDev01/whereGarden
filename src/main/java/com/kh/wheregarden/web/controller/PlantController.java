@@ -88,7 +88,6 @@ public class PlantController {
 			}else {  //null이 아닐 경우
 				model.addAttribute("Fav", favDTO);
 			}
-//			log.info("식물관심식물여부:{}", loginMember.getId());
 		}else { //로그인x
 			model.addAttribute("Fav", 0); //0 전달
 		}
@@ -96,14 +95,12 @@ public class PlantController {
 		PlantDTO foundPlantDTO = plantSVC.plantDetail(pnum);
 
 		BeanUtils.copyProperties(foundPlantDTO, plantAndProductForm);
-//		log.info("식물정보 복사 plantAndProductForm:{}", plantAndProductForm);
 
 		ProductDTO foundProductDTO = productSVC.findProductByPnum(pnum);
 		plantAndProductForm.setPid(foundProductDTO.getPid());
 		plantAndProductForm.setPprice(foundProductDTO.getPprice());
 		plantAndProductForm.setPqty(1);
 
-//		log.info("상품정보 복사 plantAndProductForm:{}", plantAndProductForm);
 
 		return "plant/plantDetail";
 	}

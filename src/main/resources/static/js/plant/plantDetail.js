@@ -1,26 +1,23 @@
 'use strict';
 
 	var favBtn = document.getElementById('heart');
-	
 
-  
-  favBtn.addEventListener('click',e=>{
-	console.log(pnum);
+  favBtn.addEventListener('click', e=>{
+
 	changeHeart();
 })
  
- /* 좋아요 버튼 눌렀을떄 */
+ /* 하트(관심식물) 버튼 눌렀을떄 */
  function changeHeart(){ 
- 
      $.ajax({
-            type : "POST",  
+            type : "GET",  
             url : "/fav/"+pnum,       
-            dataType : "text",   
+            data : pnum,   
       
         }).
         done(function (fragment) {
         $('#favorite').replaceWith(fragment);
- });
+ 	});
  }
  
  

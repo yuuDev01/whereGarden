@@ -36,4 +36,10 @@ public class FavSVCImpl implements FavSVC {
 	public void addFav(String mid, Long pnum) {
 		favDAO.addFav(mid, pnum);
 	}
+	
+	@Override
+	public void delFav(String mid, Long pnum) {
+		// TODO Auto-generated method stub
+		favDAO.delFav(mid, pnum);
+	}
 }
