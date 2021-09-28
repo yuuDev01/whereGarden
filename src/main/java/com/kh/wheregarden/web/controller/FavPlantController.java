@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kh.wheregarden.domain.favPlant.dto.FavDTO;
 import com.kh.wheregarden.domain.favPlant.svc.FavSVC;
+import com.kh.wheregarden.domain.plant.dto.PlantDTO;
 import com.kh.wheregarden.web.form.login.LoginMember;
 
 import lombok.RequiredArgsConstructor;
@@ -50,4 +51,16 @@ public class FavPlantController {
 		}
 		
 	}
+	
+	@GetMapping("/list")
+	public String allFav(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession(false);
+		LoginMember loginMember = (LoginMember) session.getAttribute("loginMember");
+		List<PlantDTO> list = favSVC.allFav(loginMember.getId());
+		
+		model.addAttribute("plantList", list);
+
+		return "plant/myFavList";
+	}
+
 }
