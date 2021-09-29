@@ -12,7 +12,8 @@
      $.ajax({
             type : "GET",  
             url : "/fav/"+pnum,       
-            data : pnum,   
+            data : pnum,  
+            cache: false, 
       
         }).
         done(function (fragment) {
