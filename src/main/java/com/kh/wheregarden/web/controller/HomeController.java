@@ -2,6 +2,7 @@ package com.kh.wheregarden.web.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.wheregarden.domain.favPlant.svc.FavSVC;
 import com.kh.wheregarden.domain.member.dto.MemberDTO;
 import com.kh.wheregarden.domain.member.svc.MemberSVC;
+import com.kh.wheregarden.domain.plant.dto.PlantDTO;
 import com.kh.wheregarden.web.form.login.LoginForm;
 import com.kh.wheregarden.web.form.login.LoginMember;
 
@@ -31,11 +34,14 @@ import lombok.extern.slf4j.Slf4j;
 public class HomeController {
 
 	private final MemberSVC memberSVC;
-
+	private final FavSVC favSVC;
 	
 	//초기화면
 	@GetMapping("/")
-	public String home() {
+	public String home(Model model) {
+		List<PlantDTO> list = null;
+		list = favSVC.list();
+		model.addAttribute("plantList", list);
 		return "home";
 	}
 	

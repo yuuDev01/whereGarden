@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.kh.wheregarden.domain.board.dao.BoardDAOImpl;
 import com.kh.wheregarden.domain.favPlant.dto.FavDTO;
 import com.kh.wheregarden.domain.plant.dto.PlantDTO;
 
@@ -20,6 +19,42 @@ import lombok.extern.slf4j.Slf4j;
 public class FavDAOImpl implements FavDAO {
 	private final JdbcTemplate jt;
 
+	@Override
+	public List<PlantDTO> list() {
+		// TODO Auto-generated method stub
+		StringBuffer sql = new StringBuffer();
+		sql.append("select  pnum,   ");
+		sql.append("  pname,   ");
+		sql.append("  pename ,   ");
+		sql.append("  pclcode,   ");
+		sql.append("  porgplce,   ");
+		sql.append("  pfnclty,   ");
+		sql.append("  padvise,   ");
+		sql.append("  pprpgt,   ");
+		sql.append("  plight,   ");
+		sql.append("  pmanagelv,   ");
+		sql.append("  pflcolor,   ");
+		sql.append("  pgrwhstle,   ");
+		sql.append("  pgrowth,   ");
+		sql.append("  pwatersp,   ");
+		sql.append("  pwatersu,   ");
+		sql.append("  pwatera,   ");
+		sql.append("  pwaterw,   ");
+		sql.append("  pplace,   ");
+		sql.append("  plthts,   ");
+		sql.append("  pspecial,   ");
+		sql.append("  pimgurl,   ");
+		sql.append("  pcount   ");
+		sql.append("from plant_info ");
+		sql.append("where ROWNUM <=8  ");
+		sql.append("  ORDER BY pcount DESC  ");
+		List<PlantDTO> list = jt.query(
+				sql.toString(),
+				new BeanPropertyRowMapper<>(PlantDTO.class));
+		
+		return list;
+	}
+	
 	// 회원별 관심식물 목록 찾기
 	@Override
 	public List<FavDTO> findFav(String mid) {

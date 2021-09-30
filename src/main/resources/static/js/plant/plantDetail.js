@@ -1,5 +1,6 @@
 'use strict';
 
+
 var favBtn = document.getElementById('heart');
 
 favBtn.addEventListener('click', e => {
@@ -24,19 +25,10 @@ function changeHeart2() {
 		done(function(fragment) {
 			$('#favorite').replaceWith(fragment);
 		});
+		location.reload();	
 }
 
-function changeHeart() {
-	$.ajax({
-		type: "GET",
-		url: "/fav/" + pnum,
-		data: pnum,
-		cache: false,
-		success: function(fragment) {
-			$('#favorite').replaceWith(fragment);
-		}
-	});
-}
+
 
 //수량조절
 function fnCalCount(type) {
