@@ -20,7 +20,7 @@ const request = {
          headers:{'content-Type' : 'application/json'},
          body : JSON.stringify(payload)
       })
-   },   
+   },
    
    delete(url) {
       return fetch(url, {method:'DELETE'});

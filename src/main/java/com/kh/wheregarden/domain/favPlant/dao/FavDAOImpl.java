@@ -45,9 +45,29 @@ public class FavDAOImpl implements FavDAO {
 		sql.append("  pspecial,   ");
 		sql.append("  pimgurl,   ");
 		sql.append("  pcount   ");
-		sql.append("from plant_info ");
-		sql.append("where ROWNUM <=8  ");
-		sql.append("  ORDER BY pcount DESC  ");
+		sql.append("  from (select pnum,");
+		sql.append("  pname,   ");
+		sql.append("  pename ,   ");
+		sql.append("  pclcode,   ");
+		sql.append("  porgplce,   ");
+		sql.append("  pfnclty,   ");
+		sql.append("  padvise,   ");
+		sql.append("  pprpgt,   ");
+		sql.append("  plight,   ");
+		sql.append("  pmanagelv,   ");
+		sql.append("  pflcolor,   ");
+		sql.append("  pgrwhstle,   ");
+		sql.append("  pgrowth,   ");
+		sql.append("  pwatersp,   ");
+		sql.append("  pwatersu,   ");
+		sql.append("  pwatera,   ");
+		sql.append("  pwaterw,   ");
+		sql.append("  pplace,   ");
+		sql.append("  plthts,   ");
+		sql.append("  pspecial,   ");
+		sql.append("  pimgurl,   ");
+		sql.append("  pcount   ");
+		sql.append("  from plant_info order by pcount desc) where ROWNUM <= 8 ");
 		List<PlantDTO> list = jt.query(
 				sql.toString(),
 				new BeanPropertyRowMapper<>(PlantDTO.class));
