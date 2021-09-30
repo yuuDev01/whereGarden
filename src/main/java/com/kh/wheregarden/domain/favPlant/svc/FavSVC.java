@@ -9,6 +9,13 @@ import com.kh.wheregarden.domain.plant.dto.PlantDTO;
 public interface FavSVC {
 	
 	/**
+	 * 전체 식물 중 상위 8개의 관심식물 리스트 받아오기
+	 * @return
+	 */
+	List<PlantDTO> list();
+	
+	
+	/**
 	 * 관심식물 값 찾기
 	 * @param mid
 	 * @return

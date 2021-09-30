@@ -20,32 +20,37 @@ public class FavSVCImpl implements FavSVC {
 	private final FavDAO favDAO;
 
 	@Override
+	public List<PlantDTO> list() {
+		// TODO Auto-generated method stub
+		return favDAO.list();
+	}
+
+	@Override
 	public List<FavDTO> findFav(String mid) {
 		// TODO Auto-generated method stub
 		List<FavDTO> favDTO = favDAO.findFav(mid);
 		return favDTO;
 	}
-	
+
 	@Override
 	public FavDTO FavDetail(String mid, Long pid) {
 		// TODO Auto-generated method stub
 		FavDTO favDTO = favDAO.FavDetail(mid, pid);
 		return favDTO;
 	}
-	
+
 	@Override
 	public void addFav(String mid, Long pnum) {
 		favDAO.addFav(mid, pnum);
 	}
-	
+
 	@Override
 	public void delFav(String mid, Long pnum) {
 		// TODO Auto-generated method stub
 		favDAO.delFav(mid, pnum);
 	}
-	
-	
-	//전체식물
+
+	// 전체식물
 	@Override
 	public List<PlantDTO> allFav(String mid) {
 		// TODO Auto-generated method stub

@@ -99,3 +99,48 @@ ul.sec3_flowerList>li{
   text-align: center;
 }
 
+/* 관심식물 순위*/
+
+section.section3{
+  width: 1000px;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  gap: 20px 0;
+  margin-top: 50px;
+}
+section.section3 h2{ text-align: center; }
+.plant_container{
+
+	  }
+.plant_container .plant_view{
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.plant_container .plant_view .plant{
+	 width: 200px;
+  height: 250px;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+.plant_container .plant_view .product-img {
+  width: 160px;
+  height: 160px;
+  border : 1px solid rgba(97, 97, 97, 0.3);
+}
+
+.plant_container .plant_view .fa-heart{
+  text-align: end;
+  font-size: 1.5rem;
+}
+
+
+.plant_container .plant_view .pname{
+  text-align: center;
+  font-weight: bold;
+  color: rgb(97, 97, 97);
+}

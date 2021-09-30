@@ -8,6 +8,12 @@ import com.kh.wheregarden.domain.plant.dto.PlantDTO;
 public interface FavDAO {
 	
 	/**
+	 * 상위 8개 가져오기
+	 * @return
+	 */
+	List<PlantDTO> list();
+	
+	/**
 	 * 관심식물 식물 목록
 	 * @param mid
 	 * @return
