@@ -1,17 +1,18 @@
 -- 1. date : 년월시분 (밀리초X)  /  timestamp : 년월시분 (밀리초o)
 drop table Member;
-drop table board;
-drop table uploadfile;
-drop table orders;
-drop table orders_detail;
-drop table cart;
-drop table product;
-drop table plant_color;
-drop table fav_plant;
---drop table plant_info;
 
---Member 테이블 
-drop table Member;
+drop table comments;
+drop table uploadfile;
+drop table board;
+
+drop table fav_plant;
+drop table product;
+drop table plant_info;
+drop table orders_detail;
+drop table orders;
+drop table cart;
+
+--Member 테이블
 create table Member(
   mid         varchar2(50) PRIMARY key,
   mpw         varchar2(30) not null,
@@ -28,35 +29,54 @@ create table Member(
   mresign     number(1)    not null
 );
 
---Board 테이블 
-drop table Board;
+--Board 테이블
+create table Board(
+  BNUM        NUMBER(10,0),
+  BMID         VARCHAR2(40 BYTE),
+  BNICKNAME     VARCHAR2(30 BYTE),
+  BCATEGORY    VARCHAR2(20 BYTE),
+  BTITLE       VARCHAR2(150 BYTE),
+  BCONTENT     CLOB,
+  BHIT         NUMBER(5,0),
+  BPNUM       NUMBER(10,0),
+  BGROUP       NUMBER(10,0),
+  BSTEP         NUMBER(3,0),
+  BINDENT       NUMBER(3,0),
+  --STATUS       CHAR(1 BYTE),
+  BCDATE       DATE default sysdate not null,
+  BUDATE      DATE,
+  CONSTRAINT board_bnum_pk PRIMARY KEY(BNUM),
+  CONSTRAINT board_bmid_fk FOREIGN KEY(bmid) REFERENCES member(mid)
+);
 drop sequence Board_bnum_seq;
 create sequence Board_bnum_seq
 increment by 1 --증감치
 start with 1 --시작값
 maxvalue 9999999999 --최대값
 nocycle;  --순환하지않음
-create table Board(
-  BNUM        NUMBER(10,0),
-  BMID	      VARCHAR2(40 BYTE),
-  BNICKNAME	  VARCHAR2(30 BYTE),
-  BCATEGORY 	VARCHAR2(20 BYTE),
-  BTITLE	    VARCHAR2(150 BYTE),
-  BCONTENT	  CLOB,
-  BHIT	      NUMBER(5,0),
-  BPNUM       NUMBER(10,0),
-  BGROUP	    NUMBER(10,0),
-  BSTEP	      NUMBER(3,0),
-  BINDENT	    NUMBER(3,0),
-  --STATUS	    CHAR(1 BYTE),
-  BCDATE	    DATE default sysdate not null,
-  BUDATE      DATE,
-  CONSTRAINT board_bnum_pk PRIMARY KEY(BNUM),
-  CONSTRAINT board_bmid_fk FOREIGN KEY(bmid) REFERENCES member(mid)
+
+-- comment 테이블
+drop sequence comments_cnum_seq;
+create sequence comments_cnum_seq
+increment by 1 --증감치
+start with 1 --시작값
+maxvalue 9999999999 --최대값
+nocycle;  --순환하지않음
+create table comments(
+    cnum            NUMBER(10),
+    cbnum           NUMBER(10) not null,
+    cid             varchar2(50) not null,
+    cnickname       varchar2(30) not null,
+    ccontent        CLOB not null,
+    cpnum           NUMBER(10),
+    cgroup          NUMBER(10),
+    ccdate          DATE default sysdate not null,
+    cudate          DATE,
+  constraint comments_cnum_pk primary key(cnum),
+  constraint comments_cbnum_fk FOREIGN key(cbnum) references Board
 );
 
 -- uploadfile 테이블
-drop table uploadfile;
 create table uploadfile(
   fid           NUMBER(10),
   rid           NUMBER(10) not null,
@@ -78,7 +98,6 @@ nocycle;  --순환하지않음
 
 -- 식물정보 테이블
 --식물정보
-drop table PLANT_INFO;
 CREATE TABLE PLANT_INFO ( 
   PNUM NUMBER(38) primary key,
   PNAME VARCHAR2(80),
@@ -105,9 +124,6 @@ CREATE TABLE PLANT_INFO (
   );
   
 --상품 테이블
-drop table product;
-drop sequence product_pid_seq;
-create sequence product_pid_seq;
 create table product(
   pid number(10) primary key,
   pname varchar2(50),
@@ -117,16 +133,10 @@ create table product(
   pdate timestamp default systimestamp,
   CONSTRAINT product_ppnum_fk1 FOREIGN KEY(ppnum) REFERENCES PLANT_INFO(PNUM)
 );
-
---상품 임의 추가
-insert into product(pid,pname,ppnum,pprice,pstock) values (1,'덕구리난',26,30000,10);
-insert into product(pid,pname,ppnum,pprice,pstock) values (2,'데코라고무나무',27,40000,10);
-commit;
+drop sequence product_pid_seq;
+create sequence product_pid_seq;
 
 --주문 테이블
-drop table orders;
-drop sequence orders_onum_seq;
-create sequence orders_onum_seq;
 create table orders(
   onum  varchar2(50) primary key,
   omid  varchar2(40),
@@ -146,30 +156,149 @@ create table orders(
   rdate timestamp default systimestamp,
   constraint orders_omid_fk foreign key(omid) references member(mid)
   );
+drop sequence orders_onum_seq;
+create sequence orders_onum_seq;
   
 --주문상세 테이블
-drop table orders_detail;
-drop sequence od_odid_seq;
-create sequence od_odid_seq;
 create table orders_detail(
   odid    varchar2(10) primary key,
   odonum  varchar2(30),
-  odpid   varchar2(30),
+  odpid   number(10),
   odpname varchar2(50),
   odqty   number(10),
   odsum   number(10),
-  constraint orders_detail_odonum_fk foreign key(odonum) references orders(onum)
+  constraint orders_detail_odonum_fk foreign key(odonum) references orders(onum),
+  constraint orders_detail_odpid_fk foreign key(odpid) references product(pid)
 );
+drop sequence od_odid_seq;
+create sequence od_odid_seq;
 
 --장바구니 테이블
-drop table cart;
-drop SEQUENCE cart_cnum_seq;
-create SEQUENCE cart_cnum_seq;
 create table cart(
   cnum varchar2(50) primary key,
   cmid varchar2(50),
   cpid number(10),
   cpname varchar2(50),
   cqty number(10),
-  cprice number(10)
+  cprice number(10),
+  constraint cart_cmid_fk foreign key(cmid) references member(mid),
+  constraint cart_cpid_fk foreign key(cpid) references product(pid)
 );
+drop SEQUENCE cart_cnum_seq;
+create SEQUENCE cart_cnum_seq;
+
+--- 관심식물
+create table fav_plant(
+FPNUM number(30) primary key, 
+FPPNUM number(30) not null, 
+FPMID varchar(40) not null,
+CONSTRAINT f_fav_FPPNUM_FK FOREIGN key(FPPNUM) references plant_info(pnum)on delete cascade,
+constraint f_fav_FPMID_FK foreign key(FPMID) REFERENCES member(mid) on delete cascade);
+
+create sequence fav_plant_FPNUM_seq
+increment by 1 --증감치
+start with 1 --시작값
+maxvalue 9999999999 --최대값
+nocycle;
+
+--상품 등록
+insert into product(pid,pname,ppnum,pprice,pstock) values (1, '가울테리아' ,0, 24000,  100);        
+insert into product(pid,pname,ppnum,pprice,pstock) values (2,  '개운죽' ,1,    34000,  100);     
+insert into product(pid,pname,ppnum,pprice,pstock) values (3, '골드크레스트 윌마', 2, 40000, 100);          
+insert into product(pid,pname,ppnum,pprice,pstock) values (4, '공작야자', 3,  55000, 100);         
+insert into product(pid,pname,ppnum,pprice,pstock) values (5,  '관엽베고니아' ,4, 68400, 100);
+insert into product(pid,pname,ppnum,pprice,pstock) values (6, '관음죽' ,5  ,  76000, 100);               
+insert into product(pid,pname,ppnum,pprice,pstock) values (7,   '구문초' ,6  ,43000, 50);             
+insert into product(pid,pname,ppnum,pprice,pstock) values (8,   '구즈마니아',7, 58000, 30);               
+insert into product(pid,pname,ppnum,pprice,pstock) values (9,    '군자란' ,8,   89000, 20);                                                 
+insert into product(pid,pname,ppnum,pprice,pstock) values (10,     '글레코마',9,  35000, 60);                                                  
+insert into product(pid,pname,ppnum,pprice,pstock) values (11,   '금목서'  ,10, 25000,30);             
+insert into product(pid,pname,ppnum,pprice,pstock) values (12, '금사철나무'  ,11 , 90000, 20);            
+insert into product(pid,pname,ppnum,pprice,pstock) values (13, '금식나무'  ,12   ,  45000, 30);         
+insert into product(pid,pname,ppnum,pprice,pstock) values (14,  '금전수' ,13  ,    30000, 40);        
+insert into product(pid,pname,ppnum,pprice,pstock) values (15,  '금천죽',14  ,     30000, 40);        
+insert into product(pid,pname,ppnum,pprice,pstock) values (16,  '기누라',15 ,      30000, 40);        
+insert into product(pid,pname,ppnum,pprice,pstock) values (17,'꽃베고니아',16,      61000, 30);           
+insert into product(pid,pname,ppnum,pprice,pstock) values (18,  '나도풍란',17  ,    61000, 30);         
+insert into product(pid,pname,ppnum,pprice,pstock) values (19,'나한송',18  ,        61000, 30);       
+insert into product(pid,pname,ppnum,pprice,pstock) values (20,'남천' , 19,          61000, 30);    
+insert into product(pid,pname,ppnum,pprice,pstock) values (21,  '네마탄투스',20  , 70000, 20);        
+insert into product(pid,pname,ppnum,pprice,pstock) values (22,  '네오레겔리아',21 ,70000, 20);         
+insert into product(pid,pname,ppnum,pprice,pstock) values (23,'녹영',22,           70000, 20);    
+insert into product(pid,pname,ppnum,pprice,pstock) values (24,'뉴기니아봉선화',23, 70000, 20);             
+insert into product(pid,pname,ppnum,pprice,pstock) values (25,  '대만고무나무',24, 70000, 20);            
+insert into product(pid,pname,ppnum,pprice,pstock) values (26, '더피고사리',25,              30800,20);
+insert into product(pid,pname,ppnum,pprice,pstock) values (27,  '덕구리난',26,             30800,20);
+insert into product(pid,pname,ppnum,pprice,pstock) values (28,  '데코라고무나무',     27,30800,20);
+insert into product(pid,pname,ppnum,pprice,pstock) values (29, '덴파레',   28,30800,20);
+insert into product(pid,pname,ppnum,pprice,pstock) values (30, '도깨비고비',  29,30800,20);
+insert into product(pid,pname,ppnum,pprice,pstock) values (31,  '돈나무',  30,67000, 10);
+insert into product(pid,pname,ppnum,pprice,pstock) values (32,  '동백', 31,   67000, 10);        
+insert into product(pid,pname,ppnum,pprice,pstock) values (33,  '둥근잎 아랄리아',32 , 26000, 30);
+insert into product(pid,pname,ppnum,pprice,pstock) values (34, '듀란타',33 ,45500,26);       
+insert into product(pid,pname,ppnum,pprice,pstock) values (35,'드라세나  송오브자마이카',34, 47000, 20);           
+insert into product(pid,pname,ppnum,pprice,pstock) values (36,  '드라세나 와네끼',35,       47000, 20);   
+insert into product(pid,pname,ppnum,pprice,pstock) values (37, '드라세나 송오브인디아',36,   47000, 20);        
+insert into product(pid,pname,ppnum,pprice,pstock) values (38,  '드라세나 자바',37,          47000, 20);
+insert into product(pid,pname,ppnum,pprice,pstock) values (39,   '드라세나 콤팩타',38,     47000, 20);
+insert into product(pid,pname,ppnum,pprice,pstock) values (40,'드라세나 트리컬러 레인보우',39, 30000,20);      
+insert into product(pid,pname,ppnum,pprice,pstock) values (41,  '드라세나 드라코',40,  101000, 10);
+insert into product(pid,pname,ppnum,pprice,pstock) values (42,     '드라세나 마지나타'  ,41, 50300, 30);
+insert into product(pid,pname,ppnum,pprice,pstock) values (43, '드라세나 맛상게아나' ,42 , 45000, 23);
+insert into product(pid,pname,ppnum,pprice,pstock) values (44,'드라세나 산데리아나' ,43  , 45000, 23);
+insert into product(pid,pname,ppnum,pprice,pstock) values (45, '드라세나 산데리아나 세레스' ,44 , 39900, 10);
+insert into product(pid,pname,ppnum,pprice,pstock) values (46,  '드라세나 수르쿨로사' ,45, 39900, 10);
+insert into product(pid,pname,ppnum,pprice,pstock) values (47,  '디지고데카' ,46,  53000, 36);
+insert into product(pid,pname,ppnum,pprice,pstock) values (48, '디펜바키아 마리안느',47,   53000, 36);
+insert into product(pid,pname,ppnum,pprice,pstock) values (49,  '디펜바키아 트로픽스노우'  ,48 , 75000, 30);
+insert into product(pid,pname,ppnum,pprice,pstock) values (50, '떡갈잎 고무나무'  ,49,   75000, 30);
+insert into product(pid,pname,ppnum,pprice,pstock) values (51,  '러브체인' ,50,  25000, 60);
+insert into product(pid,pname,ppnum,pprice,pstock) values (52,  '렉스베고니아',51,  25000, 60);
+insert into product(pid,pname,ppnum,pprice,pstock) values (53, '루모라고사리'   , 52 , 30500, 30);
+insert into product(pid,pname,ppnum,pprice,pstock) values (54, '루스커스'  ,53, 14000, 20);
+insert into product(pid,pname,ppnum,pprice,pstock) values (55, '마란타 류코뉴라', 54, 30000, 30);    
+insert into product(pid,pname,ppnum,pprice,pstock) values (56, '마삭줄', 55  , 30500, 150); 
+insert into product(pid,pname,ppnum,pprice,pstock) values (57, '만년청' ,56 , 30500, 150); 
+insert into product(pid,pname,ppnum,pprice,pstock) values (58, '만데빌라',57   , 50990, 30);
+insert into product(pid,pname,ppnum,pprice,pstock) values (59, '멕시코소철' ,58  , 50990, 30);
+insert into product(pid,pname,ppnum,pprice,pstock) values (60, '멜라니 고무나무' ,59  , 80000, 12);
+insert into product(pid,pname,ppnum,pprice,pstock) values (61, '목베고니아' ,60  , 80000, 12);
+insert into product(pid,pname,ppnum,pprice,pstock) values (62, '몬스테라' ,61, 30001,40);
+insert into product(pid,pname,ppnum,pprice,pstock) values (63, '무늬관음죽',62 , 35000, 30);
+insert into product(pid,pname,ppnum,pprice,pstock) values (64, '무늬마삭줄' ,63, 58000, 20);
+insert into product(pid,pname,ppnum,pprice,pstock) values (65, '무늬벤자민고무나무', 64, 50500, 30);  
+insert into product(pid,pname,ppnum,pprice,pstock) values (66, '무늬산호수', 65, 19000, 20);  
+insert into product(pid,pname,ppnum,pprice,pstock) values (67, '무늬석창포',  66, 30400, 10);
+insert into product(pid,pname,ppnum,pprice,pstock) values (68, '무늬쉐플레라 홍콩', 67,  85000, 30);
+insert into product(pid,pname,ppnum,pprice,pstock) values (69, '무늬알피니아', 68, 76000, 45);
+insert into product(pid,pname,ppnum,pprice,pstock) values (70, '무늬유카', 69,  12345, 34); 
+insert into product(pid,pname,ppnum,pprice,pstock) values (71, '무늬접란' ,70, 15800, 30); 
+insert into product(pid,pname,ppnum,pprice,pstock) values (72, '무늬털머위', 71, 28000, 30);
+insert into product(pid,pname,ppnum,pprice,pstock) values (73, '무늬팻츠헤데라' ,72 , 35000, 30);
+insert into product(pid,pname,ppnum,pprice,pstock) values (74, '무늬푸밀라고무나무',73 , 59000, 30);
+insert into product(pid,pname,ppnum,pprice,pstock) values (75, '뮤렌베키아' ,74  , 103000, 50);
+insert into product(pid,pname,ppnum,pprice,pstock) values (76, '바위취',75, 89000, 33); 
+insert into product(pid,pname,ppnum,pprice,pstock) values (77,'박쥐란' ,76, 22000, 30);   
+insert into product(pid,pname,ppnum,pprice,pstock) values (78,'반딧불털머위' ,77, 90888, 30);   
+insert into product(pid,pname,ppnum,pprice,pstock) values (79,'백량금' , 78, 50300, 20);  
+insert into product(pid,pname,ppnum,pprice,pstock) values (80,'백정화' , 79, 50300, 20);  
+insert into product(pid,pname,ppnum,pprice,pstock) values (81,'백화등' , 80, 50300, 20);
+insert into product(pid,pname,ppnum,pprice,pstock) values (82,'벤자민고무나무' ,81,120000, 10);
+insert into product(pid,pname,ppnum,pprice,pstock) values (83,'벤자민고무나무 킹' ,82,  300000,5);
+insert into product(pid,pname,ppnum,pprice,pstock) values (84,'벵갈고무나무',83,160000, 9);    
+insert into product(pid,pname,ppnum,pprice,pstock) values (85, '병솔나무' ,84, 200000, 12);  
+insert into product(pid,pname,ppnum,pprice,pstock) values (86, '보스톤고사리' ,85, 54000, 40); 
+insert into product(pid,pname,ppnum,pprice,pstock) values (87, '봉의꼬리' ,86 , 54000, 40);
+insert into product(pid,pname,ppnum,pprice,pstock) values (88, '부겐빌레아' ,87 , 54000, 40);
+insert into product(pid,pname,ppnum,pprice,pstock) values (89, '브룬펠시아' ,88 , 54000, 40);
+insert into product(pid,pname,ppnum,pprice,pstock) values (90, '브리세아', 89 ,  54000, 40);
+insert into product(pid,pname,ppnum,pprice,pstock) values (91, '비젯티접란', 90 , 39800, 30);  
+insert into product(pid,pname,ppnum,pprice,pstock) values (92, '비타툼접란' ,91 , 39800, 30);
+insert into product(pid,pname,ppnum,pprice,pstock) values (93, '산세베리아', 92 , 39800, 30);
+insert into product(pid,pname,ppnum,pprice,pstock) values (94, '산세베리아 골든 하니', 93 , 45000, 30);
+insert into product(pid,pname,ppnum,pprice,pstock) values (95, '산호수'  ,94 , 53000, 23);
+insert into product(pid,pname,ppnum,pprice,pstock) values (96,'삼색데코라고무나무' ,95,  98000, 30);   
+insert into product(pid,pname,ppnum,pprice,pstock) values (97,'상록넉줄고사리 후마타', 96, 120000,30);
+insert into product(pid,pname,ppnum,pprice,pstock) values (98, '새우란' , 97, 30000, 10);
+insert into product(pid,pname,ppnum,pprice,pstock) values (99,'석창포' ,  98, 30000, 10); 
+insert into product(pid,pname,ppnum,pprice,pstock) values (100,'세네시오 라디칸스', 99, 390000, 20);

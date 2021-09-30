@@ -64,7 +64,7 @@
 	      console.log(payload);
 				request.post(url,payload)
 				
-							 .then(res=>res.json())
+							 .then(res=>res.json())    //서버에서 클라이언트로 값을 전송할때 json형태의 문자열로 오게되는데 그것을 참조해서 쓰기엔 너무 복잡하다 따라서 json을 자바스크립트 객체형태로 변환해주는 기능
 							 .then(res=>displayEmail(res))
 							 .catch(err=> {
 								 displayError(err);
@@ -101,7 +101,7 @@
     <div><label for="tel">전화번호</label> <br>
     <input type="text" th:field="*{tel}" placeholder="-없이 입력해주세요">
     </div>
-		<div class="hidden"><span class="email">아이디</sapn></div>
+		<div class="hidden"><span class="email">아이디</span></div>
 		<div class="hidden"><span class="email" id="email"></span></div>
   </div>
     <div class="button1">

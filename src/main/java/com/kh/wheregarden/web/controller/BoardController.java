@@ -117,7 +117,8 @@ public class BoardController {
 	@GetMapping("/{bnum}")
 	public String boardDetail(
 			@PathVariable Long bnum,
-			Model model) {
+			Model model,
+			HttpServletRequest request) {
 		
 		model.addAttribute("boardDetail", boardSVC.boardDetail(bnum));
 		
@@ -135,6 +136,10 @@ public class BoardController {
 		else {
 			model.addAttribute("commentsDTOList", commentsDTOList);
 		}
+		
+		//댓글
+    HttpSession session = request.getSession(false);
+    LoginMember loginMember = (LoginMember) session.getAttribute("loginMember");
 		
 		return "board/boardDetail";
 	}
