@@ -23,25 +23,24 @@
     }
     /*카테고리*/
     .category{
-   			padding-left :80px;
-        height : 50px;
+   			padding-left :10%;
+        height :20px;
     }
 
     /* 식물명 , 좋아요 기능 */
-    .top{
-        margin: 10px;
+    div.top{
+       padding-right: 50px;
         display: flex;
-        width:90%;
         height  : 50px;
     }
     .top .pName {
-    		padding-left :100px;
+    		padding-left :150px;
         font-weight: bold;
         font-size: 1.5rem;
     }
     .top .fa-heart{
         color: rgb(255, 153, 0);
-        margin-left: auto;
+        padding-right :50px;
         font-size: 2rem;
     }
     /*식물사진, 간략한 정보 , 가격, */
