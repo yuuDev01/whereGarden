@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class FavDTO {
 	
-	private Long fnum;
-	private String fmid;
 	private Long fpnum;
-	
+	private String fpmid;
+	private Long fppnum;
+
 
 }

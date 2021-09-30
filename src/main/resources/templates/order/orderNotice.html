@@ -71,7 +71,7 @@
 				    </div>
 	        
 	        <div class="button_container">
-	          <button th:type="submit" class="btn btn-success" id="cancelBtn">주문취소</button><button class="btn btn-success" id="homeBtn">홈으로</button>
+	          <button th:type="submit" class="btn btn-success" id="cancelBtn">주문취소</button><button type="button" class="btn btn-success" id="homeBtn" onclick="javascript:location.href='/'">홈으로</button>
 	        </div>
 	        </div>
 	    </div>
@@ -81,11 +81,5 @@
 	 </div>
 	</main>
 	<footer th:replace="/fragment/fragment_footer :: fragment_footer"></footer>
-	<script>
-		$homeBtn = document.getElementById('homeBtn');
-		$homeBtn.addEventListener('click', e=>{
-			location.href='/';
-		})
-	</script>
 </body>
 </html>

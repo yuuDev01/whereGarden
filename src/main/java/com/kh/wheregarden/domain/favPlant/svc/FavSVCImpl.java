@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.kh.wheregarden.domain.favPlant.dao.FavDAO;
 import com.kh.wheregarden.domain.favPlant.dto.FavDTO;
 import com.kh.wheregarden.domain.plant.dao.PlantDAO;
+import com.kh.wheregarden.domain.plant.dto.PlantDTO;
 import com.kh.wheregarden.domain.plant.svc.PlantSVCImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -35,5 +36,19 @@ public class FavSVCImpl implements FavSVC {
 	@Override
 	public void addFav(String mid, Long pnum) {
 		favDAO.addFav(mid, pnum);
+	}
+	
+	@Override
+	public void delFav(String mid, Long pnum) {
+		// TODO Auto-generated method stub
+		favDAO.delFav(mid, pnum);
+	}
+	
+	
+	//전체식물
+	@Override
+	public List<PlantDTO> allFav(String mid) {
+		// TODO Auto-generated method stub
+		return favDAO.allFav(mid);
 	}
 }

@@ -48,6 +48,7 @@ public class OrderController {
 	@PostMapping("/form")
 	public String cartOrderForm(
 			@ModelAttribute OrderForm orderForm,
+			BindingResult bindingResult,
 			HttpServletRequest request,
 			Model model) {
 		
@@ -68,6 +69,13 @@ public class OrderController {
 		MemberDTO memberDTO = memberSVC.findMemberById(loginMember.getId());
 		model.addAttribute("memberDTO",memberDTO);
 		
+
+		if(orderForm.orderDetails == null) {
+			bindingResult.rejectValue("orderDetails", "orderDetails", "선택된 상품이 없습니다");
+			return "order/orderFormPage";
+		}
+		
+
 		return "order/orderFormPage";
 	}
 	
@@ -107,7 +115,7 @@ public class OrderController {
 		MemberDTO memberDTO = memberSVC.findMemberById(loginMember.getId());
 		
 		model.addAttribute("memberDTO",memberDTO);
-		
+
 		return "order/orderFormPage";
 	}
 	
@@ -122,6 +130,7 @@ public class OrderController {
 		
 		HttpSession session = request.getSession(false);
 		LoginMember loginMember = (LoginMember) session.getAttribute("loginMember");
+
 		
 		//세션이 없으면 로그인페이지로 이동
 		
@@ -130,12 +139,13 @@ public class OrderController {
 		}
 		
 		log.info("사용자가 입력한 orderForm:{}", orderForm);
-		
+
+
 		//사용자가 입력한 주문정보를 DTO에 저장
 		OrderDTO newOrderDTO = new OrderDTO();
 		BeanUtils.copyProperties(orderForm, newOrderDTO);
 		newOrderDTO.setOmid(loginMember.getId());
-//		newOrderDTO.setOrderDetails(cartForm.getCname(),cartForm.getCqty());
+
 		
 		log.info("카피된 newOrderDTO:{}", newOrderDTO);
 		
@@ -152,7 +162,13 @@ public class OrderController {
 		
 		MemberDTO memberDTO = memberSVC.findMemberById(loginMember.getId());
 		model.addAttribute("memberDTO",memberDTO);
+
+		if(bindingResult.hasErrors()) {
+			log.info("errors={}", bindingResult);
 		
+			return "order/orderFormPage";
+		}
+
 		return "order/orderNotice";
 	}
 	

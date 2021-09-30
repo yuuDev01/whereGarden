@@ -38,7 +38,7 @@ public class FavDAOImpl implements FavDAO {
 	public FavDTO FavDetail(String mid, Long pnum) {
 		// TODO Auto-generated method stub
 		StringBuffer sql = new StringBuffer();
-		sql.append("select FPNUM, FPPNUM, FPMID  ");
+		sql.append("select fpnum, fppnum, fpmid  ");
 		sql.append("from fav_plant  ");
 		sql.append(" where FPMID = ? and FPPNUM = ? ");
 		FavDTO favDTO = null;
@@ -53,6 +53,7 @@ public class FavDAOImpl implements FavDAO {
 			favDTO = null;
 
 		}
+		System.out.println(favDTO);
 		return favDTO;	
 	}
 
@@ -62,13 +63,15 @@ public class FavDAOImpl implements FavDAO {
 		// TODO Auto-generated method stub
 		StringBuffer sql = new StringBuffer();
 		sql.append("insert into fav_plant ");
-		sql.append(" values(fav_plant_FPNUM_seq, ?, ?)");
+		sql.append(" values(fav_plant_FPNUM_seq.nextval, ?, ?)");
 
 		StringBuffer sql2 = new StringBuffer();
-		sql.append("update plant_info ");
-		sql.append("   set pcount = pcount + 1 ");
-		sql.append(" where pnum = ? ");
+		sql2.append("update plant_info ");
+		sql2.append("   set pcount = pcount + 1 ");
+		sql2.append(" where pnum = ? ");
+		
 
+		
 		jt.update(sql.toString(), pnum, mid);
 		// 식물정보에서 관심식물 count 증가
 		jt.update(sql2.toString(), pnum);
@@ -78,18 +81,55 @@ public class FavDAOImpl implements FavDAO {
 	@Override
 	public void delFav(String mid, Long pnum) {
 		// TODO Auto-generated method stub
-		StringBuffer sql = new StringBuffer();
-		sql.append("delete from fav_plant ");
-		sql.append("where pnum =? , userid= ? ");
-		jt.update(sql.toString(), pnum, mid);
+		StringBuffer sql1 = new StringBuffer();
+		sql1.append("delete from fav_plant ");
+		sql1.append("where FPPNUM =? and FPMID= ? ");
+		jt.update(sql1.toString(), pnum, mid);
 
 		StringBuffer sql2 = new StringBuffer();
-		sql.append("update plant_info ");
-		sql.append("   set pcount = pcount - 1 ");
-		sql.append(" where pnum = ? ");
+		sql2.append("update plant_info ");
+		sql2.append("   set pcount = pcount - 1 ");
+		sql2.append(" where pnum = ? ");
 
 		// 식물정보에서 관심식물 count 감소
 		jt.update(sql2.toString(), pnum);
 
+	}
+	
+	@Override
+	public List<PlantDTO> allFav(String mid) {
+		// TODO Auto-generated method stub
+		StringBuffer sql = new StringBuffer();
+		sql.append("select  pnum,   ");
+		sql.append("  pname,   ");
+		sql.append("  pename ,   ");
+		sql.append("  pclcode,   ");
+		sql.append("  porgplce,   ");
+		sql.append("  pfnclty,   ");
+		sql.append("  padvise,   ");
+		sql.append("  pprpgt,   ");
+		sql.append("  plight,   ");
+		sql.append("  pmanagelv,   ");
+		sql.append("  pflcolor,   ");
+		sql.append("  pgrwhstle,   ");
+		sql.append("  pgrowth,   ");
+		sql.append("  pwatersp,   ");
+		sql.append("  pwatersu,   ");
+		sql.append("  pwatera,   ");
+		sql.append("  pwaterw,   ");
+		sql.append("  pplace,   ");
+		sql.append("  plthts,   ");
+		sql.append("  pspecial,   ");
+		sql.append("  pimgurl,   ");
+		sql.append("  pcount   ");
+		sql.append("from plant_info ");
+		sql.append("where pnum in (  ");
+		sql.append("  select FPPNUM  ");
+		sql.append("  from fav_plant  ");
+		sql.append("  where FPMID= ? ) ");
+		List<PlantDTO> list = jt.query(
+				sql.toString(),
+				new BeanPropertyRowMapper<>(PlantDTO.class), mid);
+		return list;
 	}
 }

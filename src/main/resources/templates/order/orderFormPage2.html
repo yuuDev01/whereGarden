@@ -25,7 +25,6 @@
  	.hidden{
  		display:none;
  	}
-
  	.bank {
  		width: 200px;
  		border: none;
@@ -34,7 +33,6 @@
  		width: 200px;
  		border: none;
  	}
-
  	.order_title2{
  		font-size: 20px;
  	}
@@ -57,8 +55,7 @@
  		<input type="hidden" th:value="${memberDTO.mpost}" id="hiddenPost"/>
  		<input type="hidden" th:value="${memberDTO.mroadname}" id="hiddenRoadName"/>
  	
-
-		<form th:action="@{/order}" th:method="post" th:object="${orderForm}">
+		<form th:action="@{/order}" th:method="post">
 		  <h3>주문하기</h3>
 		  <hr />
 		  <p class="order_title2">주문내역</p>
@@ -90,33 +87,29 @@
 		        <input type="radio" name="orderInfo" value="새로운 배송정보" id="newInfo" th:field="${orderForm.oinfo}">
 		        <label for="member">새로운 배송정보</label>
 		      </li>
-		      <li><p th:errors="${orderForm.oinfo}" th:errorclass="field-msg"></p></li>
+		      <li><p th:errors="${orderForm.oinfo}" th:errorclass="error-msg"></p></li>
 		      <li><p>받으시는 분</p></li>
 		      <li>
 		        <input type="text" th:field="${orderForm.oname}" id="d-name">
 		      </li>
-		      <li><p th:errors="${orderForm.oname}" th:errorclass="field-msg"></p></li>
+		      <li><p th:errors="${orderForm.oname}" th:errorclass="error-msg"></p></li>
 		      <li><p>주소</p></li>
 		      <li>
 		      	<div>
 		        <input type="text" th:field="${orderForm.opost}" id="sample4_postcode" placeholder="우편번호">
-		        <button class="addBtn" type="button" id="findBtn"onclick="sample4_execDaumPostcode()"  value="우편번호 찾기">우편번호 찾기</button>
+		        <button type="button">우편번호 찾기</button>
 		      	</div>
 		      	<div>
-		      		<input type="text" th:field="${orderForm.oroadname}" id="sample4_roadAddress" placeholder="도로명주소">
-		      		<input type="text" th:field="${orderForm.oaddress}" id="sample4_detailAddress" placeholder="나머지 주소를 입력해주세요">
-		      		<input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
-		      		<input type="hidden" id="sample4_extraAddress" placeholder="참고항목" >
+		      		<input type="text" th:field="${orderForm.oroadname}" id="d-roadname" placeholder="도로명주소">
+		      		<input type="text" th:field="${orderForm.oaddress}" id="d-address" placeholder="나머지 주소를 입력해주세요">
 		      	</div>	
 		      </li>
-		      <li><p th:errors="${orderForm.opost}" th:errorclass="field-msg"></p>
-		      <p th:errors="${orderForm.oroadname}" th:errorclass="field-msg"></p>
-		      <p th:errors="${orderForm.oaddress}" th:errorclass="field-msg"></p></li>
+		      <li><p th:errors="${orderForm.oaddress}" th:errorclass="error-msg"></p></li>
 		      <li><p>휴대전화</p></li>
 		      <li>
 		        <input type="text" th:field="${orderForm.ophone}" id="d-tel">
 		      </li>
-		      <li><p th:errors="${orderForm.ophone}" th:errorclass="field-msg"></p></li>
+		      <li><p th:errors="${orderForm.ophone}" th:errorclass="error-msg"></p></li>
 		      <li><p>배송 메모</p></li>
 		      <li>
 		      	<div>
@@ -131,8 +124,8 @@
 		        <label>무통장입금</label>
 		        <input id="card" type="radio" value="카드결제" th:field="${orderForm.opayment}">
 		        <label>카드결제</label>
-		      </li>	      
-		      <li><p th:errors="${orderForm.opayment}" th:errorclass="field-msg"></p></li>
+		      </li>
+		      <li><p th:errors="${orderForm.opayment}" th:errorclass="error-msg"></p></li>
 		      <li>
 		      	<div class="bank hidden">
 			      	<div>은행명</div>

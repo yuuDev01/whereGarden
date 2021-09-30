@@ -108,12 +108,14 @@
 
 		<div class="plant_view" id="plant_view">
 			<div th:each="plant : ${plantList}" class="plant">
-					<i class="far fa-heart" ></i>
+			<!--
 				<div th:each="fav : ${favPlant}">
-					<div th:if="${plant.PNUM} == ${fav.fpnum}">
-					<i class="fas fa-heart" ></i>
+					<div th:if = "${plant.PNUM} == ${fav.fpnum}">
+					<i class="fas fa-heart" ></i></div>
+					<div th:unless = "${plant.PNUM} == ${fav.fpnum}">
+					<i class="far fa-heart" ></i>
 					</div>
-				</div>
+				</div>  -->
 				<a href="" th:href="@{|/plant/${plant.PNUM}/|}"> 
 				<img class="product-img" th:src="${plant.PIMGURL}" alt=""></a>
 				<div th:text="${plant.PNAME}" class="pname">선인장1</div>

@@ -3,11 +3,12 @@ package com.kh.wheregarden.domain.favPlant.dao;
 import java.util.List;
 
 import com.kh.wheregarden.domain.favPlant.dto.FavDTO;
+import com.kh.wheregarden.domain.plant.dto.PlantDTO;
 
 public interface FavDAO {
 	
 	/**
-	 * 관심식물 식물목록
+	 * 관심식물 식물 목록
 	 * @param mid
 	 * @return
 	 */
@@ -23,17 +24,23 @@ public interface FavDAO {
 	FavDTO FavDetail(String mid, Long pid);
 	
 	/**
-	 * 좋아요추가
+	 *  관심식물 추가
 	 * @param mid
 	 * @param pnum
 	 */
 	void addFav(String mid, Long pnum);
 	
 	/**
-	 * 좋아요 취소
+	 * 관심식물 취소
 	 * @param mid
 	 * @param pnum
 	 */
 	void delFav(String mid, Long pnum);
-
+	
+	/**
+	 * 관심식물 리스트 plantDTO
+	 * @param mid
+	 * @return
+	 */
+	List<PlantDTO> allFav(String mid);
 }

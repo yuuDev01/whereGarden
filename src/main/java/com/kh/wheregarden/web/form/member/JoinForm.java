@@ -14,7 +14,8 @@ public class JoinForm {
 
 	@NotEmpty(message = "아이디를 입력하세요")
 	@Email(message = "")
-	private String mid;						
+	private String mid;
+
 	
 	//삭제된회원
 	private String delmid;

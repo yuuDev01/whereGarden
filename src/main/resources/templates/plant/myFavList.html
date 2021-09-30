@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<th:block th:replace="/fragment/fragment_header :: fragment_headBlock"></th:block>
+
+<style>
+.plant_container{
+	  	display: grid;
+	  	grid-template-columns: 150px 800px;
+	  	gap: 100px;
+	  	margin-top:30px;
+	  }
+.plant_container .plant_view{
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.plant_container .plant_view .plant{
+	 width: 200px;
+  height: 250px;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+.plant_container .plant_view .product-img {
+  width: 160px;
+  height: 160px;
+  border : 1px solid rgba(97, 97, 97, 0.3);
+}
+
+.plant_container .plant_view .fa-heart{
+  text-align: end;
+  font-size: 1.5rem;
+}
+
+
+.plant_container .plant_view .pname{
+  text-align: center;
+  font-weight: bold;
+  color: rgb(97, 97, 97);
+}
+
+</style>
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<title>내 관심식물</title>
+
+</head>
+<body>
+	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
+
+	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
+	<div class="plant_container">
+	<nav th:replace="/fragment/fragment_aside :: fragment_aside"></nav>
+	<div class="plant_view" id="plant_view">
+			<div th:each="plant : ${plantList}" class="plant">
+				<a href="" th:href="@{|/plant/${plant.PNUM}/|}"> 
+				<img class="product-img" th:src="${plant.PIMGURL}" alt=""></a>
+				<div th:text="${plant.PNAME}" class="pname">선인장1</div>
+		</div>
+		</div>
+	</div>
+		<footer th:replace="/fragment/fragment_footer :: fragment_footer">
+			연습용 빈 footer입니다. 
+</body>
+</html>
+
+

@@ -52,7 +52,9 @@ section.section2 h2{ text-align: center; }
 div.card{
   width: 200px; height: 400px;
 }
-div.card>h4{ text-align: center; margin-top: 10px;}
+
+div.card>h4{ text-align: center; margin-top:10px;}
+
 
 div.top-section2{
   display: grid;

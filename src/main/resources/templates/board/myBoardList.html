@@ -7,8 +7,28 @@
  
   <title>어딜, 가든</title>
   
-  <!-- 추가 CSS -->
-  <link rel="stylesheet" href="/css/board/myBoardList.css">
+  <style>
+	  div.boardList_allContainer{
+	  	display: grid;
+	  	grid-template-columns: 150px 800px;
+	  	gap: 100px;
+	  	margin-top:30px;
+	  }
+	  .Board_menu{
+	  margin-bottom:20px;
+	  }
+	  .Board_menu a{
+	  font-size:30px;
+	  margin-right:20px;
+	  border:1px solid grey;
+	  padding:5px;
+	  border-radius:5px;
+	  background-color:green;
+	  color:white;
+	  }
+	  
+  </style>
+
   
 	<!-- js 추가 -->
 	<script src="/js/board/myBoardList.js" defer></script>
@@ -21,8 +41,9 @@
 	<header th:replace="/fragment/fragment_header :: fragment_header"></header>
 	
  	<nav th:replace="/fragment/fragment_nav :: fragment_nav"></nav>
- 	
   <div class="boardList_allContainer">
+ 	<nav th:replace="/fragment/fragment_aside :: fragment_aside"></nav>
+ 	<div>
     <div class="Board_menu">
     	<a th:href="@{/board/myBoardList(category=자유게시판)}">자유게시판</a>
     	<a th:href="@{/board/myBoardList(category=QnA)}">QnA</a>
@@ -55,6 +76,7 @@
           </tbody>
         </table>
       </div>
+     </div>
     </div>
       
 	<!-- 페이징 -->

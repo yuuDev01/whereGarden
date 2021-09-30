@@ -40,7 +40,7 @@ public class APIMemberController {
 		return result;
 	}
 	
-	
+
 	//이메일 찾기
 	@PostMapping("/email")
 	public JsonResult<String> findMid(
