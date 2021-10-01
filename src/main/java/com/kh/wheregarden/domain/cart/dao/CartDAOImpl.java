@@ -66,15 +66,16 @@ public class CartDAOImpl implements CartDAO {
 	
 	//장바구니 상품조회
 	@Override
-	public CartDTO findProduct(int cpid) {
+	public CartDTO findProduct(int cpid, String cmid) {
 		CartDTO findedCartDTO = null;
 		StringBuffer sql = new StringBuffer();
 		sql.append("select cnum,cmid,cpid,cpname,cqty,cprice ");
 		sql.append("from cart ");
 		sql.append("where cpid = ? ");
+		sql.append("and cmid = ? ");
 		
 		try {
-			findedCartDTO = jt.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(CartDTO.class),cpid);
+			findedCartDTO = jt.queryForObject(sql.toString(), new BeanPropertyRowMapper<>(CartDTO.class),cpid,cmid);
 		}
 		catch (EmptyResultDataAccessException e){
 			findedCartDTO = null;

@@ -2,7 +2,7 @@
  * 
  */
 
- //체크박스
+ //전체 체크박스 체크
  function selectAll(selectAll) {
       const checkboxes = document.querySelectorAll('input[type="checkbox"]');
       checkboxes.forEach((checkbox)=>{
@@ -10,6 +10,7 @@
       })
   }
 
+//장바구니 선택상품 주문
 const $orderBtn = document.getElementById('orderBtn');
 $orderBtn.addEventListener('click', e => {
    const checkedProduct = document.querySelectorAll('input[type="checkbox"]:not(:checked)');
@@ -20,7 +21,7 @@ $orderBtn.addEventListener('click', e => {
 //      console.log(ele.nextSibling.nextSibling.nextSibling.nextSibling);
 //   })
    const nullCheckBoxValue = document.getElementById('cartChk').value;
-   for( const unChecked of checkedProduct){
+   for(const unChecked of checkedProduct){
       if(unChecked.value == nullCheckBoxValue) continue;
      	console.log(unChecked.nextElementSibling);
      	console.log(unChecked.nextElementSibling.nextElementSibling);
@@ -36,14 +37,29 @@ $orderBtn.addEventListener('click', e => {
    }
 });
 
+//장바구니 전체상품 주문
 const $allBtn = document.getElementById('allBtn');
 $allBtn.addEventListener('click', e=>{
 	const checkedProduct = document.querySelectorAll('input[type="checkbox"]:not(:checked)');
-	for( const unChecked of checkedProduct) {
-		unchecked.checked = true;
+	const checkBox = document.querySelectorAll('input[type="checkbox"]');
+	
+	 var notChecked = "";
+	 for(var i=0; i<checkBox.length; i++) {
+		if(checkBox[i].checked == true){
+			notChecked = "1";
+		}
 	}
+	const $plantName = document.getElementById('plantName');
+	if(notChecked == "" && $plantName == null){
+		alert("장바구니가 비었습니다");
+		return false;
+	} else{
+		for( const unChecked of checkedProduct) {
+			unChecked.checked = true;
+			document.orderForm.submit();
+		}
+	}	
 });
-   
    //장바구니 수량 및 합계 변경
        const cartNums = document.querySelectorAll(".cartNum");
        for(const cartNum of cartNums){
