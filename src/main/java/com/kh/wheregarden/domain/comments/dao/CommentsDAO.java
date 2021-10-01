@@ -14,7 +14,7 @@ public interface CommentsDAO {
 	Long writeComment(CommentsDTO commentsDTO);
 	
 	//댓글 수정
-	Long modifyComment(Long cnum, CommentsDTO commentsDTO);
+	String modifyComment(String modifiedContent, Long cnum, String id);
 	
 	//댓글 삭제
 	void delComment(Long cnum);
