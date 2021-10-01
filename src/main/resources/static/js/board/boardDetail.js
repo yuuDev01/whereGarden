@@ -25,7 +25,20 @@ const displayModifiedComments = res => {
 	const $modifiedComments = document.getElementById('commentTextarea');
 
 	if(res.rtcd == '00'){
-	    $modifiedComments.textContent = res.data;			    	  
+	    $modifiedComments.textContent = res.data;
+			const $commentTextarea = document.getElementById('commentTextarea');
+			$commentTextarea.style.border="0";
+			$commentTextarea.readOnly=true;
+			
+			$commentMoiBtn.innerHTML="수정하기";
+			/*$commentMoiBtn.id = "commentMoiBtn";*/
+			$commentMoiBtn.nextElementSibling.remove(); //삭제버튼 제거
+			var deleteButton = document.createElement("button");
+			deleteButton.className = 'btn btn-success';
+			deleteButton.id = 'commentDelBtn';
+			deleteButton.innerHTML = "삭제";
+			$commentMoiBtn.parentNode.appendChild(deleteButton);
+				  
 	  }else{
 		  $modifiedComments.textContent = res.data;
 	  }
@@ -74,9 +87,7 @@ $commentDelBtn?.addEventListener("click", e=>{
 
 //댓글수정
 $commentMoiBtn?.addEventListener("click", e=>{
-	/*부모의 다음 형제의 자식*/
-	const bnum = e.target.dataset.bnum;	//th-data로 글번호 받아옴
-	
+
 	console.log($commentMoiBtn.parentNode.nextElementSibling.firstElementChild
 								.nextElementSibling.nextElementSibling);		//댓글내용창
 	$commentMoiBtn.parentNode.nextElementSibling.firstElementChild
@@ -84,12 +95,15 @@ $commentMoiBtn?.addEventListener("click", e=>{
 	$commentMoiBtn.parentNode.nextElementSibling.firstElementChild
 								.nextElementSibling.nextElementSibling.style.border="solid";
 	$commentMoiBtn.nextElementSibling.remove(); //삭제버튼 제거
+	
 	$commentMoiBtn.innerHTML="수정완료";
+	/*$commentMoiBtn.id = "commentMoiOkBtn";*/
 	var cancelButton = document.createElement("button");
 	cancelButton.className = 'btn btn-success';
 	cancelButton.id = 'commentModiCancel';
 	cancelButton.innerHTML = "수정취소";
 	$commentMoiBtn.parentNode.appendChild(cancelButton);
+
 	
 	//수정취소 버튼 클릭
 	cancelButton.addEventListener("click", e=>{
@@ -131,13 +145,9 @@ $commentMoiBtn?.addEventListener("click", e=>{
 						 displayError(err);
 						 console.log(err);
 					 });*/
-				
-			const $commentTextarea = document.getElementById('commentTextarea');
-			$commentTextarea.style.border="0";
-			$commentTextarea.readOnly=true;
-			$commentMoiBtn.innerHTML="수정하기";
-	});
-});
+				});
+		});
+
 
 
 
