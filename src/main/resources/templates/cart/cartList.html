@@ -20,7 +20,7 @@
    <main>  
      <h3>내 장바구니</h3>
      <hr />
-     <form th:action="@{/order/form}" id="orderForm" class="orderForm" th:method="post">
+     <form th:action="@{/order/form}" id="orderForm" name="orderForm" class="orderForm" th:method="post">
         <div class="basketdiv" id="basket">
            <div class="row head" >
               <input type="checkbox" id="cartChk" value="null" onclick="selectAll(this)" />
@@ -34,7 +34,7 @@
            <div class="row data" th:each="cList,idx : ${foundCartList}">
               <input type="hidden" th:value="${cList.cpid}" th:name="|orderDetails[${idx.index}].odpid|"/>
               <input type="checkbox" name="product" th:value="${cList.cnum}" />
-              <input type="text" th:value="${cList.cpname}" th:name="|orderDetails[${idx.index}].odpname|" readonly="readonly"/>
+              <input type="text" id="plantName" th:value="${cList.cpname}" th:name="|orderDetails[${idx.index}].odpname|" readonly="readonly"/>
               <input type="text" th:value="${cList.cprice}" readonly="readonly"/>
               <input type="number" min=1 th:value="${cList.cqty}" th:name="|orderDetails[${idx.index}].odqty|"
                         class="cartNum" 
@@ -49,7 +49,7 @@
            <div class="sumAndBtn">
           	 <h4> 합계 : </h4> <input type="text" id="allSum" readonly="readonly"/>
           	 <button type="submit" class="btn btn-success" id="orderBtn">선택상품주문</button>
-          	 <button type="submit" class="btn btn-success" id="allBtn">전체상품주문</button>
+          	 <button type="button" class="btn btn-success" id="allBtn">전체상품주문</button>
            </div>
         </div>
      </form>

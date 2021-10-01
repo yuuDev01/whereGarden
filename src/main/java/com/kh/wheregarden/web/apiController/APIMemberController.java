@@ -59,6 +59,24 @@ public class APIMemberController {
 		return new JsonResult<String>("00","ok",findedMid);
 	}
 	
+	//닉네임 중복체크
+		@GetMapping("/nickname/dupchk")
+		public JsonResult<String> dupChkNickname(
+				@RequestParam String mnickname
+				){
+			
+			JsonResult<String> result = null;
+			if(memberSVC.isExistNickname(mnickname)) {
+				result = new JsonResult<String>("00", "OK", mnickname);
+			}else {
+				result = new JsonResult<String>("01", "NOK", null);
+			}
+			
+			return result;
+		}
+		
+
+	
 	//비밀번호 찾기
 	@PostMapping("/pw")
 		public JsonResult<String> findPw(

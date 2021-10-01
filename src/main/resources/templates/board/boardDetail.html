@@ -86,7 +86,10 @@
 	  				<button th:if="${mid} == ${comments.cid}" type="button" class="btn btn-success" id="commentDelBtn" th:data-cnum="${comments.cnum}">삭제</button>
 	  			</div>
 	  			<div class="commentContent">
+	  				<input type="hidden" id="hiddenCid" th:value="${comments.cid}"/>
+	  				<input type="hidden" id="hiddenCnum" th:value="${comments.cnum}"/>
 	  				<textarea class="autosize" id="commentTextarea" onkeydown="resize(this)" onkeyup="resize(this)" th:text="${comments.ccontent}" readonly="readonly"></textarea>
+	  				<div class="hidden"><span class="email" id="email"></span></div>
 	  			</div>
 	  		</div>
 	  	</div>

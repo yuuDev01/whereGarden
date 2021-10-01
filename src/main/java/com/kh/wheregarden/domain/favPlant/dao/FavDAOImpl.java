@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class FavDAOImpl implements FavDAO {
 	private final JdbcTemplate jt;
-
+ 
 	@Override
 	public List<PlantDTO> list() {
 		// TODO Auto-generated method stub
@@ -71,7 +71,7 @@ public class FavDAOImpl implements FavDAO {
 		List<PlantDTO> list = jt.query(
 				sql.toString(),
 				new BeanPropertyRowMapper<>(PlantDTO.class));
-		
+
 		return list;
 	}
 	

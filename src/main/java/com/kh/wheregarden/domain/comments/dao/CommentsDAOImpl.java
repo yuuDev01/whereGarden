@@ -83,22 +83,21 @@ public class CommentsDAOImpl implements CommentsDAO {
 	
 	//댓글수정
 	@Override
-	public Long modifyComment(Long cnum, CommentsDTO commentsDTO) {
-		
+	public String modifyComment(String modifiedContent, Long cnum, String id) {
+		log.info(modifiedContent, cnum, id);
 		StringBuffer sql = new StringBuffer();
 		sql.append("update comments ");
 		sql.append("   set ccontent = ?, ");
 		sql.append("       cudate = sysdate ");
-		sql.append(" where cnum = ? ");
+		sql.append(" where cid = ? and cnum = ? ");
 		
-		int rows = jt.update(sql.toString(), commentsDTO.getCcontent(), cnum);
+		int rows = jt.update(sql.toString(), modifiedContent, id, cnum);
 		 
 		if(rows != 1) {
 			 throw new IllegalArgumentException(cnum + " 번 댓글 번호를 찾을 수 없습니다!");
 		}
 		
-		log.info("게시글 수정 rows:"+rows);
-		return cnum;
+		return modifiedContent;
 	}
 
 	//댓글삭제

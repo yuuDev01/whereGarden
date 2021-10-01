@@ -36,9 +36,9 @@ public class CommentsSVCImpl implements CommentsSVC {
 
 	//댓글 수정
 	@Override
-	public Long modifyComment(Long cnum, CommentsDTO commentsDTO) {
+	public String modifyComment(String modifiedContent, Long cnum, String id) {
 		// TODO Auto-generated method stub
-		return commentsDAO.modifyComment(cnum, commentsDTO);
+		return commentsDAO.modifyComment(modifiedContent, cnum, id);
 	}
 
 	//댓글 삭제

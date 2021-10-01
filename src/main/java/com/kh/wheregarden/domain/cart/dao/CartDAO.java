@@ -12,7 +12,7 @@ public interface CartDAO {
 	public CartDTO findCart(int cnum);
 	
 	//장바구니 상품조회
-	public CartDTO findProduct(int cpid);
+	public CartDTO findProduct(int cpid, String cmid);
 	
 	//장바구니 목록
 	public List<CartDTO> list(String cmid);
