@@ -20,6 +20,9 @@ border: 1px solid grey;
  form .form-control{
   width: 100%;
   }
+  li{
+  margin-top: 3px;
+  }
   .addBtn{
   background-color: burlywood;
   height:38px;

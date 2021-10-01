@@ -35,8 +35,8 @@ public class CartSVCImpl implements CartSVC {
 	 * 장바구니 상품조회
 	 */
   @Override
-  public CartDTO findProduct(int cpid) {
-  	return cartDAO.findProduct(cpid);
+  public CartDTO findProduct(int cpid, String cmid) {
+  	return cartDAO.findProduct(cpid, cmid);
   }
 	
 	/**

@@ -53,14 +53,14 @@ public class CartController {
     		 plantAndProductForm.getPqty(), plantAndProductForm.getPprice());
      
     // 장바구니 추가시 중복 품목은 수량만 변경
- 		CartDTO findedCartDTO = cartSVC.findProduct(newCartDTO.getCpid());
- 		if(findedCartDTO==null) {
- 			cartSVC.add(newCartDTO);
- 		}
- 		else {
- 			cartSVC.updateQty(newCartDTO);
- 		}
-     
+	CartDTO findedCartDTO = cartSVC.findProduct(newCartDTO.getCpid(), loginMember.getId());
+	if(findedCartDTO == null) {
+		cartSVC.add(newCartDTO);
+	}
+	else{
+		cartSVC.updateQty(newCartDTO);
+	}
+ 
      if(plantAndProductForm.getCartFlag() == 1) {
     	 return "redirect:/cart/myCartList";
      }
@@ -99,32 +99,5 @@ public class CartController {
      
      return "cart/cartList";
   }
-	
-	/**
-	 * 장바구니 수정
-	 * @param cmid
-	 * @param model
-	 * @return
-	 */
-//	@GetMapping("/myCartEdit/{cmid}")
-//	public String editForm(@PathVariable("cmid") String cmid, Model model) {
-//		CartDTO cartDTO = cartSVC.findCart(cmid);
-//		model.addAttribute("cartDTO", cartDTO);
-//		log.info("String editForm() 호출됨");
-//		
-//		return "cart/cartEdit";
-//	}
-	
-	/**
-	 * 장바구니 삭제
-	 * @param cnum
-	 * @return
-	 */
-//	@GetMapping("/mycartDel/{cnum}")
-//	public String delete(@PathVariable String cnum) {
-//		cartSVC.delete(cnum);
-//		log.info("String delete() 호출됨");
-//		
-//		return "/cart/cartList";
-//	}
+
 }
